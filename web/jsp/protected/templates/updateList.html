@@ -1,0 +1,15 @@
+<table class="table table-striped table-bordered table-condensed">
+<tbody>
+<tr><th>Name</th><th>Version</th><th>Date</th><th>Published</th></tr>
+{{#each this}}
+<tr>
+	<td><a href="/Fountain/jsp/protected/updates/viewRelease.jsp?id={{id}}">{{releaseName}}</a></td>
+	<td>{{releaseVersion}}</td>
+	<td>{{date releaseDate}}</td>
+	<td><input type="checkbox" onclick="ofwat.updates.togglePublished('{{id}}')" 
+		{{checked published}}/>
+	</td>
+</tr>
+{{/each}}
+</tbody>
+</table>

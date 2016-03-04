@@ -1,0 +1,20 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ <hibernate-mapping>
+ 	<class name="uk.gov.ofwat.fountain.domain.tag.TagLinkType" table="tbl_taglink_type">
+ 	 	<cache usage="read-write"/>
+	 	<id name="id" column="id">
+			<generator class="identity"/>
+		</id>
+		<property name="entityType" type="string"/>
+	</class>
+	
+	<query name="findTagLinkByType">
+		<![CDATA[
+			select distinct tagLinkType
+			from TagLinkType tagLinkType where tagLinkType.entityType like :entityType
+		]]>
+	</query>		
+	
+ </hibernate-mapping>
+ 

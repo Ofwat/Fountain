@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="FA015333" name="uk.gov.ofwat.fountain.rest.dto.DtoTestSuite" tests="4" time="0.047" timestamp="2010-02-04T12:27:56">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="env.DEFLOGDIR" value="c:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="eclipse.pdebuild.templates" value="/D:/eclipse/plugins/org.eclipse.pde.build_3.5.0.v20090527-1800/templates/" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="env.PROMPT" value="$P$G" />
+    <property name="os.name" value="Windows XP" />
+    <property name="env.PYTHONPATH" value="d:\python" />
+    <property name="env.FP_NO_HOST_CHECK" value="NO" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jre1.6.0_01\lib\resources.jar;C:\Program Files\Java\jre1.6.0_01\lib\rt.jar;C:\Program Files\Java\jre1.6.0_01\lib\sunrsasign.jar;C:\Program Files\Java\jre1.6.0_01\lib\jsse.jar;C:\Program Files\Java\jre1.6.0_01\lib\jce.jar;C:\Program Files\Java\jre1.6.0_01\lib\charsets.jar;C:\Program Files\Java\jre1.6.0_01\classes" />
+    <property name="env.COMPUTERNAME" value="FA015333" />
+    <property name="env.ALLUSERSPROFILE" value="C:\Documents and Settings\All Users" />
+    <property name="sun.desktop" value="windows" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145" />
+    <property name="java.runtime.version" value="1.6.0_01-b06" />
+    <property name="env.lib" value="C:\Program Files\Microsoft Visual Studio\VC98\mfc\lib;C:\Program Files\Microsoft Visual Studio\VC98\lib" />
+    <property name="env.HOMEPATH" value="\" />
+    <property name="label" value="${env.JOB_NAME}-${env.BUILD_NUMBER}" />
+    <property name="env.HOMESHARE" value="\\fpcl01\isu" />
+    <property name="clover.project.historydir" value="C:\Documents and Settings\andrew.partington/.cloverhistory/Fountain" />
+    <property name="env.__COMPAT_LAYER" value="EnableNXShowUI " />
+    <property name="user.name" value="andrew.partington" />
+    <property name="env.LDAPCONF" value="D:\ldap\\ldap.conf" />
+    <property name="test.classes.dir" value="bin" />
+    <property name="env.QTJAVA" value="&quot;C:\Program Files\Java\jre1.5.0_04\lib\ext\QTJava.zip&quot;" />
+    <property name="user.language" value="en" />
+    <property name="class.dir" value="web/WEB-INF/classes" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jre1.6.0_01\bin" />
+    <property name="reports.dir" value="test/reports" />
+    <property name="ant.project.name" value="Fountain" />
+    <property name="java.version" value="1.6.0_01" />
+    <property name="env.PROCESSOR_IDENTIFIER" value="x86 Family 15 Model 75 Stepping 2, AuthenticAMD" />
+    <property name="version" value="0.0.0" />
+    <property name="user.timezone" value="" />
+    <property name="compile.target" value="1.5" />
+    <property name="env.TEMP" value="c:\temp" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="env.APR_ICONV_PATH" value="C:\Program Files\Subversion\iconv" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jre1.6.0_01\lib\endorsed" />
+    <property name="env.VSEDEFLOGDIR" value="C:\Documents and Settings\All Users\Application Data\McAfee\DesktopProtection" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="env.HOMEDRIVE" value="N:" />
+    <property name="sun.jnu.encoding" value="Cp1252" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="ant.file.Fountain" value="D:\workspaces\dev\Fountain\build.xml" />
+    <property name="clover.initstring" value="D:\workspaces\dev\Fountain\.clover\clover2_5_1.db" />
+    <property name="java.class.version" value="50.0" />
+    <property name="user.country" value="GB" />
+    <property name="java.home" value="C:\Program Files\Java\jre1.6.0_01" />
+    <property name="env.APPDATA" value="C:\Documents and Settings\andrew.partington\Application Data" />
+    <property name="clover.dir" value="D:\workspaces\dev\Fountain/clover" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="env.ComSpec" value="C:\WINDOWS\system32\cmd.exe" />
+    <property name="env.OS" value="Windows_NT" />
+    <property name="env.CommonProgramFiles" value="C:\Program Files\Common Files" />
+    <property name="ant.file" value="D:\workspaces\dev\Fountain\build.xml" />
+    <property name="os.version" value="5.1" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="1.6.0_01-b06" />
+    <property name="tomcat.local" value="D:/apache-tomcat-6.0.20" />
+    <property name="env.PHPRC" value="C:\Program Files\PHP\" />
+    <property name="user.variant" value="" />
+    <property name="env.USERPROFILE" value="C:\Documents and Settings\andrew.partington" />
+    <property name="ant.library.dir" value="D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib" />
+    <property name="clover.jar" value="D:\workspaces\dev\Fountain\${clover.home}\clover.jar" />
+    <property name="env.JAVA_HOME" value="C:\Program Files\Java\jdk1.5.0_09" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="env.TMP" value="c:\temp" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="env.MSDevDir" value="C:\Program Files\Microsoft Visual Studio\Common\MSDev98" />
+    <property name="eclipse.pdebuild.scripts" value="/D:/eclipse/plugins/org.eclipse.pde.build_3.5.0.v20090527-1800/scripts/" />
+    <property name="user.home" value="C:\Documents and Settings\andrew.partington" />
+    <property name="env.SESSIONNAME" value="Console" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="clover.span" value="1day" />
+    <property name="test.dir" value="test" />
+    <property name="clover.dest" value="test/reports/Clover" />
+    <property name="java.library.path" value="C:\Program Files\Java\jre1.6.0_01\bin;.;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;D:\ldap\;;C:\Program Files\Windows Resource Kits\Tools\;C:\Program Files\PHP\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\WBEM;C:\Program Files\ATI Technologies\ATI.ACE\;C:\Program Files\Subversion\bin;d:\tools;C:\Program Files\OpenLink Software\UDA\bin\;D:\apache-ant-1.7.0\bin\;C:\Program Files\TextPad 4\;C:\Program Files\Java\jdk1.5.0_09\bin;D:\ORANT\BIN;C:\Program Files\Credant\Shield v5.4.2\;C:\Program Files\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files\Microsoft Visual Studio\Common\Tools;C:\Program Files\Microsoft Visual Studio\VC98\bin;D:\tools\usr\local\wbin;c:\python25" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="env.NUMBER_OF_PROCESSORS" value="2" />
+    <property name="test.target" value="test" />
+    <property name="env.USERDNSDOMAIN" value="OFWAT.NET" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="java.class.path" value="D:\workspaces\dev\Fountain\test;D:\workspaces\dev\Fountain\lib\RestEasy\activation-1.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\apache-mime4j-0.6.jar;D:\workspaces\dev\Fountain\lib\RestEasy\async-http-jbossweb-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\async-http-servlet-3.0-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\async-http-tomcat6-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\commons-codec-1.2.jar;D:\workspaces\dev\Fountain\lib\RestEasy\commons-httpclient-3.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\commons-logging-1.1.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\FastInfoset-1.2.7.jar;D:\workspaces\dev\Fountain\lib\RestEasy\guice-1.0.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jackson-core-asl-1.0.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jackson-jaxrs-1.0.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jackson-mapper-asl-1.0.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\javassist-3.6.0.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jaxb-api-2.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jaxb-impl-2.1.10.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jaxrs-api-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jboss-common-core-2.2.10.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jboss-logging-spi-2.0.5.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jbosscache-core-3.0.3.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jcl-over-slf4j-1.5.8.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jettison-1.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jgroups-2.6.7.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jsr250-api-1.0.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jta-1.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\jyaml-1.3.jar;D:\workspaces\dev\Fountain\lib\RestEasy\mail-1.4.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-atom-provider-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-cache-core-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-guice-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-jackson-provider-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-jaxb-provider-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-jaxrs-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-multipart-provider-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-spring-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\resteasy-yaml-provider-1.1.GA.jar;D:\workspaces\dev\Fountain\lib\RestEasy\scannotation-1.0.2.jar;D:\workspaces\dev\Fountain\lib\RestEasy\sjsxp-1.0.1.jar;D:\workspaces\dev\Fountain\lib\RestEasy\slf4j-api-1.5.8.jar;D:\workspaces\dev\Fountain\lib\RestEasy\slf4j-simple-1.5.8.jar;D:\workspaces\dev\Fountain\lib\RestEasy\stax-api-1.0.jar;D:\workspaces\dev\Fountain\lib\tomcat\jsp-api.jar;D:\workspaces\dev\Fountain\lib\tomcat\servlet-api.jar;D:\workspaces\dev\Fountain\lib\commons-logging\commons-logging.jar;D:\workspaces\dev\Fountain\lib\commons-pool\commons-pool.jar;D:\workspaces\dev\Fountain\lib\junit\junit.jar;D:\workspaces\dev\Fountain\lib\mysql\mysql-connector-java-5.0.3-bin.jar;D:\workspaces\dev\Fountain\lib\org.springframework\spring-mock.jar;D:\workspaces\dev\Fountain\lib\org.springframework\spring.jar;D:\workspaces\dev\Fountain\lib\commons-dbcp\commons-dbcp.jar;D:\workspaces\dev\Fountain\lib\jakarta-regexp\jakarta-regexp-1.4.jar;D:\workspaces\dev\Fountain\lib\clover\clover.jar;D:\workspaces\dev\Fountain\lib\aspect-j\aspectjrt.jar;D:\workspaces\dev\Fountain\lib\aspect-j\aspectjweaver.jar;D:\workspaces\dev\Fountain\lib\log4j\log4j-1.2.15.jar;D:\workspaces\dev\Fountain\lib\mockito\mockito-all-1.8.0.jar;D:\workspaces\dev\Fountain\web\WEB-INF\classes;D:\workspaces\dev\Fountain\bin;D:\workspaces\dev\reservoir\thirdparty\junit\junit.jar;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant-launcher.jar;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant.jar;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant-junit.jar" />
+    <property name="ant.version" value="Apache Ant version 1.7.1 compiled on June 27 2008" />
+    <property name="project.name" value="Fountain" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="clover.snapshot.file" value="C:\Documents and Settings\andrew.partington/.cloverhistory/Fountain/clover.snapshot" />
+    <property name="env.windir" value="C:\WINDOWS" />
+    <property name="env.LOGONSERVER" value="\\DC02" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="env.PROCESSOR_ARCHITECTURE" value="x86" />
+    <property name="sun.os.patch.level" value="Service Pack 3" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.ProgramFiles" value="C:\Program Files" />
+    <property name="env.ANT_HOME" value="D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145" />
+    <property name="env.PROCESSOR_REVISION" value="4b02" />
+    <property name="eclipse.pdebuild.home" value="/D:/eclipse/plugins/org.eclipse.pde.build_3.5.0.v20090527-1800/./" />
+    <property name="java.io.tmpdir" value="c:\temp\" />
+    <property name="project.title" value="Fountain" />
+    <property name="my.env" value="local" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="env.SystemRoot" value="C:\WINDOWS" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="os.arch" value="x86" />
+    <property name="clover.jarpath" value="D:\workspaces\dev\Fountain\lib\clover\clover.jar" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jre1.6.0_01\lib\ext;C:\WINDOWS\Sun\Java\lib\ext" />
+    <property name="war-file" value="Fountain" />
+    <property name="env.PKSFXDATA" value="C:\Program Files\Common Files\PKWARE\Pksfxs.dat" />
+    <property name="user.dir" value="D:\workspaces\dev\Fountain" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="env.PATHEXT" value=".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH" />
+    <property name="env.Path" value="C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;D:\ldap\;;C:\Program Files\Windows Resource Kits\Tools\;C:\Program Files\PHP\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\WBEM;C:\Program Files\ATI Technologies\ATI.ACE\;C:\Program Files\Subversion\bin;d:\tools;C:\Program Files\OpenLink Software\UDA\bin\;D:\apache-ant-1.7.0\bin\;C:\Program Files\TextPad 4\;C:\Program Files\Java\jdk1.5.0_09\bin;D:\ORANT\BIN;C:\Program Files\Credant\Shield v5.4.2\;C:\Program Files\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files\Microsoft Visual Studio\Common\Tools;C:\Program Files\Microsoft Visual Studio\VC98\bin;D:\tools\usr\local\wbin;c:\python25" />
+    <property name="basedir" value="D:\workspaces\dev\Fountain" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="ant.core.lib" value="D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant.jar" />
+    <property name="env.USERNAME" value="andrew.partington" />
+    <property name="env.SystemDrive" value="C:" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="build.compiler" value="org.apache.tools.ant.taskdefs.CloverCompilerAdapter" />
+    <property name="env.USERDOMAIN" value="OFWAT" />
+    <property name="clover.historydir" value="C:\Documents and Settings\andrew.partington/.cloverhistory" />
+    <property name="env.include" value="C:\Program Files\Microsoft Visual Studio\VC98\atl\include;C:\Program Files\Microsoft Visual Studio\VC98\mfc\include;C:\Program Files\Microsoft Visual Studio\VC98\include" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="env.PROCESSOR_LEVEL" value="15" />
+  </properties>
+  <testcase classname="uk.gov.ofwat.fountain.rest.dto.IntervalDtoTest" name="testIntervalDto" time="0.016" />
+  <testcase classname="uk.gov.ofwat.fountain.rest.dto.DataDtoTest" name="testDataDto_notCalculated" time="0.015" />
+  <testcase classname="uk.gov.ofwat.fountain.rest.dto.DataDtoTest" name="testDataDto_calculated" time="0.0" />
+  <testcase classname="uk.gov.ofwat.fountain.rest.dto.ModelDtoTest" name="testModelDto" time="0.016" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

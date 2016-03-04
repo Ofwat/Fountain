@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	   	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	    xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+							http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+							http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd" >
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:test.properties</value>
+		</property>
+	</bean>
+
+
+<!--
+		************************************ Aspects *******************************
+-->
+	<aop:aspectj-autoproxy/>
+
+		<bean id="daoCacheService" class="uk.gov.ofwat.fountain.api.DaoCacheServiceImpl"/>
+		<bean id="findByIdAspect" class="uk.gov.ofwat.fountain.aspect.cache.dao.generic.FindByIdAspect" scope="prototype" init-method="init">
+			<property name="cacheSize" value="2000"/> 
+			<property name="daoCacheService" ref="daoCacheService"/> 
+		</bean>
+		<bean id="findByCodeAspect" class="uk.gov.ofwat.fountain.aspect.cache.dao.generic.FindByCodeAspect" scope="prototype" init-method="init">
+			<property name="cacheSize" value="2000"/> 
+			<property name="daoCacheService" ref="daoCacheService"/> 
+		</bean>
+		<bean id="getAllAspect"	class="uk.gov.ofwat.fountain.aspect.cache.dao.generic.GetAllAspect" scope="prototype" init-method="init"> 
+			<property name="daoCacheService" ref="daoCacheService"/> 
+		</bean>
+		
+		<bean id="FindByModelAndItemAspect"	class="uk.gov.ofwat.fountain.aspect.cache.dao.specific.modelPropertiesMapDao.FindByModelAndItemAspect" init-method="init">
+			<property name="cacheSize" value="10000"/> 
+			<property name="daoCacheService" ref="daoCacheService"/> 
+		</bean> 
+		<bean id="LatestDataAspect" class="uk.gov.ofwat.fountain.aspect.cache.dao.specific.dataDao.LatestDataAspect" init-method="init">
+			<property name="cacheSize" value="10000"/> 
+			<property name="daoCacheService" ref="daoCacheService"/> 
+		</bean> 
+		<bean id="BranchDataAspect" class="uk.gov.ofwat.fountain.aspect.cache.dao.specific.dataDao.GetBranchDataAspect" init-method="init">
+			<property name="cacheSize" value="10000"/> 
+			<property name="daoCacheService" ref="daoCacheService"/> 
+		</bean> 
+		<bean id="FindEntriesForCompanyAndGroupAspect" class="uk.gov.ofwat.fountain.aspect.cache.dao.specific.groupDao.FindEntriesForCompanyAndGroupAspect" init-method="init">
+			<property name="cacheSize" value="10000"/> 
+			<property name="daoCacheService" ref="daoCacheService"/> 
+		</bean> 
+		<bean id="FindByTableIdAspect" class="uk.gov.ofwat.fountain.aspect.cache.dao.specific.potDao.FindByTableIdAspect" init-method="init">
+			<property name="cacheSize" value="2000"/> 
+			<property name="daoCacheService" ref="daoCacheService"/> 
+		</bean> 
+	
+
+	<bean id="dataSource-fountain"
+		class="org.apache.commons.dbcp.BasicDataSource"> <property
+		name="url"><value>${test.db.url}</value></property> <property
+		name="username"><value>${test.db.user}</value></property> <property
+		name="password"><value>${test.db.password}</value></property> <property
+		name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+	</bean>
+
+<!--
+		************************************ DAOS *******************************
+-->
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="confidenceGradeDao" class="uk.gov.ofwat.fountain.dao.ConfidenceGradeDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="modelFamilyDao" class="uk.gov.ofwat.fountain.dao.ModelFamilyDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="modelDao" class="uk.gov.ofwat.fountain.dao.ModelDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="branchDao" ref="branchDao" />
+		<property name="modelFamilyDao" ref="modelFamilyDao" />
+	</bean>
+
+	<bean id="groupDao" class="uk.gov.ofwat.fountain.dao.GroupDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+	
+	<bean id="codeListDao" class="uk.gov.ofwat.fountain.dao.CodeListDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="itemDao" class="uk.gov.ofwat.fountain.dao.ItemDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="groupDao" ref="groupDao" />
+		<property name="teamDao" ref="teamDao"/>
+		<property name="codeListDao" ref="codeListDao"/>
+	</bean>
+
+	<bean id="itemPropertiesDao" class="uk.gov.ofwat.fountain.dao.ItemPropertiesDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="itemDao" ref="itemDao" />
+		<property name="purposeDao" ref="purposeDao" />
+		<property name="priceBaseDao" ref="priceBaseDao" />
+		<property name="inflationTypeDao" ref="inflationTypeDao" />
+	</bean>
+
+	<bean id="intervalDao" class="uk.gov.ofwat.fountain.dao.IntervalDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="userDao" class="uk.gov.ofwat.fountain.dao.UserDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean name="lockDao" class="uk.gov.ofwat.fountain.dao.LockDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="userDao" ref="userDao" />
+	</bean>
+
+	<bean id="dataDao" class="uk.gov.ofwat.fountain.dao.DataDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="itemDao" ref="itemDao" />
+		<property name="intervalDao" ref="intervalDao" />
+		<property name="companyDao" ref="companyDao" />
+		<property name="lockDao" ref="lockDao" />
+		<property name="confidenceGradeDao" ref="confidenceGradeDao" />
+		<property name="branchDao" ref="branchDao" />
+	</bean>
+
+	<bean id="branchDao" class="uk.gov.ofwat.fountain.dao.BranchDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="potDao" class="uk.gov.ofwat.fountain.dao.PotDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="itemDao" ref="itemDao" />
+		<property name="intervalDao" ref="intervalDao" />
+		<property name="modelDao" ref="modelDao" />
+		<property name="modelPropertiesMapDao" ref="modelPropertiesMapDao" />
+	</bean>
+
+	<bean id="auditDao" class="uk.gov.ofwat.fountain.dao.AuditDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="companyDao" ref="companyDao"/>
+	</bean>
+
+	<bean id="companyDao" class="uk.gov.ofwat.fountain.dao.CompanyDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="tableDao" class="uk.gov.ofwat.fountain.dao.TableDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="itemPropertyIntervalDao" class="uk.gov.ofwat.fountain.dao.ItemPropertyIntervalDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="intervalDao" ref="intervalDao" />
+		<property name="itemPropertiesDao" ref="itemPropertiesDao" />
+	</bean>
+
+	<bean id="modelPropertiesMapDao" class="uk.gov.ofwat.fountain.dao.ModelPropertiesMapDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="itemPropertiesDao" ref="itemPropertiesDao" />
+		<property name="itemPropertyIntervalDao" ref="itemPropertyIntervalDao" />
+	</bean>
+
+	<bean id="userEditDao" class="uk.gov.ofwat.fountain.dao.UserEditDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="reportDao" class="uk.gov.ofwat.fountain.dao.ReportDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+		<property name="itemDao" ref="itemDao" />
+		<property name="modelDao" ref="modelDao" />
+		<property name="modelPropertiesMapDao" ref="modelPropertiesMapDao" />
+		<property name="groupDao" ref="groupDao"/>
+	</bean>
+
+	<bean id="inflationTypeDao" class="uk.gov.ofwat.fountain.dao.InflationTypeDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="priceBaseDao" class="uk.gov.ofwat.fountain.dao.PriceBaseDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+
+	<bean id="purposeDao" class="uk.gov.ofwat.fountain.dao.PurposeDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+	
+	<bean id="teamDao" class="uk.gov.ofwat.fountain.dao.TeamDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+	
+	<bean id="lineDao" class="uk.gov.ofwat.fountain.dao.LineDaoImpl">
+		<property name="dataSource" ref="dataSource-fountain" />
+	</bean>
+	
+
+	<!--
+		************************************ SERVICES
+		*******************************
+	-->
+	
+	<bean id="companyService" class="uk.gov.ofwat.fountain.api.CompanyServiceImpl">
+		<property name="companyDao" ref="companyDao"/>
+	</bean>
+
+	<bean id="lockService" class="uk.gov.ofwat.fountain.api.LockServiceImpl">
+		<property name="duration">
+			<value>60</value>
+		</property>
+		<property name="lockDao" ref="lockDao" />
+		<property name="userDao" ref="userDao" />
+	</bean>
+	
+	<bean id="auditService" class="uk.gov.ofwat.fountain.api.AuditServiceImpl">
+		<property name="auditDao" ref="auditDao" />
+	</bean>
+
+	<bean id="itemService" class="uk.gov.ofwat.fountain.api.ItemServiceImpl">
+		<property name="itemPropertiesDao" ref="itemPropertiesDao" />
+		<property name="modelPropertiesMapDao" ref="modelPropertiesMapDao" />
+		<property name="itemDao" ref="itemDao" />
+		<property name="itemPropertyIntervalDao" ref="itemPropertyIntervalDao" />
+		<property name="teamDao" ref="teamDao"/>
+		<property name="codeListDao" ref="codeListDao"/>
+	</bean>
+
+	<bean id="dataService" class="uk.gov.ofwat.fountain.api.DataServiceImpl">
+		<property name="dataDao" ref="dataDao" />
+		<property name="referenceService" ref="referenceService" />
+		<property name="lockService" ref="lockService" />
+		<property name="auditService" ref="auditService" />
+		<property name="confidenceGradeService" ref="confidenceGradeService" />
+	</bean>
+
+	<bean id="referenceService" class="uk.gov.ofwat.fountain.api.ReferenceServiceImpl">
+		<property name="intervalDao" ref="intervalDao" />
+		<property name="companyDao" ref="companyDao" />
+	</bean>
+
+	<bean id="groupService" class="uk.gov.ofwat.fountain.api.GroupServiceImpl">
+		<property name="groupDao" ref="groupDao" />
+	</bean>
+	
+		<bean id="reservoirDictionaryItemsImporter" class="uk.gov.ofwat.fountain.api.ReservoirDictionaryItemsImporter">
+		<property name="priceBaseDao" ref="priceBaseDao"/>
+		<property name="inflationTypeDao" ref="inflationTypeDao"/>
+		<property name="purposeDao" ref="purposeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="itemDao" ref="itemDao"/>
+		<property name="itemPropertiesDao" ref="itemPropertiesDao"/>
+		<property name="itemPropertyIntervalDao" ref="itemPropertyIntervalDao"/>
+	</bean>
+
+	<bean id="reservoirDictionaryModelImporter" class="uk.gov.ofwat.fountain.api.ReservoirDictionaryModelImporter">
+		<property name="itemPropertiesDao" ref="itemPropertiesDao"/>
+		<property name="itemPropertyIntervalDao" ref="itemPropertyIntervalDao"/>
+		<property name="intervalDao" ref="intervalDao" />
+	</bean>
+	
+	<bean id="modelService" class="uk.gov.ofwat.fountain.api.ModelServiceImpl" init-method="init">
+		<property name="modelDao" ref="modelDao" />
+		<property name="tableDao" ref="tableDao" />
+		<property name="potDao" ref="potDao" />
+		<property name="branchDao" ref="branchDao" />
+		<property name="itemService" ref="itemService" />
+		<property name="dataService" ref="dataService" />
+		<property name="referenceService" ref="referenceService" />
+		<property name="groupService" ref="groupService" />
+		<property name="modelPropertiesMapDao" ref="modelPropertiesMapDao" />
+	</bean>
+
+	<bean id="modelItemService" class="uk.gov.ofwat.fountain.api.ModelItemServiceImpl">
+		<property name="modelPropertiesMapDao" ref="modelPropertiesMapDao" />
+	</bean>
+
+	<bean id="basketService" class="uk.gov.ofwat.fountain.api.BasketServiceImpl">
+		<property name="userEditDao" ref="userEditDao" />
+	</bean>
+
+	<bean id="userService" class="uk.gov.ofwat.fountain.api.UserServiceTestImpl">
+		<property name="userDao" ref="userDao" />
+	</bean>
+
+	<bean id="confidenceGradeService" class="uk.gov.ofwat.fountain.api.ConfidenceGradeServiceImpl">
+		<property name="confidenceGradeDao" ref="confidenceGradeDao" />
+	</bean>
+
+	<bean id="fileService" class="uk.gov.ofwat.fountain.api.FileServiceImpl">
+		<property name="modelImporter" ref="modelImporter" />
+		<property name="modelFormsImporter" ref="modelFormsImporter" />
+		<property name="reservoirDictionaryItemsImporter" ref="reservoirDictionaryItemsImporter"/>
+		<property name="bulkUploadDir">
+			<value>${model.bulk.dir}</value>
+		</property>
+	</bean>
+
+	<bean id="reportService" class="uk.gov.ofwat.fountain.api.ReportServiceImpl">
+		<property name="reportDao" ref="reportDao" />
+		<property name="dataService" ref="dataService" />
+		<property name="groupService" ref="groupService" />
+		<property name="itemService" ref="itemService" />
+		<property name="modelService" ref="modelService" />
+		<property name="referenceService" ref="referenceService" />
+		<property name="basketService" ref="basketService"/>
+		<property name="lockService" ref="lockService" />
+		<property name="confidenceGradeService" ref="confidenceGradeService" />
+		<property name="reportTemplate" value="jsp/protected/reportTemplate.jsp.txt" />
+		<property name="outputDir">
+			<value>${jsp.web.dir}/report/</value>
+		</property>
+		<property name="localDir">
+			<value>${jsp.local.dir}report/</value>
+		</property>
+	</bean>
+
+	<bean id="teamService" class="uk.gov.ofwat.fountain.api.TeamServiceImpl">
+		<property name="teamDao" ref="teamDao" />
+	</bean>
+
+	<bean id="modelImporter" class="uk.gov.ofwat.fountain.api.ModelImporterImpl">
+		<property name="intervalDao" ref="intervalDao" />
+		<property name="modelPropertiesMapDao" ref="modelPropertiesMapDao" />
+		<property name="potDao" ref="potDao" />
+		<property name="tableDao" ref="tableDao" />
+		<property name="modelDao" ref="modelDao" />
+		<property name="lineDao" ref="lineDao" />
+		<property name="modelService" ref="modelService" />
+		<property name="companyService" ref="companyService"/>
+		<property name="reservoirDictionaryModelImporter" ref="reservoirDictionaryModelImporter"/>
+		<property name="groupService" ref="groupService"/>
+	</bean>
+
+	<bean id="modelFormsImporter" class="uk.gov.ofwat.fountain.api.ModelFormsImporterImpl">
+		<property name="modelService" ref="modelService" />
+		<property name="referenceService" ref="referenceService" />
+		<property name="confidenceGradeService" ref="confidenceGradeService" />
+		<property name="tableTemplate" value="file:web/jsp/protected/tableTemplate.jsp.txt" />
+		<property name="outputDir">
+			<value>file:test-data/temp</value>
+		</property>
+		<property name="localDir">
+			<value>${jsp.local.dir}</value>
+		</property>
+	</bean>
+
+	<bean id="auditAndDataImporter" class="uk.gov.ofwat.fountain.tools.AuditAndDataImporterImpl">
+		<property name="auditDao" ref="auditDao" />
+		<property name="dataDao" ref="dataDao" />
+		<property name="itemDao" ref="itemDao" />
+		<property name="intervalDao" ref="intervalDao" />
+		<property name="companyDao" ref="companyDao" />
+		<property name="confidenceGradeDao" ref="confidenceGradeDao" />
+		<property name="groupDao" ref="groupDao" />
+		<property name="userService" ref="userService" />
+		<property name="branchDao" ref="branchDao" />
+		<property name="bulkUploadDir">
+			<value>d:/data/upload</value>
+		</property>
+		<property name="referenceService" ref="referenceService" />
+	</bean>
+
+
+	
+	<bean id="transferExistingJSP"  class="uk.gov.ofwat.fountain.api.TransferExistingJSP">
+		<property name="webLocation"><value>${jsp.web.dir}</value></property>
+		<property name="localLocation"><value>${jsp.local.dir}</value></property>
+	</bean>
+
+
+	<bean id="pOIReportWriter" class="uk.gov.ofwat.fountain.api.report.POIReportWriter">
+		<property name="reportService" ref="reportService" />
+	</bean>
+	
+	<bean id="excelReportMarshaller" class="uk.gov.ofwat.fountain.rest.marshallers.ExcelReportMarshaller">
+		<property name="pOIReportWriter" ref="pOIReportWriter"/>
+	</bean>
+	
+	<!--
+		************************************************** ** ** ** RESOURCES
+		** ** ** *******************************************************
+	-->
+
+	<bean id="auditResource" class="uk.gov.ofwat.fountain.rest.AuditResource">
+		<property name="auditService" ref="auditService" />
+	</bean>
+
+	<bean id="basketResource" class="uk.gov.ofwat.fountain.rest.BasketResource">
+		<property name="lockService" ref="lockService" />
+		<property name="basketService" ref="basketService" />
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean id="companyResource" class="uk.gov.ofwat.fountain.rest.CompanyResource">
+		<property name="referenceService" ref="referenceService" />
+	</bean>
+
+	
+
+	<bean id="itemResource" class="uk.gov.ofwat.fountain.rest.ItemResource">
+		<property name="itemService" ref="itemService" />
+		<property name="modelItemService" ref="modelItemService" />
+	</bean>
+
+	<bean id="intervalResource" class="uk.gov.ofwat.fountain.rest.IntervalResource">
+		<property name="referenceService" ref="referenceService" />
+	</bean>
+
+	<bean id="checkoutResource" class="uk.gov.ofwat.fountain.rest.CheckoutResource">
+		<property name="dataService" ref="dataService" />
+		<property name="lockService" ref="lockService" />
+		<property name="basketService" ref="basketService" />
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean id="reportResource" class="uk.gov.ofwat.fountain.rest.ReportResource">
+		<property name="reportService" ref="reportService" />
+		<property name="userService" ref="userService" />
+		<property name="teamService" ref="teamService" />
+	</bean>
+
+	<bean id="dataResource" class="uk.gov.ofwat.fountain.rest.DataResource">
+		<property name="auditService" ref="auditService" />
+	</bean>
+
+	<bean id="modelResource" class="uk.gov.ofwat.fountain.rest.ModelResource">
+		<property name="modelService" ref="modelService" />
+	</bean>
+
+	<bean id="fileResource" class="uk.gov.ofwat.fountain.rest.FileResource">
+		<property name="auditAndDataImporter" ref="auditAndDataImporter" />
+		<property name="fileService" ref="fileService" />
+	</bean>
+
+	<bean id="confidenceGradeResource" class="uk.gov.ofwat.fountain.rest.ConfidenceGradeResource">
+		<property name="confidenceGradeService" ref="confidenceGradeService" />
+	</bean>
+	
+	<bean id="lockResource" class="uk.gov.ofwat.fountain.rest.LockResource">
+		<property name="lockService" ref="lockService" />
+		<property name="basketService" ref="basketService"/>
+		<property name="userService" ref="userService"/>
+	</bean>
+	
+	<bean id="cacheResource" class="uk.gov.ofwat.fountain.rest.CacheResource">
+		<property name="daoCacheService" ref="daoCacheService"/>
+	</bean>
+
+	<bean id="tableResource" class="uk.gov.ofwat.fountain.rest.TableResource">
+		<property name="lockService" ref="lockService" />
+		<property name="modelService" ref="modelService" />
+		<property name="referenceService" ref="referenceService" />
+		<property name="basketService" ref="basketService" />
+		<property name="userService" ref="userService" />
+		<property name="displayService" ref="displayService" />
+		<property name="modelItemService" ref="modelItemService" />
+		<property name="confidenceGradeService" ref="confidenceGradeService" />
+		<property name="itemService" ref="itemService" />
+	</bean>
+	
+	<bean id="teamResource" class="uk.gov.ofwat.fountain.rest.TeamResource">
+		<property name="teamService" ref="teamService"/>
+	</bean>
+</beans>

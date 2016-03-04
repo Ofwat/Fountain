@@ -1,0 +1,12 @@
+@CHARSET "ISO-8859-1";
+
+div.ribbonRight {
+	height: 43px;
+	text-align: right;
+	vertical-align: middle;
+	font-size: 1em;
+	color: #ffffff;
+	background: #00FFFF;
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#00FFFF', EndColorStr='#00008B')
+	border-bottom: #cad2db 1px solid;
+}

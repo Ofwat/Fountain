@@ -1,0 +1,33 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ <hibernate-mapping>
+	 <class name="uk.gov.ofwat.fountain.domain.tag.TagLink" table="tbl_taglink">
+	 	<!-- 
+	    <secondary-table name="tbl_tagLink_type">
+	    	<primary-key-join-column name="entityTypeId" referenced-column-name="id" />
+	    </secondary-table>
+	     -->	 
+	 	<cache usage="read-write"/>
+	 	<id name="id" column="id">
+			<generator class="identity"/>
+		</id>
+		<many-to-one 
+			name="tag"
+			column="tagId"
+			class="uk.gov.ofwat.fountain.domain.tag.Tag"
+			fetch="select"
+			not-null="true"
+			/>
+		<!-- <property name="tagId" type="long" column="tagId"/> -->
+		<property name="dateCreated" type="timestamp" column="dateCreated"/>
+		<property name="createdBy"/>
+		<!-- This needs to become another type? -->
+	    <many-to-one name="entityType" 
+	        column="entityTypeId" 
+	        unique="true"
+	        not-null="true"/>		
+		<!-- <property name="entityType" type="TagLinkType"/> -->
+		<property name="entityId" type="long">
+		</property>
+	</class>
+</hibernate-mapping>

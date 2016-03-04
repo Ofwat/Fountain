@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+   <Valve className="waffle.apache.NegotiateAuthenticator"  />
+
+ <Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
+      		
+      		connectionURL="ldap://DC201.ofwat.net:389"      
+      		connectionName="fountain.live@ofwat.net"
+      		connectionPassword="AdamJB0806#"   
+            userRoleName="member"
+            userBase="OU=Users, OU=Jigsaw\ , DC=ofwat,DC=net"
+            userPattern="CN={0},OU=Users, OU=Jigsaw\ , DC=ofwat,DC=net"
+            roleBase="OU=Jigsaw\ ,DC=ofwat,DC=net"
+            roleName="cn"
+            roleSearch="(member={0})"
+            roleSubtree="true"
+            userSubtree="true" 
+      		
+      />
+
+</Context>

@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+div.ribbonRight {
+	height: 43px;
+	text-align: right;
+	vertical-align: middle;
+	font-size: 1em;
+	color: #ffffff;
+	background: #00FFFF;
+	background-image:url('/Fountain/themes/dev1.gif');
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#FF3333', EndColorStr='#9900FF')
+	border-bottom: #cad2db 1px solid;
+}

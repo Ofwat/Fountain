@@ -1,0 +1,525 @@
+<project name="Fountain" default="build-war">
+	<property name="my.env" value="local" />
+	<property file="environment/${my.env}/build.properties" />
+	<property file="environment/${my.env}/test.properties" />
+	<property name="deploy.env" value="${my.env}" />
+	<property name="test.app.properties" value="test.properties"/>
+	<property name="war.app.properties" value="app.properties"/>
+	<property name="war.theme.properties" value="theme.properties"/>
+	<property name="war.aspect.xml" value="aspect.xml"/>
+	<property environment="env" />
+	
+	<taskdef name="xmlbean" classname="org.apache.xmlbeans.impl.tool.XMLBean" classpath="antLibs/xmlbean/xbean.jar"/>
+	<taskdef resource="checkstyletask.properties" classpath="antLibs/checkStyle/checkstyle-all-5.1.jar"/>
+<!--	
+	<taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpath="antLibs/groovy-all-2.0.5.jar"/>
+-->	
+	<taskdef name="minify" classname="tools.MinifyTask" classpath="antLibs/minitask/minitask.jar;antLibs/yuicompressor/yuicompressor-2.4.2.jar"/>
+		
+	<target name="clean" >
+		<delete dir="bin/uk" />
+		<delete dir="build" />
+		<delete dir="web/WEB-INF/classes" />
+	</target>
+
+	<target name="prepare" depends="clean">
+		<mkdir dir="build" />
+		<antcall target="create-version-manifest">
+		</antcall>
+	</target>
+	
+	<target name="hudson-build" depends="prepare,override-properties,build-war"/>
+
+	<target name="minifyJS">
+		<minify jsDir="web/js/ofwat"/>
+		<minify jsDir="web/css"/>
+	</target>
+	
+	<target name="makeMinifyJar" >
+		<javac srcdir="src/main/java" destdir="build" target="${compile.target}">
+			<classpath>
+				<pathelement path="antLibs/yuicompressor/yuicompressor-2.4.2.jar"/>
+				<pathelement path="antLibs/ant/ant.jar"/>
+			</classpath>
+			<include name="tools/MinifyTask.java"/>
+		</javac>
+		<!-- <delete file="antLibs/minitask/minitask.jar"/> -->
+		  <jar destfile="antLibs/minitask/minitask.jar"
+		       basedir="build"
+		       includes="tools/*"
+		  />
+	</target>
+
+	
+	<target name="build-war" >
+		<property name="test.strategy" value="without-clover"/>
+		<echo>${test.strategy}</echo>
+		<antcall target="${test.strategy}"/>
+		<antcall target="compile"/>
+		<!-- ???? -->
+		<copy file="web/jsp/footer.jsp.template" toFile="web/jsp/footer.jsp" overwrite="true">
+			<filterset>
+				<filter token="BUILD_INFO" value="${env.JOB_NAME} build: ${env.BUILD_NUMBER}  TimeStamp: ${env.BUILD_ID}  SVN revision: ${env.SVN_REVISION}"/>
+			</filterset>
+		</copy>
+		<war destfile="build/${war-file}.war" webxml="web/WEB-INF/web.xml" manifest="build/MANIFEST.mf" >
+			<!-- classes dir="bin" / -->
+			<fileset dir="web" includes="**" excludes="web.xml,**/${war.aspect.xml},**/${war.app.properties},**/${war.theme.properties},**/${test.app.properties},**/footer.jsp.template"/>
+			<fileset dir="." includes="META-INF/context.xml" />
+			<fileset dir="src/main/java" includes="log4j*"/>
+			<classes file="environment/${deploy.env}/${war.app.properties}" />
+			<classes file="environment/${deploy.env}/${war.aspect.xml}" />
+			<classes file="environment/${deploy.env}/${war.theme.properties}"/>
+			<!-- Add the 3rd party antLibsraries -->
+			<lib dir="antLibs/org.springframework" includes="*.RELEASE.jar, com.springsource.org.aopalliance-1.0.0.jar" />
+			<lib dir="antLibs/aspect-j" includes="*.jar" />
+			<lib dir="antLibs/resteasy" includes="*.jar" />
+			<lib dir="antLibs/poi" includes="*.jar" />
+			<lib dir="antLibs/commons-dbcp" includes="commons-dbcp.jar" />
+			<lib dir="antLibs/commons-pool" includes="commons-pool.jar" />
+			<lib dir="antLibs/mysql" includes="mysql-connector-java-5.0.3-bin.jar" />
+			<lib dir="antLibs/jakarta-regexp" includes="jakarta-regexp-1.4.jar" />
+			<lib dir="antLibs/log4j" includes="log4j-1.2.15.jar" />
+			<lib dir="antLibs/xml" includes="*.jar"/>
+			<lib dir="antLibs/xmlbean" includes="*.jar"/>
+			<lib dir="antLibs/FountainDataFormat/" includes="*.jar"/>
+			<lib dir="antLibs/jstl" includes="*.jar"/>
+			<lib dir="antLibs/cglib" includes="*.jar"/>
+			<lib dir="antLibs/json" includes="*.jar"/>
+			<lib dir="antLibs/commons-collections" includes="*commons-collections-3.2.jar"/>
+			<lib dir="antLibs/commons-io" includes="commons-io-1.4.jar"/>
+			<lib dir="antLibs/commons-lang" includes="commons-lang-2.6.jar"/>
+			<lib dir="antLibs/jtor" includes="dom4j-1.6.1.jar" />
+		</war>
+	</target>
+	
+
+	<target name="staticCodeChecks">
+		<checkstyle config="checkStyleRules.xml" failOnViolation="false">
+		  <fileset dir="src/main/java" includes="**/*.java"/>
+			  <formatter type="plain" toFile="test/reports/CheckStyle/checkStyleResults.txt"/>
+			  <formatter type="xml" toFile="test/reports/CheckStyle/checkStyleResults.xml"/>
+		</checkstyle>
+	</target>
+
+	<target name="compile" depends="prepare, staticCodeChecks">
+		<mkdir dir="${class.dir}" />
+		<groovyc srcdir="src/main/java:src/main/groovy" destdir="${class.dir}" classpath="compilePath">
+		<!-- <classpath refid="compilePath">
+			<path refid="compilePath"/>
+		</classpath> -->
+		</groovyc>
+		  <copy todir="${class.dir}">
+		    <fileset dir="src/main/java" excludes="**/*.java"/>
+		  </copy>
+		<!-- include the local beans properties -->
+		<copy overwrite="true" todir="${class.dir}">
+			<fileset dir="environment/${my.env}" includes="${test.app.properties}"/>
+			<fileset dir="environment/${my.env}" includes="${war.app.properties}"/>
+			<fileset dir="environment/${my.env}" includes="${war.theme.properties}"/>
+		</copy>
+	</target>
+
+
+	<target name="deploy-to-local" depends="build-war">
+		<echo message="Deploying jar file to Tomcat" />
+		<copy file="build/${war-file}.war" tofile="${tomcat.local}/webapps/${war-file}.war" overwrite="yes" />
+	</target>
+
+	<target name="create-manifest">
+		<tstamp>
+			<format property="timestamp" pattern="yyyyMMddHHmmss" locale="en,UK" />
+		</tstamp>
+		<echo message="Creating manifest - version ${version}, timestamp ${timestamp}" />
+		<property name="manifest-file" value="build/MANIFEST.MF" />
+		<echo file="${manifest-file}" message="Implementation-Version: ${version}${line.separator}" />
+		<echo file="${manifest-file}" message="Ofwat-Build-Time: ${timestamp}${line.separator}" append="true" />
+	</target>
+	<property environment="env"/>
+
+	<property name="label" value="${env.JOB_NAME}-${env.BUILD_NUMBER}"/>
+
+	
+	<target name="create-version-manifest">
+		<tstamp>
+			<format property="timestamp" pattern="yyyyMMddHHmmss" locale="en,UK" />
+		</tstamp>
+		<echo message="Creating manifest - version ${version}, timestamp ${timestamp}" />
+		<property name="manifest-file" value="build/MANIFEST.MF" />
+		<echo file="${manifest-file}" message="Build-number: ${label}${line.separator}" />
+		<echo file="${manifest-file}" message="Ofwat-Build-Time: ${timestamp}${line.separator}" append="true" />
+	</target>
+	
+	<target name="override-properties">
+		<!-- currently puts the test version of app.properties into the war
+		can extend this to do parameterised build with live / test properties -->
+	</target>
+	
+	
+	<target name="compiletest" depends="compile">
+		<mkdir dir="${class.dir}" />
+		<mkdir dir="${test.classes.dir}" />
+		<javac srcdir="test" destdir="${test.classes.dir}" target="${compile.target}">
+			<classpath>
+				<path refid="compilePath"/>
+				<pathelement path="antLibs/mockito/mockito-all-1.8.0.jar"/>
+				<pathelement path="${class.dir}"/>
+			</classpath>
+		</javac>
+		<copy todir="${class.dir}">
+		    <fileset dir="src/main/java" excludes="**/*.java"/>
+		</copy>
+	</target>
+	
+
+	<target name="unitTests" depends="compiletest">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once" maxmemory="1024m" showoutput="true">
+			  <classpath>
+			  	<path path="${test.dir}"/>
+			  	<path path="web/jsp/protected"/>
+			  	<path refid="compilePath"/>
+			 	<pathelement path="environment/${my.env}/test.properties"/> 
+			  	<pathelement path="antLibs/mockito/mockito-all-1.8.0.jar"/>
+			  	<pathelement path="${class.dir}"/>
+			  	<pathelement path="${test.classes.dir}"/>
+			  </classpath>
+
+			  <batchtest todir="${reports.dir}">
+				<fileset dir="${test.dir}">
+					<include name="**/UnitTestSuite.java" />
+				</fileset>
+			  </batchtest>
+			  <formatter type="xml" usefile="true" />
+			</junit>
+	</target>
+	
+	<target name="deploy-to-test">
+		<echo>invoked ${deploy-path}</echo>
+	</target>
+		
+	<path id="compilePath">
+		<pathelement path="antLibs/RestEasy/activation-1.1.jar"/>
+		<pathelement path="antLibs/RestEasy/apache-mime4j-0.6.jar"/>
+		<pathelement path="antLibs/RestEasy/async-http-jbossweb-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/async-http-servlet-3.0-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/async-http-tomcat6-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/commons-codec-1.2.jar"/>
+		<pathelement path="antLibs/RestEasy/commons-httpclient-3.1.jar"/>
+		<pathelement path="antLibs/RestEasy/commons-logging-1.1.1.jar"/>
+		<pathelement path="antLibs/RestEasy/dir.txt"/>
+		<pathelement path="antLibs/RestEasy/FastInfoset-1.2.7.jar"/>
+		<pathelement path="antLibs/RestEasy/guice-2.0.jar"/>
+		<pathelement path="antLibs/RestEasy/httpclient-4.0.jar"/>
+		<pathelement path="antLibs/RestEasy/httpcore-4.0.1.jar"/>
+		<pathelement path="antLibs/RestEasy/jackson-core-asl-1.3.0.jar"/>
+		<pathelement path="antLibs/RestEasy/jackson-jaxrs-1.3.0.jar"/>
+		<pathelement path="antLibs/RestEasy/jackson-mapper-asl-1.3.0.jar"/>
+		<pathelement path="antLibs/RestEasy/jackson-xc-1.3.0.jar"/>
+		<pathelement path="antLibs/RestEasy/javassist-3.6.0.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/jaxb-api-2.1.jar"/>
+		<pathelement path="antLibs/RestEasy/jaxb-impl-2.1.12.jar"/>
+		<pathelement path="antLibs/RestEasy/jaxrs-api-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/jboss-common-core-2.2.10.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/jboss-logging-spi-2.0.5.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/jbosscache-core-3.0.3.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/jcip-annotations-1.0.jar"/>
+		<pathelement path="antLibs/RestEasy/jcl-over-slf4j-1.5.8.jar"/>
+		<pathelement path="antLibs/RestEasy/jettison-1.1.jar"/>
+		<pathelement path="antLibs/RestEasy/jgroups-2.6.7.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/jsr250-api-1.0.jar"/>
+		<pathelement path="antLibs/RestEasy/jta-1.1.jar"/>
+		<pathelement path="antLibs/RestEasy/jyaml-1.3.jar"/>
+		<pathelement path="antLibs/RestEasy/mail-1.4.jar"/>
+		<pathelement path="antLibs/RestEasy/oauth-20090825.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-atom-provider-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-cache-core-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-fastinfoset-provider-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-guice-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-jackson-provider-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-jaxb-provider-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-jaxrs-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-jettison-provider-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-multipart-provider-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-oauth-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-spring-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/resteasy-yaml-provider-1.2.1.GA.jar"/>
+		<pathelement path="antLibs/RestEasy/scannotation-1.0.2.jar"/>
+		<pathelement path="antLibs/RestEasy/sjsxp-1.0.1.jar"/>
+		<pathelement path="antLibs/RestEasy/slf4j-api-1.5.8.jar"/>
+		<pathelement path="antLibs/RestEasy/slf4j-simple-1.5.8.jar"/>
+		<pathelement path="antLibs/RestEasy/stax-api-1.0.jar"/>
+		<pathelement path="antLibs/tomcat/jsp-api.jar"/>
+		<pathelement path="antLibs/tomcat/servlet-api.jar"/>
+		<pathelement path="antLibs/commons-pool/commons-pool.jar"/>
+		<pathelement path="antLibs/commons-lang/commons-lang-2.6.jar"/>
+		<pathelement path="antLibs/junit/junit.jar"/>
+		<pathelement path="antLibs/junit/junit-4.7.jar"/>
+		<pathelement path="antLibs/mysql/mysql-connector-java-5.0.3-bin.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.aop-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.asm-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.aspects-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.beans-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.context-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.context.support-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.core-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.expression-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.instrument-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.instrument.tomcat-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.jdbc-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.jms-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.orm-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.oxm-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.spring-library-3.0.3.RELEASE.libd"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.test-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.transaction-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.web-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.web.portlet-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.web.servlet-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/org.springframework.web.struts-3.0.3.RELEASE.jar"/>
+		<pathelement path="antLibs/org.springframework/com.springsource.org.aopalliance-1.0.0.jar"/>
+		<pathelement path="antLibs/commons-dbcp/commons-dbcp.jar"/>
+		<pathelement path="antLibs/jakarta-regexp/jakarta-regexp-1.4.jar" />
+		<pathelement path="antLibs/clover/clover.jar" />
+		<pathelement path="antLibs/aspect-j/aspectjrt.jar" />
+		<pathelement path="antLibs/aspect-j/aspectjweaver.jar" />
+		<pathelement path="antLibs/log4j/log4j-1.2.15.jar" />
+		<pathelement path="antLibs/poi/poi-3.8-20120326.jar" />
+		<pathelement path="antLibs/poi/poi-ooxml-3.8-20120326.jar" />
+		<pathelement path="antLibs/poi/poi-ooxml-schemas-3.8-20120326.jar" />
+		<pathelement path="antLibs/dbUnit/dbunit-2.4.4.jar" />
+		<pathelement path="antLibs/xml/dictionary.jar" />
+		<pathelement path="antLibs/xml/newmodel.jar" />
+		<pathelement path="antLibs/xml/newdictionary.jar" />
+		<pathelement path="antLibs/FountainDataFormat/FountainDataFormat.jar" />
+		<pathelement path="antLibs/xmlbean/xbean.jar" />
+		<pathelement path="antLibs/jstl/jstl.jar" />
+		<pathelement path="antLibs/jstl/standard.jar" />
+		<pathelement path="antLibs/commons-io/commons-io-1.4.jar" />
+		<pathelement path="antLibs/cglib/cglib-nodep-2.2.jar" />
+		<pathelement path="antLibs/json/json_simple.jar" />
+		<pathelement path="antLibs/commons-collections/commons-collections-3.2.jar" />
+		<pathelement path="antLibs/RestEasy/webserver-1.3.3.jar" />
+		<pathelement path="antLibs/yuicompressor/yuicompressor-2.4.2.jar" />
+		<pathelement path="antLibs/jtor/" />
+		<pathelement path="antLibs/jtor/jtor-1.3.1.jar"/>
+		<pathelement path="antLibs/jtor/xstream-1.4.2.jar"/>
+		<pathelement path="antLibs/jtor/xmlpull-1.1.3.1.jar"/>
+  		<pathelement path="antLibs/jtor/dom4j-1.6.1.jar"/>
+  		<pathelement path="antLibs/jtor/xom-1.1.jar"/>
+  		<pathelement path="antLibs/jtor/jdom-1.1.jar"/>
+  		<pathelement path="antLibs/jtor/kxml2-2.3.0.jar"/>
+  		<pathelement path="antLibs/jtor/kxml2-min-2.3.0.jar"/>
+  		<pathelement path="antLibs/jtor/cglib-nodep-2.2.jar"/>
+  		<pathelement path="antLibs/jtor/jettison-1.2.jar"/>
+  		<pathelement path="antLibs/jtor/joda-time-1.6.jar"/>
+  		<pathelement path="antLibs/jtor/json-20080701.jar"/>
+  		<pathelement path="antLibs/jtor/stax-1.2.0.jar"/>
+  		<pathelement path="antLibs/jtor/stax-api-1.0.1.jar"/>
+  		<pathelement path="antLibs/jtor/wstx-asl-3.2.7.jar"/>
+  		<pathelement path="antLibs/jtor/xpp3_min-1.1.4c.jar"/>
+  		<pathelement path="antLibs/jtor/xstream-benchmark-1.4.2.jar"/>
+  		<pathelement path="antLibs/jtor/xstream-hibernate-1.4.2.jar"/>
+		<pathelement path="antLibs/groovy-all-2.0.5.jar"/>
+		<!--
+		<pathelement path="antLibs/checkStyle/checkstyle-all-5.1.jar" />
+		-->
+	</path>
+
+	<!-- clover -->	
+    <property name="clover.dest" value="${reports.dir}/Clover"/> <!-- The destination directory for clover reports for this project -->
+	<taskdef resource="cloverlib.xml" classpath="antLibs/clover/clover.jar"/>
+	<clover-env/>
+	
+	<target name="clean-classes">
+		<delete dir="${class.dir}" />
+		<delete dir="${test.classes.dir}" />
+	</target>	
+
+	<!-- Test strategies -->
+	<target name="no-tests"/>
+
+	<target name="unit">
+		<antcall target="unitTests"/>
+	</target>
+	
+	<target name="intergration">
+		<antcall target="clean-classes" />
+		<antcall target="clover.all" inheritAll="true">
+			<param name="test.target" value="unitAndIntegrationTests"/>
+		</antcall>
+		<antcall target="clean-classes" />
+	</target>
+
+	<target name="regression">
+		<antcall target="intergration" />
+		<antcall target="blackBoxTests" />
+	</target>
+	<!-- End test strategies -->
+
+	<target name="generateXMLBeans">
+
+		<xmlbean classpathref="compilePath" schema="schemas/newModel.xsd" srcgendir="generated/xmlsrc" destfile="antLibs/xml/newmodel.jar "/>
+<!--
+		<delete dir="antLibs/xml/*" >
+			<fileset dir="antLibs/xml" includes="**/*"/>
+		</delete>
+		<delete dir="generated/xmlsrc" failonerror="false" />
+		<xmlbean classpathref="compilePath" schema="schemas/NewDictionary.xsd" srcgendir="generated/xmlsrc" destfile="antLibs/xml/newdictionary.jar "/>
+		<delete dir="generated/xmlsrc" failonerror="false" />
+		<xmlbean classpathref="compilePath" schema="schemas/dictionary.xsd" srcgendir="generated/xmlsrc" destfile="antLibs/xml/dictionary.jar "/>
+		<delete dir="generated/xmlsrc" failonerror="false" />
+		<xmlbean classpathref="compilePath" schema="schemas/newModel.xsd" srcgendir="generated/xmlsrc" destfile="antLibs/xml/newmodel.jar "/>
+		<delete dir="generated/xmlsrc" failonerror="false" />
+		<xmlbean classpathref="compilePath" schema="schemas/fountainDataFormat.xsd" srcgendir="generated/xmlsrc" destfile="antLibs/xml/FountainDataFormat.jar "/>
+-->
+	</target>
+	
+
+	<target name="dump-database">  
+	    <exec executable="mysqldump" output="db/fountain.sql">  
+	        <arg value="--user=${db.user}" />  
+	        <arg value="--password=${db.password}" />  
+	        <arg value="--host=localhost" />  
+	        <arg value="--port=3306" />  
+	        <arg value="fountain" />  
+	    </exec>  
+	</target>
+
+<!-- Water 2000 Reader -->
+	<path id="Water2000ReaderPath">
+		<pathelement path="antLibs/xmlbean/xbean.jar" />
+		<pathelement path="antLibs/commons-io/commons-io-1.4.jar" />
+		<pathelement path="antLibs/FountainDataFormat/FountainDataFormat.jar" />
+		<pathelement path="antLibs/junit/junit.jar" />
+	</path>
+
+	<target name="compileWater2000Reader">
+		<javac srcdir="src/main/java" destdir="Water2000Reader" includes="uk/gov/ofwat/fountain/tools/Water2000Reader/*">
+			<classpath>
+				<path refid="Water2000ReaderPath"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="runWater2000Reader" depends="compileWater2000Reader">
+		<java classname="uk.gov.ofwat.fountain.tools.Water2000Reader.Water2000Reader">
+<!--
+         <arg value="D:/workspaces/fountain/Fountain/test-data/Audit"/>
+         <arg value="D:/workspaces/fountain/Fountain/test-data/Audit/xml"/>
+         <arg value="D:/tempdata/Migration/Water2000/Data/2010-10-14-audit"/>
+         <arg value="D:/tempdata/Migration/Water2000/Data/2010-10-14-audit/xml"/>
+-->
+         <arg value="T:/Migration/Water2000/Data/Audit/2010-10-14"/>
+         <arg value="T:/Migration/Water2000/Data/Audit/2010-10-14/xml"/>
+			<classpath>
+				<path refid="Water2000ReaderPath"/>
+				<pathelement path="Water2000Reader"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="generateFountainDataFormatXMLBeans" depends="clean">
+		<delete dir="antLibs/FountainDataFormat/*" >
+			<fileset dir="antLibs/FountainDataFormat" includes="**/*"/>
+		</delete>
+		<delete dir="generated/FountainDataFormat" failonerror="false" />
+		<xmlbean classpathref="compilePath" schema="schemas/FountainDataFormat.xsd" srcgendir="generated/FountainDataFormat" destfile="antLibs/FountainDataFormat/FountainDataFormat.jar"/>
+	</target>
+
+
+
+	<target name="blackBoxGenerator" depends="compiletest">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once" maxmemory="1024m" showoutput="true">
+			  <classpath>
+			  	<path path="${test.dir}"/>
+			  	<path path="web/jsp/protected"/>
+			  	<path refid="compilePath"/>
+			 	<pathelement path="environment/${my.env}/test.properties"/> 
+			  	<pathelement path="antLibs/mockito/mockito-all-1.8.0.jar"/>
+			  	<pathelement path="${class.dir}"/>
+			  	<pathelement path="${test.classes.dir}"/>
+			  </classpath>
+			  <jvmarg value="-Dbeans.location=blackbox_beans.xml"/>
+			  <batchtest todir="${reports.dir}">
+				<fileset dir="${test.dir}">
+					<include name="**/BlackBoxGenerator.java" />
+				</fileset>
+			  </batchtest>
+			  <formatter type="xml" usefile="true" />
+			</junit>
+	</target>
+	
+	<target name="blackBoxTests" depends="compiletest">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once" maxmemory="1024m" showoutput="true">
+			  <classpath>
+			  	<path path="${test.dir}"/>
+			  	<path path="web/jsp/protected"/>
+			  	<path refid="compilePath"/>
+			 	<pathelement path="environment/${my.env}/test.properties"/> 
+			  	<pathelement path="antLibs/mockito/mockito-all-1.8.0.jar"/>
+			  	<pathelement path="${class.dir}"/>
+			  	<pathelement path="${test.classes.dir}"/>
+			  </classpath>
+			  <jvmarg value="-Dbeans.location=blackbox_beans.xml"/>
+			  <batchtest todir="${reports.dir}">
+				<fileset dir="${test.dir}">
+					<include name="**/BlackBoxTests.java" />
+				</fileset>
+			  </batchtest>
+			  <formatter type="xml" usefile="true" />
+			</junit>
+	</target>
+
+
+	<target name="integrationTests" depends="compiletest">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once" maxmemory="1024m" showoutput="true">
+			  <classpath>
+			  	<path path="${test.dir}"/>
+			  	<path path="web/jsp/protected"/>
+			  	<path refid="compilePath"/>
+			 	<pathelement path="environment/${my.env}/test.properties"/> 
+			  	<pathelement path="antLibs/mockito/mockito-all-1.8.0.jar"/>
+			  	<pathelement path="${class.dir}"/>
+			  	<pathelement path="${test.classes.dir}"/>
+			  </classpath>
+
+			  <batchtest todir="${reports.dir}">
+				<fileset dir="${test.dir}">
+					<include name="**/IntegrationTestSuite.java" />
+				</fileset>
+			  </batchtest>
+			  <formatter type="xml" usefile="true" />
+			</junit>
+	</target>
+
+
+	<target name="unitAndIntegrationTests">
+		<antcall target="unitTests" />
+		<antcall target="integrationTests" />
+	</target>
+	
+	<target name="compileDataComparitor">
+		<javac srcdir="src/main/java" destdir="${class.dir}" target="${compile.target}">
+		<classpath>
+			<path refid="compilePath"/>
+		</classpath>
+		</javac>
+	</target>	
+	
+	<target name="compareToReservoir" depends="compiletest">
+		<java classname="uk.gov.ofwat.fountain.util.DataComparitor" maxmemory="1024m" fork="true" failonerror="true">
+			<arg value="../FountainRegressionDigest/Digest"/> 
+			<arg value="../FountainRegressionDigest/Results"/> 
+			<arg value="http://localhost:8080/Fountain"/>
+			<arg value="themba"/>
+			<arg value="password"/>
+			<arg value="JR2010-ICS"/>
+			<classpath>
+				<path refid="compilePath"/>
+			  	<path path="${test.dir}"/>
+			  	<pathelement path="${test.classes.dir}"/>
+			</classpath>
+		</java>
+	</target>
+
+</project>

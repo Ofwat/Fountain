@@ -1,0 +1,48 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<filter-def name="linkTypeFilter">
+	    <filter-param name="linkTypeString" type="string"/>
+	</filter-def>
+
+	 <class name="uk.gov.ofwat.fountain.domain.tag.Tag" table="tbl_tag">
+	 	<cache usage="read-write"/>
+		<id name="id" column="id">
+			<generator class="identity"/>
+		</id>
+		<property name="dateCreated" type="timestamp" column="dateCreated"/>
+		<property name="createdBy"/>
+		<property name="name"/>
+		<property name="displayName" type="string"/>
+		<property name="note"/>
+		<!-- <property name="entityType" type="string" not-null="false"/> -->
+		<!-- has many 0+ tags defined as type list in domain. -->
+		<set name="tagLinks" cascade="save-update, delete-orphan" table="tbl_taglink" inverse="true" lazy="true" fetch="select">
+		 	<cache usage="read-write"/>
+			<key column="tagId" not-null="true"/>
+			<one-to-many class="uk.gov.ofwat.fountain.domain.tag.TagLink"/>
+	        <filter name="linkTypeFilter" condition=":linkTypeString like entityType"/>			
+		</set>		
+	</class>
+	<query name="findTagByName">
+		<![CDATA[
+			select distinct tag
+			from Tag tag where tag.name like :tagName
+		]]>
+	</query>	
+	<query name="findTagByNameAndType">
+		<![CDATA[
+			select distinct tag
+			from Tag tag
+			inner join tag.tagLinks as tags
+			where tag.name like :tagName and tags.entityType = :entityType
+		]]>
+	</query>
+	<query name="deleteAllTagLinks">
+		<![CDATA[
+			delete from TagLink 
+			where tagId = :tagId
+		]]>
+	</query>			
+</hibernate-mapping>

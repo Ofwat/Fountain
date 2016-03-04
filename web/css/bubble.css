@@ -1,0 +1,208 @@
+@CHARSET "ISO-8859-1";
+body {
+	font-family: "Myriad Web",Verdana,Helvetica,Arial,sans-serif;
+}
+/*
+div.ribbonRight {
+	height: 43px;
+	text-align: right;
+	vertical-align: middle;
+	font-size: 1em;
+	color: #ffffff;
+	background: #21374C;
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#21374C', EndColorStr='#33485D')
+	border-bottom: #cad2db 1px solid;
+}
+*/
+
+div.logoLeft {
+	height: 75px;
+	background-color: #f9f9f9;
+	vertical-align: middle;
+	text-align: left;
+	border-bottom: #e0e0e0 1px solid;
+}
+
+div.menuBar {
+	background-color: #f9f9f9;
+	border-bottom: #b8babd 1px solid;
+}
+
+span.img {
+	display: inline-block;
+	float: left;
+	margin: 4px;
+}
+
+div.box {
+	border: 1px #9AC6FF solid;
+	width: auto;
+	margin: 2px;
+	padding: 4px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+h1.banner {
+	display: inline-block;
+	font-size: 1.4em;
+	font-weight: normal;
+	color: #003759;
+	text-align: left;
+	vertical-align: middle;
+	margin-top: 1em;
+}
+
+.downArrow {
+  font-size: 85%;
+  vertical-align: text-bottom;
+}
+ 
+#userMenu {
+  -webkit-border-radius: 8px;
+  background: #f9f9f9;
+  display: table;
+  font-size: 13px;
+  font-weight: bold;
+  list-style-type: none;
+  margin: 0;
+  padding: 0 12px;
+  position: relative;
+}
+ 
+#userMenu li {
+  cursor: pointer;
+  font-size: 12px;
+  list-style: none;
+  display: table-cell;
+  float: left;
+  position: relative;
+  text-shadow: 0px#ffffff 0px 1px #fff;
+}
+ 
+#userMenu li a,#userMenu li div {
+  color: #008ec8;
+  font-size: 11px;
+  padding: 5px 12px;
+  text-decoration: none;
+}
+ 
+#userMenu li a:hover,#userMenu li div:hover {
+  color: #ffffff;
+  background-color: #204d89;
+
+}
+ 
+#userMenu img {
+  margin-right: 3px;
+  vertical-align: top;
+}
+ 
+#userMenu a {
+  position: relative;
+  display: block;
+}
+ 
+#userMenu .dropdown {
+  -webkit-border-bottom-left-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  background: #ffffff;
+  color: #0072BC;
+  border: 1px solid #BBCFBB;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  z-index: 999;
+  top: 24px;
+  left: -999em;
+  height: 1px;
+  display: block;
+  font-weight: normal;
+}
+ 
+#userMenu .dropdown li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 145px;
+  text-align: left;
+}
+ 
+#userMenu .dropdown li:hover {
+  opacity: 1;
+  
+}
+ 
+#userMenu .dropdown li a {
+  display: block;
+  padding: 6px 14px;
+  color: #0072BC;
+  text-decoration: none;
+}
+ 
+#userMenu .dropdown li a:hover {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+#modelForm {
+	text-align: left;
+}
+
+p.frontPageSelector {
+	margin: 2px;
+}
+
+h1.indexHead {
+	text-align:left;
+	font-variant: small-caps;
+	margin-bottom: 5px;
+}
+
+label {
+	float: left;
+	text-align: right;
+	margin-right: 10px;
+	width: 100px;
+}
+
+button.goButton {
+	margin: 4px;
+	padding: 2px 6px 2px 6px;
+	text-align: right;
+	border: 1px outset blue;
+   	background-color: lightblue;
+	
+}
+
+p.right {
+	text-align: right;
+	font-weight: bold;
+}
+
+div.footer {
+	text-align: center;
+	font-size: 60%;
+	clear: both;
+}
+
+div.spacer {
+	height: 25px;
+}
+
+td.centre {
+	text-align: center;
+}
+
+div.okcancel {
+	margin-top: 3px;
+	
+}
+
+div.editButtons {
+	margin-bottom: 10px;
+}
+
+select#page{
+	width:250px;
+}

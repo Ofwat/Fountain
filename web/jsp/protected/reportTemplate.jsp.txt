@@ -1,0 +1,112 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"%>
+<%@page pageEncoding="UTF-8"%>
+<%@page errorPage="error.jsp"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ofwat" uri="http://www.ofwat.gov.uk" %>   
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/> 
+		<link rel="stylesheet" type="text/css" href="/Fountain/js/dojo/resources/dojo.css" />
+        <link type="text/css" rel="stylesheet" href="/Fountain/css/tablePages.css" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="/Fountain/css/tables.css" media="screen"></link>
+		<link rel="stylesheet" type="text/css" href="/Fountain/js/dijit/themes/tundra/tundra.css"/>
+		<link type="text/css" rel="stylesheet" href="/Fountain/css/bubble.css" media="screen"/>
+
+		<link rel="stylesheet" href="<spring:theme code='colourscheme'/>" type="text/css" media="screen"/>
+		<link type="text/css" rel="stylesheet" href="/Fountain/css/printbubble.css" media="print"/>
+	    <link type="text/css" rel="stylesheet" href="/Fountain/css/printtable.css" media="print"/>
+        <title>TOKEN_REPORT_NAME</title>
+    </head>
+    
+    <body class="tundra">
+
+<div class="bannerContent"></div>
+
+<div class="editButtons">
+<ofwat:userRole role="Reservoir Test team, Reservoir Development team, OFWAT\Fountain.Editors">
+<button id="editButton" title="Edit Report Data" onClick="ofwat.editor.startEdit()" dojoType="dijit.form.Button">Edit Data</button>
+<button id="saveButton" onClick="ofwat.editor.showSaveDialog()" dojoType="dijit.form.Button" disabled="disabled">Save Edits</button>
+<button id="cancelEditing" onClick="ofwat.editor.cancelEdits()" dojoType="dijit.form.Button" disabled="disabled">Cancel Editing</button>
+</ofwat:userRole>
+<ofwat:userRole role="OFWAT\Fountain.Users">
+<button id="reportDesign" title="Redesign report" onClick="ofwat.reportDisplayPage.reportDesign('/Fountain/jsp/protected/adhocReport.jsp?reportId=TOKEN_REPORT_ID')" dojoType="dijit.form.Button"><img border='0' src='../../images/pencil.png'/></button>
+<button id="deleteReport" title="Delete report" onClick="ofwat.reportDisplayPage.deleteReport('/Fountain/rest-services/report/TOKEN_REPORT_ID','TOKEN_REPORT_NAME')" dojoType="dijit.form.Button"><img border='0' src='../../images/bin_closed.png'/></button>
+</ofwat:userRole>
+
+<button id="emailLink" dojoType="dijit.form.Button" title="Email link" onClick="ofwat.reportDisplayPage.emailReport('TOKEN_REPORT_NAME')"><img border='0' src='../../images/email_go.png'></button>&nbsp;
+<a title="Export Report to Excel" href="/Fountain/rest-services/report/TOKEN_REPORT_ID/excel" target="_blank"><img border='0' src='../../images/page_excel.png'></a>&nbsp;
+<span id="response"></span>
+</div>
+
+
+
+<div id="saveDialog" class="white_content">
+			<div id="editsTableDiv"></div> 
+			Audit Comment <textarea dojoType="dijit.form.Textarea" class="auditComment" id="auditComment"></textarea>
+			<div class="okcancel">
+			<button onclick="ofwat.editor.saveEdits()" class="btn" dojoType="dijit.form.Button">Save</button>
+			<button onclick="ofwat.editor.returnToEdits()" class="btn" dojoType="dijit.form.Button">Return To Edits</button>
+			<br/><ofwat:wikiPage helpPage="Saving_Edits" model="true"/>
+			</div>
+</div>
+<div id="fade" class="dark_overlay"></div>
+
+    <table>
+    	<tbody>
+    	<tr colspan=2><div id="response"></div></tr>
+    		<tr>
+    			<td class="icsSpace">
+	    			TOKEN_REPORT_TABLE
+	    		</td>
+	    		<td class="sidePanel">
+	    			
+					<div id="dictionary"></div>
+					<div id="audit"></div>
+				
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	    
+		
+
+		<script type="text/javascript" src="../../js/json2.js"></script>
+	    <script type="text/javascript" src="../../js/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+	    <script type="text/javascript" src="../../js/ofwat/ofwat.js"></script>
+		<script type="text/javascript" src="../../js/ofwat/keyUtils.js"></script>
+		<script type="text/javascript" src="../../js/ofwat/rest.js"></script>
+	    <script type="text/javascript" src="../../js/ofwat/confidenceGrade.js"></script>
+        <script type="text/javascript" src="../../js/ofwat/editor.js"></script>
+	    <script type="text/javascript" src="../../js/ofwat/dictionary.js"></script>
+		<script type="text/javascript" src="../../js/ofwat/adhocReportDecorator.js"></script>
+		<script type="text/javascript" src="../../js/ofwat/reportDisplayPage.js"></script>
+
+
+	    <script type="text/javascript">
+	    	ofwat.reportDisplayPage.populateReport("/Fountain/rest-services/report/TOKEN_REPORT_ID");
+	    </script>
+	
+	    
+	    <script type="text/javascript">
+	        dojo.require("dijit.form.Button");
+	        dojo.require("dijit.form.Textarea");
+	        dojo.require("dojo.parser");
+	    </script>
+
+    <script type="text/javascript" src="../../js/handlebars/handlebars.js"></script>
+    <script type="text/javascript">
+	    Handlebars.registerHelper('inRole', ofwat.checkUserInRole); /*TODO needs to be global i.e everywhere where we use clientside templates.*/
+		ofwat.loadTemplate(dojo.query(".bannerContent")[0], ofwat.template.banner);
+		helpPage="Report Page";
+		ofwat.wikiPage();
+    </script>
+
+		<jsp:include page="../../footer.jsp" />
+	</body>
+    
+</html>

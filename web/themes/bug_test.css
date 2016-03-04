@@ -1,0 +1,11 @@
+@CHARSET "ISO-8859-1";
+
+div.ribbonRight {
+    min-height: 13px;
+    vertical-align: top;
+    /* font-size: 1em; */
+    /* color: #ffffff; */
+    background: #00FFFF;
+    background-image: url('/Fountain/themes/bugtest.png');
+    /* display: block; */
+}

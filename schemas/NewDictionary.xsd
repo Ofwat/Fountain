@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 2 (http://www.altova.com) by Catriona Smith (Ofwat) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ofwat.gov.uk/version2" targetNamespace="http://www.ofwat.gov.uk/version2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Items">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Item" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ItemType">
+		<xs:sequence>
+			<xs:element name="Unit" type="xs:string"/>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Code" type="xs:string"/>
+			<xs:element name="Group" type="xs:string" minOccurs="0"/>
+			<xs:element name="ItemProperties">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ItemProperty" type="ItemPropertyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Item" type="ItemType"/>
+	<xs:complexType name="ItemPropertyIntervalType">
+		<xs:sequence>
+			<xs:element name="Interval"/>
+			<xs:element name="Formula" type="xs:string"/>
+			<xs:element name="Description" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ItemPropertyType">
+		<xs:sequence>
+			<xs:element name="Version" type="xs:string"/>
+			<xs:element name="GeneralFormula" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Definition" type="xs:string"/>
+			<xs:element name="ItemPropertyIntervals" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ItemPropertyInterval" type="ItemPropertyIntervalType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Purpose" type="xs:string"/>
+			<xs:element name="PriceBase" type="xs:string"/>
+			<xs:element name="InflationType" type="xs:string"/>
+			<xs:element name="decimal-places" type="xs:string"/>
+			<xs:element name="group-total-formula" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="dictionary">
+		<xs:annotation>
+			<xs:documentation>Data dictionary structure for Reservoir Share</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Items"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

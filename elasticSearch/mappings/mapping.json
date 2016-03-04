@@ -1,0 +1,249 @@
+DELETE /fountain
+
+
+//************** reports ***********************//
+PUT /fountain
+{
+	"mappings":	{
+		"report":{
+			"properties":{
+				"id":{
+					"type":"long",
+					"index": "not_analyzed"
+				},
+				"name":{
+					"type":"string",
+					"index": "not_analyzed"
+				},
+				"user":{
+					"type":"string"
+				},
+				"last_modified":{
+					"type":"date",
+					"format":"date_time_no_millis"
+				},
+				"deleted":{
+					"type":"boolean"
+				},
+				"public":{
+					"type":"boolean"
+				},
+				"group_id":{
+					"type":"long"
+				},
+				"ipl_run":{
+					"type":"boolean"
+				},
+				"readOnly":{
+					"type":"boolean"
+				},
+				"description":{
+					"type":"string"
+				},
+				"tags":{
+				  "type":"string"
+				},
+				"items":{
+					"type":"nested",
+					"include_in_parent": true,
+					"properties":{
+						"id": {"type":"string", "index": "not_analyzed"},
+						"version":{"type":"long"},
+						"code": {"type":"string", "index": "not_analyzed"}, 
+						"unit": {"type":"string", "index": "not_analyzed"}, 
+						"description": {"type":"string", "analyzer": "english"}, 
+						"definition": {"type":"string", "analyzer": "english"}, 
+						"model_id": {"type":"long"}
+					}
+				}																											
+			}
+		},
+
+		"table":{
+			"properties":{
+				"id":{
+					"type":"long"
+				},
+				"name":{
+					"type":"string"
+				},
+				"model_name":{
+					"type":"string"
+				},
+				"model_code":{
+					"type":"string"	
+				},
+				"model_type":{
+					"type":"string"	
+				},
+				"model_id":{
+					"type":"long"
+				},
+				"items":{
+					"type":"nested",
+					"properties":{
+						"id": {"type":"string", "index": "not_analyzed"},
+						"version":{"type":"long"},
+						"code": {"type":"string", "index": "not_analyzed"}, 
+						"unit": {"type":"string", "index": "not_analyzed"}, 
+						"description": {"type":"string", "analyzer": "english"}, 
+						"definition": {"type":"string", "analyzer": "english"}, 
+						"model_id": {"type":"long"}						
+					}
+				}
+			}
+		},
+
+		"item":{
+			"properties":{
+				"id": {"type":"string"},
+				"code": {"type":"string", "index": "not_analyzed"}, 
+				"unit": {"type":"string", "index": "not_analyzed"}, 
+				"description": {"type":"string", "analyzer": "english"}, 
+				"definition": {"type":"string", "analyzer": "english"},
+				"version": {"type":"long"},
+				"reports":{
+					"type":"nested",
+					"name":"string",
+					"id":"long"
+				},
+				"tables":{
+					"type":"nested",
+					"name":{
+						"type":"string"
+					},
+					"model_name":{
+						"type":"string"	
+					},
+					"model_code":{
+						"type":"string"
+					}
+				}
+			}
+		}		
+	}
+}
+
+
+PUT /fountain/report/1
+{
+	"id":1,
+	"name":"test report 1",
+	"user":"James.Toddington",
+	"last_modified":"2012-04-23",
+	"deleted":false,
+	"public":true,
+	"group_id":100,
+	"ipl_run":true,
+	"items":[
+		{
+			"id": 1,
+			"code": "xxx", 
+			"unit": "CM", 
+			"description":"Sample Description 1", 
+			"definition":"Sample Definition 1", 
+			"model_id": 1			
+		},
+		{
+			"id": 2,
+			"code": "yyy", 
+			"unit": "Meters", 
+			"description":"Sample Description 2", 
+			"definition":"Sample Definition 2", 
+			"model_id": 1	
+		},
+		{
+			"id": 3,
+			"code": "zzz", 
+			"unit": "Miles", 
+			"description":"Sample Description 3 loaded", 
+			"definition":"Sample Definition 3", 
+			"model_id": 2	
+		}
+	]
+}
+
+PUT /fountain/report/2
+{
+	"id":2,
+	"name":"test report 2",
+	"user":"James.Toddington",
+	"last_modified":"2014-04-23",
+	"deleted":true,
+	"public":true,
+	"group_id":101,
+	"ipl_run":false,
+	"items":[
+		{
+			"id": 4,
+			"code": "aaa", 
+			"unit": "CM", 
+			"description":"Sample Description 4 cats", 
+			"definition":"Sample Definition 4", 
+			"model_id": 2			
+		},
+		{
+			"id": 5,
+			"code": "bbb", 
+			"unit": "Inches", 
+			"description":"Sample Description 5 foxes", 
+			"definition":"Sample Definition 5", 
+			"model_id": 2	
+		},
+		{
+			"id": 6,
+			"code": "ccc ddd", 
+			"unit": "mm", 
+			"description":"Sample Description 6", 
+			"definition":"Sample Definition 6", 
+			"model_id": 1	
+		}
+	]
+
+}
+
+
+
+
+/************************  Sample Query  **********************************/
+
+GET /fountain/report/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        //{ "match": { "name": "2" }}, 
+        {
+          "nested": {
+            "path": "items", 
+            "query": {
+              //"bool": {
+              //  "must": [ 
+              //    { 
+                    "wildcard": { "items.code":"p*"}
+              //    }
+              //  ]
+        //}
+            
+          }}}
+      ]
+}}}
+
+
+GET /fountain/report/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        //{ "match": { "name": "2" }}, 
+        {
+          "nested": {
+            "path": "items", 
+            "query": {
+              "bool": {
+                "must": [ 
+                  { "match": { "items.code":"BC38420Y"}}
+                ]
+        }}}}
+      ]
+}}}

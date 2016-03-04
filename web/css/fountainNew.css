@@ -1,0 +1,66 @@
+.innerModelCompanies {
+	padding-left:20px;		
+}
+
+.nounderline{
+	text-decoration: none
+}
+
+.connectedSortable {
+	background-color: rgb(238, 238, 238);
+	border-bottom-color: rgb(204, 204, 204);
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-image-outset: 0px;
+	border-image-repeat: stretch;
+	border-image-slice: 100%;
+	border-image-source: none;
+	border-image-width: 1;
+	border-left-color: rgb(204, 204, 204);
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: rgb(204, 204, 204);
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: rgb(204, 204, 204);
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-top-style: solid;
+	border-top-width: 1px;
+	box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;	
+}
+
+.connectedSortable tr, .ui-sortable-helper {
+    cursor: move;
+}
+.connectedSortable tr:first-child {
+    cursor: default;
+}
+.ui-sortable-placeholder-fountain {
+    background: red;
+    height:0px;
+}
+
+.dragging li.ui-state-hover {
+    min-width: 300px;
+}
+
+.ui-state-hover {
+	background-color: black;
+}
+
+.modelHeaderTd {
+	font-style: italic;
+	/*font-weight: bold;*/
+	background-color: #FCFCFC;
+}
+
+.modelHeaderImage {
+	padding-right: 10px;
+}
+
+html {
+       overflow-y: scroll;
+}

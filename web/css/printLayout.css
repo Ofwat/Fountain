@@ -1,0 +1,285 @@
+@CHARSET "ISO-8859-1";
+
+table.banner {
+visibility:hidden;
+}
+
+td.bannerCentre {
+visibility:hidden;
+}
+
+td.bannerRight {
+visibility:hidden;
+}
+td.bannerLeft {
+visibility:hidden;
+}
+
+div.bannerToolbar {
+visibility:hidden;}
+
+table.mainTable {
+visibility:hidden;
+	border: 0;
+}
+
+table.companies, td.companies{
+visibility:hidden;
+}
+
+table.selector {
+visibility:hidden;
+}
+
+td.selector {
+visibility:hidden;
+}
+
+.select {
+visibility:hidden;
+} 
+
+table.dictionary, td.dictionary {
+visibility:hidden;
+}
+
+td.dictionaryHeader {
+visibility:hidden;
+}
+
+table.dataTable {
+	border: thin;
+	background-color: silver;
+	font-family: "Myriad Web",Verdana,Helvetica,Arial,sans-serif;
+}
+	
+
+tr.tabEven {
+	background-color: #DCDCDC;
+}
+
+tr.tabOdd {
+	background-color: #FFFFFF;
+}
+
+p.logout {
+visibility:hidden;
+}
+
+p.text {
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;
+	text-align: left;
+	font-size: 75%;
+}
+
+p.exception {
+	font-family: "Courier New", Courier, "Times New Roman";
+	font-size: 75%;
+	text-align: left;
+	padding-left: 50pt;
+}
+
+p.footer {
+visibility:hidden;
+}
+
+
+div.dictionary {
+visibility:hidden;
+}
+
+hr {
+visibility:hidden;
+}
+
+table.searchTable {
+	visibility:hidden;
+}
+
+fixedBox {
+	visibility:hidden;
+}
+
+.scrollTable table {
+	visibility:hidden;
+}
+
+.scrollTable table td, .scrollTable table th {
+	visibility:hidden;
+}
+
+.tablePrintDiv {
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+.printScrollTable table {
+	border-collapse: collapse;
+}
+
+.printScrollTable table td, .printScrollTable table th {
+	vertical-align: top;
+	text-align: left;
+	margin: 0px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	white-space: nowrap;
+	border-top: solid 1px #aaaaaa;
+	border-bottom: solid 1px #aaaaaa;
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 80%;
+}
+
+
+th {
+	background-color: #002664;
+	border-left: solid 1px #002664;
+	border-right: solid 1px #002664;
+	color: #ffffff;
+	font-weight: bold;
+}
+
+a {
+	text-decoration: none;
+}
+
+a.expandGroup:link {color: white; }
+a.expandGroup:visited {color: white; }
+a.expandGroup:hover {color: white; }
+a.expandGroup:active {color: white; }
+
+
+td.simpleCell {
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 80%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: white;
+	}
+
+td.calcCell {
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 80%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: silver;
+	}
+
+td.lockedCell {
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 80%;
+	text-align: left;
+	vertical-align: middle;
+	background-image: url('../images/lock.png');
+	background-repeat: no-repeat;
+	background-position: 75% 50%;
+	border: 1px solid silver;
+	}
+
+td.editableCell {
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 80%;
+	vertical-align: middle;
+	text-align: left;
+	background-color: #99CCFF;
+	border:1px solid silver;
+	}
+	
+
+.dark_overlay{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color:  #002664;
+	z-index:1001;
+	-moz-opacity: 0.6;
+	opacity:.60;
+	filter: alpha(opacity=60);
+}
+ 
+.white_content {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	padding: 16px;
+	border: 16px solid #4B92DB;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 80%;
+}
+
+
+/* css tweak so the overlay works in IE */	
+body {
+     height:100%;
+     margin:0;
+     padding:0;
+}
+
+#rss-bar { 
+    margin: 0 auto 0px;
+}
+
+#rss-bar table td#rss-channel {
+    background-repeat: no-repeat;
+    background-position: top left;
+    font-size: 14px;
+    font-weight: bold;
+    vertical-align: top;
+    text-align: center;
+    width: 254px;
+}
+
+#rss-bar table td#rss-item {
+    background-repeat: no-repeat;
+    font-size: 14px;
+    width: 534px;
+    text-align: left;
+}
+
+#rss-bar table a {
+    color: white;
+    text-decoration: none;
+}
+#rss-bar table a:hover { color: #ffff00;}
+
+td.reportListHeader {
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 90%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: white;
+	font-weight: bold;	
+}
+
+td.reportListEven {
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 80%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: white;
+}
+
+td.reportListOdd {
+	font-family : "Myriad Web",Verdana,Helvetica,Arial,sans-serif;	
+	font-size: 80%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: silver;
+}

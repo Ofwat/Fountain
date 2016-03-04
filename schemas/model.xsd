@@ -1,0 +1,653 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="model">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element ref="modeldetails" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="audits" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="items" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="years" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="inputs" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="headings" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="validation-rules" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="company-pages" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="documents" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="pages" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="texts" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="macros" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="transfers" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="transfers">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="transfer" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+    </xsd:element>
+
+     <xsd:element name="transfer">
+        <xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="transfer-condition" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="transfer-blocks" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+     <xsd:element name="transfer-condition">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="item-code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="year-code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="failure-message" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+
+     <xsd:element name="transfer-blocks">
+        <xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="transfer-block" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+     <xsd:element name="transfer-block">
+        <xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="transfer-block-details" minOccurs="1" maxOccurs="1"/>
+				<xsd:element ref="transfer-block-items" minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+     <xsd:element name="transfer-block-details">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="from-model-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="from-version-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="from-page-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="to-model-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="to-version-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="to-page-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="to-macro-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+
+     <xsd:element name="transfer-block-items">
+        <xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="transfer-block-item" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+     <xsd:element name="transfer-block-item">
+        <xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="item-code" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="company-type" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="year-code" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="modeldetails">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="version" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="text-code" type="xsd:string" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="base-year-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="report-year-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="allow-data-changes" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="model-set-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+    
+
+    <xsd:element name="audits">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="audit" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="audit">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element ref="auditdetails" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="changes" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="auditdetails">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="username" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="timestamp" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="reason" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="changes">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="change" type="xsd:string" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+        
+    <xsd:element name="items">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="item" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="item">
+        <xsd:complexType>
+            <xsd:all>
+            	<!-- 
+            	A version item is actually linked to an item and a specific 
+				version of the item properties. To identify an item, we need
+            	to specify both the code and version number 
+            	--> 
+                <xsd:element name="code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="version-number" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                
+                <!-- Optional details that can be used to override the data dictionary -->
+                <xsd:element name="pricebase-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="purpose-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="text-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+	<xsd:element name="years">
+		<xsd:complexType>
+			<xsd:sequence>
+                <xsd:element name="year" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+    <xsd:element name="inputs">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="input" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="input">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="model" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="tag" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="version" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="company" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="default" type="xsd:boolean" minOccurs="1" maxOccurs="1" />                
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="headings">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="heading" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="heading">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="parent" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="notes" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="annotation" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="validation-rules">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="validation-rule" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="validation-rule">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="validation-rule-details" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="validation-rule-items" minOccurs="1" maxOccurs="1" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="validation-rule-details">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                <xsd:element name="formula" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="validation-rule-items">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="validation-rule-item" minOccurs="1" maxOccurs="3" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="validation-rule-item">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="evaluate" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="company-pages">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="company-page" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="company-page">
+    	<xsd:complexType>
+            <xsd:all>
+                <xsd:element name="company-code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="page-code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+                    
+    <xsd:element name="documents">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="document" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="document">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="reporter" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                <xsd:element name="auditor" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="pages">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="page" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+     <xsd:element name="page">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element ref="pagedetails" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="documents" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="sections" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+    
+     <xsd:element name="pagedetails">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                <xsd:element name="text" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="company-type" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="heading" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="commercial-in-confidence" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="hidden" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+				<xsd:element name="text-code" type="xsd:string" minOccurs="0" maxOccurs="1" />                
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="sections">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="section" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    
+    <xsd:element name="section">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element ref="sectiondetails" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="forms" minOccurs="0" maxOccurs="1" />                
+                <xsd:element ref="documents" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="lines" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="sectiondetails">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="display" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="grouptype" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="use-line-number" type="xsd:boolean" minOccurs="1" maxOccurs="1" />                
+                <xsd:element name="use-item-code" type="xsd:boolean" minOccurs="1" maxOccurs="1" />                
+                <xsd:element name="use-item-description" type="xsd:boolean" minOccurs="1" maxOccurs="1" />                
+                <xsd:element name="use-unit" type="xsd:boolean" minOccurs="1" maxOccurs="1" />                
+                <xsd:element name="use-year-code" type="xsd:boolean" minOccurs="1" maxOccurs="1" />                
+                <xsd:element name="use-confidence-grades" type="xsd:boolean" minOccurs="1" maxOccurs="1" />                
+                <xsd:element name="allow-group-selection" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="allow-data-changes" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="lines">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="line" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="line">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element ref="linedetails" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="documents" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="cellrange" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="cells" minOccurs="0" maxOccurs="1" />                
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="linedetails">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="heading" type="xsd:boolean" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+                <xsd:element name="equation" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="linenumber" type="xsd:string" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="ruletext" type="xsd:string" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="type" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+                <xsd:element name="company-type" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+                <xsd:element name="use-confidence-grade" type="xsd:boolean" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="validation-rule-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="text-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+                <xsd:element name="unit" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="decimal-places" type="xsd:nonNegativeInteger" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="cellrange">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="startyear" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="endyear" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="cells">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="cell" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="cell">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="year" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="equation" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="cgtype" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- 
+    The form element is used to describe any section whose cells are arranged in 
+    an arbitary structure. The overall structure is:
+        forms									0-1 
+	        form                                0-1
+	            form-details					1      must provide details
+    	        	company-type				1      must state company type
+            	
+    	        form-headings-top               0-1    top headings are optional
+        	        form-heading-cell           0-n    the actual heading cells, if any
+            	form-headings-left              0-1    as are left headings
+                	form-heading-cell           0-n    the actual heading cells, if any
+	            form-cells                      1      the actual cells must be present though.
+    	            form-cell                   1-n    at least one cell
+    -->
+    <xsd:element name="forms">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="form" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="form">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element ref="form-details" minOccurs="1" maxOccurs="1" />
+                <xsd:element ref="form-headings-top" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="form-headings-left" minOccurs="0" maxOccurs="1" />
+                <xsd:element ref="form-cells" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="form-details">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="company-type" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="form-headings-top">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="form-heading-cell" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="form-headings-left">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="form-heading-cell" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="form-heading-cell">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="text" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="use-line-number" type="xsd:boolean" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="use-item-code" type="xsd:boolean" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="use-item-description" type="xsd:boolean" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="use-unit" type="xsd:boolean" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="use-year-code" type="xsd:boolean" minOccurs="0" maxOccurs="1" />                
+                <xsd:element name="use-confidence-grades" type="xsd:boolean" minOccurs="0" maxOccurs="1" />                
+
+                <xsd:element name="row" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="column" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="row-span" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="column-span" type="xsd:string" minOccurs="0" maxOccurs="1" />
+
+                <xsd:element name="item-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="year-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+                <xsd:element name="width" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+                <!-- Optional elements used to show that the heading is an input. 
+                     These elements tell the viewer where to save the data.
+                     If no item is entered, no group description can be entered either -->
+                <xsd:element name="cell-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="group-description-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="form-cells">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="form-cell" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="form-cell">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="cell-code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                
+                <xsd:element name="use-confidence-grade" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="input-confidence-grade" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="confidence-grade-input-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="row-heading-source" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="column-heading-source" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="group-description-code" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="row" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="column" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                
+                <!-- Optional elements. If not supplied, then it is assumed that span is always 1 -->
+                <xsd:element name="row-span" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="column-span" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+                <!-- Optional elements. If not supplied, width is 0 (i.e. best fit is calculated) -->
+                <xsd:element name="width" type="xsd:string" minOccurs="0" maxOccurs="1" />
+                
+                
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+	<xsd:element name="macros">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="macro" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+     <xsd:element name="macro">
+        <xsd:complexType>
+            <xsd:all>
+            	<!-- Mandatory details -->
+            	<xsd:element name="name" type="xsd:string" minOccurs="1"
+            		maxOccurs="1" />
+            	<xsd:element name="description" type="xsd:string"
+            		minOccurs="1" maxOccurs="1" />
+            	<xsd:element name="block" type="xsd:string"
+            		minOccurs="1" maxOccurs="1" />
+
+            	<!-- Not mandatory -->
+            	<xsd:element name="conditional-item-code"
+            		type="xsd:string" minOccurs="0" maxOccurs="1" />
+            	<xsd:element name="page-code" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+	<!-- Any kind of text that we need to import -->
+	<xsd:element name="texts">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="text" minOccurs="0" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	    
+
+     <xsd:element name="text">
+        <xsd:complexType>
+            <xsd:all>
+            	<!-- Mandatory details -->
+                <xsd:element name="code" type="xsd:string" minOccurs="1" maxOccurs="1" />
+
+				<!-- Text blocks -->                
+				<xsd:element ref="text-blocks" minOccurs="1" maxOccurs="1"/>
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+
+	<!-- Any kind of text-blocks that we need to import -->
+	<xsd:element name="text-blocks">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="text-block" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+     <xsd:element name="text-block">
+        <xsd:complexType>
+            <xsd:all>
+            	<!-- Mandatory details -->
+                <xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="version-number" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="text-format-code" type="xsd:string" minOccurs="1" maxOccurs="1" />        
+                <xsd:element name="text-type-code" type="xsd:string" minOccurs="1" maxOccurs="1" />                
+
+                <!-- Retired not mandatory - if not present, default is False -->
+                <xsd:element name="retired" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                
+                <!-- Data -->
+                <xsd:element name="data" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>        
+
+</xsd:schema>

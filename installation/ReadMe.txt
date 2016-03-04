@@ -1,0 +1,1 @@
+The files in this dir are to be used to create a Fountain installation. For instructions on how to set an installation please see the wiki at http://resdev01:8008/reservoirwiki/index.php/Setting_up_a_Fountain_Installation

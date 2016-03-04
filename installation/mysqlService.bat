@@ -1,0 +1,1 @@
+D:\fountain\mysql\mysql-5.0.45-win32\bin\mysqld --install "Mysql-fountain" --defaults-file="D:\fountain\mysql\mysql-5.0.45-win32\my.ini"

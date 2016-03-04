@@ -1,0 +1,939 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html dir="ltr">
+  <head>
+    <meta name="generator" content="HTML Tidy for Windows (vers 14 February 2006), see www.w3.org">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>
+ 2 TEST PAGE FOR SWAPPING UNITS 
+    </title>
+    <link rel="stylesheet" type="text/css" href="/Fountain/css/reset-fonts-grids.css">
+    <link rel="stylesheet" type="text/css" href="/Fountain/js/dojo/resources/dojo.css">
+    <link rel="stylesheet" type="text/css" href="/Fountain/js/dijit/themes/tundra/tundra.css">
+    <link type="text/css" rel="stylesheet" href="/Fountain/css/bubble.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/Fountain/css/tablePages.css">
+    <link rel="stylesheet" href="/Fountain/themes/local.css" type="text/css" media="screen">
+  </head>
+  <body class="tundra">
+    <div class="ribbonRight">
+      OFWAT\catriona.smith
+    </div>
+    <div class="logoLeft">
+      <span class="img"><a href="/Fountain/jsp/protected/index.jsp"><img border="0" src="/Fountain/images/banner_logo.gif" alt="Fountain"></a></span>
+      <h1 class="banner">
+        Fountain
+      </h1>
+    </div>
+    <div class="menuBar">
+      <ul id="userMenu" class="tabs">
+        <li>
+          <a href="/Fountain/jsp/protected/index.jsp">Home</a>
+        </li>
+        <li>
+          <div>
+            Reports <span class="downArrow">&#9660;</span>
+          </div>
+          <ul class="dropdown">
+            <li>
+              <a href="/Fountain/jsp/protected/adhocReport.jsp">Create A Report</a>
+            </li>
+            <li>
+              <a href="/Fountain/jsp/protected/customReports.jsp">View Reports</a>
+            </li><!--
+      <li>
+       <a href="/Fountain/jsp/protected/customReports.jsp">
+         
+          My Current Reports
+        </a>
+      </li>
+    -->
+          </ul>
+        </li><!--
+  <li>
+     <div>
+      Audit<span class="downArrow">&#9660;</span>
+      </div>
+       <ul class="dropdown">
+          <li>
+        <a href="#">
+        Recent Team Edits
+        </a>
+      </li>
+       </ul>
+  </li>
+  -->
+        <li>
+          <div>
+            Export <span class="downArrow">&#9660;</span>
+          </div>
+          <ul class="dropdown">
+            <li>
+              <a href="/Fountain/jsp/protected/excelExport.jsp">Export Tables To Excel</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div>
+            Upload <span class="downArrow">&#9660;</span>
+          </div>
+          <ul class="dropdown">
+            <li>
+              <a href="/Fountain/jsp/protected/dictionaryUpload.jsp">Dictionary Upload</a>
+            </li>
+            <li>
+              <a href="/Fountain/jsp/protected/modelUpload.jsp">Model Upload</a>
+            </li>
+            <li>
+              <a href="/Fountain/jsp/protected/dataUpload.jsp">Data Upload</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div>
+            Admin <span class="downArrow">&#9660;</span>
+          </div>
+          <ul class="dropdown">
+            <li>
+              <a href="/Fountain/jsp/protected/itemRoles.jsp">Assign Items to Teams</a>
+            </li>
+            <li>
+              <a href="/Fountain/jsp/protected/admin.jsp">Remove Edit Locks</a>
+            </li>
+            <li>
+              <a href="/Fountain/jsp/protected/cache.jsp">Report cache levels</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="http://bubble/Teams/Fountain/Pages/Table%20Views.aspx" target="_blank"><img alt="help" src="/Fountain/images/help.png" title="Help" border="0"></a>
+        </li>
+      </ul>
+    </div>
+    <div class="spacer">
+       
+    </div>
+    <div id="showFixedDiv" class="right">
+      <a href="javascript:ofwat.toggleRightPane('showFixedDiv',%20'fixeddiv',true);">Show Dictionary/Navigation</a>
+    </div>
+    <div id="fixeddiv" class="invisible right">
+      <a href="javascript:ofwat.toggleRightPane('fixeddiv',%20'showFixedDiv',false);">x</a>
+      <div id="progtabwrapper">
+        <div rel="dijit.layout.TabContainer" id="rightMenu">
+          <div rel="dijit.layout.ContentPane" title="Tables">
+            <div id="navPane">
+              <ul id="navlist">
+                <li>
+                  <a href="table_1.page?companyId=61">Table 1</a>
+                </li>
+                <li>
+                  <a href="table_2.page?companyId=61">Table 2</a>
+                </li>
+                <li>
+                  <a href="table_3.page?companyId=61">Table 3</a>
+                </li>
+                <li>
+                  <a href="table_3a.page?companyId=61">Table 3a</a>
+                </li>
+                <li>
+                  <a href="table_4.page?companyId=61">Table 4</a>
+                </li>
+                <li>
+                  <a href="table_5.page?companyId=61">Table 5</a>
+                </li>
+                <li>
+                  <a href="table_5a.page?companyId=61">Table 5a</a>
+                </li>
+                <li>
+                  <a href="table_5b.page?companyId=61">Table 5b</a>
+                </li>
+                <li>
+                  <a href="table_6.page?companyId=61">Table 6</a>
+                </li>
+                <li>
+                  <a href="table_6a.page?companyId=61">Table 6a</a>
+                </li>
+                <li>
+                  <a href="table_6b.page?companyId=61">Table 6b</a>
+                </li>
+                <li>
+                  <a href="table_7.page?companyId=61">Table 7</a>
+                </li>
+                <li>
+                  <a href="table_8.page?companyId=61">Table 8</a>
+                </li>
+                <li>
+                  <a href="table_10.page?companyId=61">Table 10</a>
+                </li>
+                <li>
+                  <a href="table_10a(i).page?companyId=61">Table 10a(i)</a>
+                </li>
+                <li>
+                  <a href="table_10a(iii).page?companyId=61">Table 10a(iii)</a>
+                </li>
+                <li>
+                  <a href="table_10b(i).page?companyId=61">Table 10b(i)</a>
+                </li>
+                <li>
+                  <a href="table_10b(ii).page?companyId=61">Table 10b(ii)</a>
+                </li>
+                <li>
+                  <a href="table_11.page?companyId=61">Table 11</a>
+                </li>
+                <li>
+                  <a href="table_11a.page?companyId=61">Table 11a</a>
+                </li>
+                <li>
+                  <a href="table_12.page?companyId=61">Table 12</a>
+                </li>
+                <li>
+                  <a href="table_13.page?companyId=61">Table 13</a>
+                </li>
+                <li>
+                  <a href="table_14.page?companyId=61">Table 14</a>
+                </li>
+                <li>
+                  <a href="table_15.page?companyId=61">Table 15</a>
+                </li>
+                <li>
+                  <a href="table_16.page?companyId=61">Table 16</a>
+                </li>
+                <li>
+                  <a href="table_16a.page?companyId=61">Table 16a</a>
+                </li>
+                <li>
+                  <a href="table_16b.page?companyId=61">Table 16b</a>
+                </li>
+                <li>
+                  <a href="table_17a.page?companyId=61">Table 17a</a>
+                </li>
+                <li>
+                  <a href="table_17b.page?companyId=61">Table 17b</a>
+                </li>
+                <li>
+                  <a href="table_17c.page?companyId=61">Table 17c</a>
+                </li>
+                <li>
+                  <a href="table_17d.page?companyId=61">Table 17d</a>
+                </li>
+                <li>
+                  <a href="table_17f.page?companyId=61">Table 17f</a>
+                </li>
+                <li>
+                  <a href="table_18.page?companyId=61">Table 18</a>
+                </li>
+                <li>
+                  <a href="table_18c.page?companyId=61">Table 18c</a>
+                </li>
+                <li>
+                  <a href="table_18d.page?companyId=61">Table 18d</a>
+                </li>
+                <li>
+                  <a href="table_19.page?companyId=61">Table 19</a>
+                </li>
+                <li>
+                  <a href="table_20.page?companyId=61" id="current">Table 20</a>
+                </li>
+                <li>
+                  <a href="table_21.page?companyId=61">Table 21</a>
+                </li>
+                <li>
+                  <a href="table_21a.page?companyId=61">Table 21a</a>
+                </li>
+                <li>
+                  <a href="table_21b.page?companyId=61">Table 21b</a>
+                </li>
+                <li>
+                  <a href="table_22.page?companyId=61">Table 22</a>
+                </li>
+                <li>
+                  <a href="table_22a.page?companyId=61">Table 22a</a>
+                </li>
+                <li>
+                  <a href="table_23.page?companyId=61">Table 23</a>
+                </li>
+                <li>
+                  <a href="table_24.page?companyId=61">Table 24</a>
+                </li>
+                <li>
+                  <a href="table_25a.page?companyId=61">Table 25a</a>
+                </li>
+                <li>
+                  <a href="table_25b.page?companyId=61">Table 25b</a>
+                </li>
+                <li>
+                  <a href="table_25c.page?companyId=61">Table 25c</a>
+                </li>
+                <li>
+                  <a href="table_26.page?companyId=61">Table 26</a>
+                </li>
+                <li>
+                  <a href="table_27.page?companyId=61">Table 27</a>
+                </li>
+                <li>
+                  <a href="table_28.page?companyId=61">Table 28</a>
+                </li>
+                <li>
+                  <a href="table_29.page?companyId=61">Table 29</a>
+                </li>
+                <li>
+                  <a href="table_30.page?companyId=61">Table 30</a>
+                </li>
+                <li>
+                  <a href="table_31.page?companyId=61">Table 31</a>
+                </li>
+                <li>
+                  <a href="table_32.page?companyId=61">Table 32</a>
+                </li>
+                <li>
+                  <a href="table_33.page?companyId=61">Table 33</a>
+                </li>
+                <li>
+                  <a href="table_34.page?companyId=61">Table 34</a>
+                </li>
+                <li>
+                  <a href="table_35.page?companyId=61">Table 35</a>
+                </li>
+                <li>
+                  <a href="table_36.page?companyId=61">Table 36</a>
+                </li>
+                <li>
+                  <a href="table_37.page?companyId=61">Table 37</a>
+                </li>
+                <li>
+                  <a href="table_38.page?companyId=61">Table 38</a>
+                </li>
+                <li>
+                  <a href="table_39.page?companyId=61">Table 39</a>
+                </li>
+                <li>
+                  <a href="table_35a.page?companyId=61">Table 35a</a>
+                </li>
+                <li>
+                  <a href="table_35b.page?companyId=61">Table 35b</a>
+                </li>
+                <li>
+                  <a href="table_36a.page?companyId=61">Table 36a</a>
+                </li>
+                <li>
+                  <a href="table_36b.page?companyId=61">Table 36b</a>
+                </li>
+                <li>
+                  <a href="table_41.page?companyId=61">Table 41</a>
+                </li>
+                <li>
+                  <a href="table_42.page?companyId=61">Table 42</a>
+                </li>
+                <li>
+                  <a href="table_Indices.page?companyId=61">Table Indices</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div id="dictionaryPane" rel="dijit.layout.ContentPane" title="Dictionary">
+            <div id="dictionary"></div>
+          </div>
+          <div id="auditPane" rel="dijit.layout.ContentPane" title="Audit">
+            <div id="audit"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header">
+      12/Jul/2011 10:29 AM: JR2011-ICS for
+      <div id="acronym">
+        TMS
+      </div> 
+      <div id="company">
+        Thames Water Utilities Ltd
+      </div>
+    </div>
+    <div class="tableHeader">
+      20 - Regulatory accounts (CCA) - Profit and loss account for year ending 31 March
+    </div>
+    <div class="editButtons">
+      <button id="editButton" onclick="ofwat.editor.startEdit();" dojotype="dijit.form.Button">Edit</button> 
+	  <button id="saveButton" onclick="ofwat.editor.showSaveDialog();" dojotype="dijit.form.Button" disabled="disabled">Save Edits</button> 
+	  <button id="cancelEditing" onclick="ofwat.editor.cancelEdits();" dojotype="dijit.form.Button" disabled="disabled">Cancel Editing</button> 
+	  <button title="Create a report from this page" id="convertToReport" onclick="ofwat.modelPage.sendToReport(8686);" dojotype="dijit.form.Button">Create A Report</button> 
+	  <!-- TODO Need to change this dijit combobutton as it puts a table in, which breaks the table populator routines.... or need to change the dojo.query in modelPage.js -->
+	   <div dojoType="dijit.form.ComboButton">
+            <span>
+                Change £ Unit
+            </span>
+            <div dojoType="dijit.Menu">
+                <div dojoType="dijit.MenuItem" onClick="alert('change to £')">
+                    £
+                </div>
+                <div dojoType="dijit.MenuItem" onClick="alert('change to £000')">
+                   £000
+                </div>
+				<div dojoType="dijit.MenuItem" onClick="alert('change to £m')">
+                   £m
+                </div>
+            </div>
+        </div>
+	  <a title="Export table to Excel" href="/Fountain/rest-services/table/excel/tables?tableId=8686&amp;companyId=61" target="_blank"><img border='0' src='/Fountain/images/page_excel.png'></a> 
+	  
+	  <span id="response"></span>
+    </div>
+    <div id="saveDialog" class="white_content">
+      <div id="editsTableDiv" class="editButtons"></div>Audit Comment 
+      <textarea dojotype="dijit.form.Textarea" class="auditComment" id="auditComment">
+</textarea>
+      <div class="okcancel">
+        <button onclick="ofwat.editor.saveEdits();" dojotype="dijit.form.Button">Save</button> <button onclick="ofwat.editor.returnToEdits();" dojotype="dijit.form.Button">Return To Edits</button><br>
+        <a href="http://bubble/Teams/Fountain/Pages/Saving_Edits.aspx" target="_blank"><img alt="help" src="../../../../images/help.png" title="Help" border="0"></a>
+      </div>
+    </div>
+    <div id="fade" class="dark_overlay"></div>
+    <table>
+      <tr>
+        <td class="icsSpace">
+          <table>
+            <tr>
+              <td>
+                <table class="ICS">
+                  <tr class='nonGroupRow'>
+                    <td class="empty"></td>
+                    <td class="empty"></td>
+                    <td class="empty"></td>
+                    <td colspan="1" class="colHeading">
+                      2009-10
+                    </td>
+                    <td colspan="1" class="colHeading">
+                      2010-11
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="colHeading">
+                      Line
+                    </td>
+                    <td colspan="1" class="colHeading">
+                      Description
+                    </td>
+                    <td colspan="1" class="colHeading">
+                      Unit
+                    </td>
+                    <td class="empty"></td>
+                    <td class="empty"></td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="3" class="rowHeading"></td>
+                    <td class="empty"></td>
+                    <td class="empty"></td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      1
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Turnover
+                    </td>
+                    <td colspan="1" class="rowHeading">
+               £m
+                    </td>
+                    <td title="BO1180" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="tilgksrrik" class="i209878-p112489-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO1180', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Column 1 copied from table 23 line 16 column 3, column 2 from table 23 line 16 column 6'>
+                      </form>
+                    </td>
+                    <td title="BO1180" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="zntvozifae" class="i209878-p112489-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO1180', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Column 1 copied from table 23 line 16 column 3, column 2 from table 23 line 16 column 6'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      2
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Current cost operating costs (including CCD &amp; IRC)
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      	       £m
+                    </td>
+                    <td title="BO2975" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="ylosnkaryi" class="i209955-p136234-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO2975', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of table 21 line 34 and table 22 line 33, with the sign reversed'>
+                      </form>
+                    </td>
+                    <td title="BO2975" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="yfgyufblfe" class="i209955-p136234-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO2975', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of table 21 line 34 and table 22 line 33, with the sign reversed'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      3
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Operating income
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                     	       £m
+                    </td>
+                    <td title="BO3090" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="oicpmwabsy" class="i210006-p112626-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3090', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Column 1 copied from table 23 line 20 column 3, column 2 from table 23 line 20 column 6'>
+                      </form>
+                    </td>
+                    <td title="BO3090" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="knhewcvssz" class="i210006-p112626-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3090', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Column 1 copied from table 23 line 20 column 3, column 2 from table 23 line 20 column 6'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      4
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Working capital adjustment (Appointed business)
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                             £m
+                    </td>
+                    <td title="BO3060" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="svaoyfeksu" class="i209985-p112605-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3060', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Column 1 copied from table 23 line 21 column 3, column 2 from table 23 line 21 column 6'>
+                      </form>
+                    </td>
+                    <td title="BO3060" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="gejieomeks" class="i209985-p112605-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3060', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Column 1 copied from table 23 line 21 column 3, column 2 from table 23 line 21 column 6'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      5
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Current cost operating profit
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                    	       £m
+                    </td>
+                    <td title="BO3166" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="hogeohbnkd" class="i210007-p136271-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3166', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 1, 2, 3 and 4'>
+                      </form>
+                    </td>
+                    <td title="BO3166" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="eioynvpbfs" class="i210007-p136271-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3166', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 1, 2, 3 and 4'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      6
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Other income
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                     	       £m
+                    </td>
+                    <td title="BO3301" colspan="1" rowspan="1" class="input alignRight">
+                      <div id="xlwveafklu" class="i210014-p112635-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="input alignRight disabled" onchange="ofwat.editor.postUpdate('BO3301', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18 line 6'>
+                      </form>
+                    </td>
+                    <td title="BO3301" colspan="1" rowspan="1" class="input alignRight">
+                      <div id="resaksiegq" class="i210014-p112635-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="input alignRight disabled" onchange="ofwat.editor.postUpdate('BO3301', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18 line 6'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      7
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Net interest receivable less payable
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                              £m
+                    </td>
+                    <td title="BO3300" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="arcvfzhoge" class="i210013-p136098-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3300', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18d line 2'>
+                      </form>
+                    </td>
+                    <td title="BO3300" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="jczdxxubak" class="i210013-p136098-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3300', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18d line 2'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      8
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Financing adjustment
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                    	       £m
+                    </td>
+                    <td title="BO3201" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="isrrmcjmcs" class="i210010-p136199-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3201', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Table 27 line 5 with the sign reversed'>
+                      </form>
+                    </td>
+                    <td title="BO3201" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="wsyfwobfbs" class="i210010-p136199-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3201', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Table 27 line 5 with the sign reversed'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      9
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Current cost profit before taxation
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                            £m
+                    </td>
+                    <td title="BO3310" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="dhsogdveso" class="i210017-p136093-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3310', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 5, 6, 7 and 8'>
+                      </form>
+                    </td>
+                    <td title="BO3310" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="dtuvlwiavs" class="i210017-p136093-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3310', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 5, 6, 7 and 8'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      10
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Current tax
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                    	       £m
+                    </td>
+                    <td title="BO3351" colspan="1" rowspan="1" class="input alignRight">
+                      <div id="tmrzfkbxbx" class="i210019-p112641-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="input alignRight disabled" onchange="ofwat.editor.postUpdate('BO3351', '2009-10', this.value, 'value');">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18 line 9'>
+                      </form>
+                    </td>
+                    <td title="BO3351" colspan="1" rowspan="1" class="input alignRight">
+                      <div id="dzfezmcvnz" class="i210019-p112641-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="input alignRight disabled" onchange="ofwat.editor.postUpdate('BO3351', '2010-11', this.value, 'value');">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18 line 9'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      11
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Deferred tax
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      	       £m
+                    </td>
+                    <td title="BO3352" colspan="1" rowspan="1" class="input alignRight">
+                      <div id="nwxxfizfrw" class="i210020-p112643-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="input alignRight disabled" onchange="ofwat.editor.postUpdate('BO3352', '2009-10', this.value, 'value');">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18 line 10'>
+                      </form>
+                    </td>
+                    <td title="BO3352" colspan="1" rowspan="1" class="input alignRight">
+                      <div id="veykkrgntx" class="i210020-p112643-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="input alignRight disabled" onchange="ofwat.editor.postUpdate('BO3352', '2010-11', this.value, 'value');">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18 line 10'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      12
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Current cost profit on ordinary activities
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                           £m
+                    </td>
+                    <td title="BO3320" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="vbvzdjyyqx" class="i210018-p136090-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3320', '2009-10', this.value, 'value');">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 9, 10 and 11'>
+                      </form>
+                    </td>
+                    <td title="BO3320" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="dhdjsyjwfe" class="i210018-p136090-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3320', '2010-11', this.value, 'value');">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 9, 10 and 11'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      13
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Extraordinary items
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                     	       £m
+                    </td>
+                    <td title="BO2520" colspan="1" rowspan="1" class="copy alignRight">
+                      <div id="dldfvdekqh" class="i209948-p112566-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="copy alignRight disabled" onchange="ofwat.editor.postUpdate('BO2520', '2009-10', this.value, 'value');">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Negative number if a charge, positive number if a credit'>
+                      </form>
+                    </td>
+                    <td title="BO2520" colspan="1" rowspan="1" class="input alignRight">
+                      <div id="kounlwdssn" class="i209948-p112566-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="input alignRight disabled" onchange="ofwat.editor.postUpdate('BO2520', '2010-11', this.value, 'value');">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Negative number if a charge, positive number if a credit'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      14
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Current cost profit attributable to shareholders
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                    	       £m
+                    </td>
+                    <td title="BO3390" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="leeuzpdqhv" class="i210021-p136060-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3390', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 12 and 13'>
+                      </form>
+                    </td>
+                    <td title="BO3390" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="lgpegltcbv" class="i210021-p136060-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3390', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 12 and 13'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      15
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Dividends
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                          £m
+                    </td>
+                    <td title="BO3402" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="qajefmrzhi" class="i210022-p136041-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3402', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18d line 3'>
+                      </form>
+                    </td>
+                    <td title="BO3402" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="mdhhyaejif" class="i210022-p136041-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3402', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='Copied from table 18d line 3'>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class='nonGroupRow'>
+                    <td colspan="1" class="rowHeading lineNumber">
+                      16
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                      Current cost profit retained
+                    </td>
+                    <td colspan="1" class="rowHeading">
+                            £m
+                    </td>
+                    <td title="BO3490" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="nlctdoscvj" class="i210023-p136001-y91-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3490', '2009-10', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 14 and 15'>
+                      </form>
+                    </td>
+                    <td title="BO3490" colspan="1" rowspan="1" class="calc alignRight">
+                      <div id="ugnkiwlxld" class="i210023-p136001-y92-c61-m13">
+                        <input type="text" readonly="readonly" class="calc alignRight disabled" onchange="ofwat.editor.postUpdate('BO3490', '2010-11', this.value, 'value')">
+                      </div>
+                      <form>
+                        <input type='hidden' class='ruletext' value='The sum of lines 14 and 15'>
+                      </form>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table><script type="text/javascript" src="/Fountain/js/json2.js">
+</script><script type="text/javascript" src="/Fountain/js/ofwat/ofwat.js">
+</script><script type="text/javascript" src="/Fountain/js/ofwat/rest.js">
+</script><script type="text/javascript" src="/Fountain/js/ofwat/fixedMenu.js">
+</script><script type="text/javascript">
+        var modelId = 13;
+   </script><script type="text/javascript" src="/Fountain/js/ofwat/editor.js">
+</script><script type="text/javascript" src="/Fountain/js/ofwat/dictionary.js">
+</script><script type="text/javascript" src="/Fountain/js/ofwat/keyUtils.js">
+</script><script type="text/javascript" src="/Fountain/js/ofwat/modelPage.js">
+</script><script type="text/javascript" src="/Fountain/js/dojo/dojo.js" djconfig="parseOnLoad: true">
+</script>
+<script type="text/javascript" src="/Fountain/js/ofwat/test.js">
+</script>
+<script type="text/javascript">
+
+		dojo.require("dijit.layout.TabContainer");
+		dojo.require("dijit.layout.ContentPane");
+            
+            dojo.require("dijit.Menu");
+
+         dojo.require("dijit.form.Button");
+
+
+         dojo.require("dijit.form.Textarea");
+
+
+         dojo.require("dojo.parser");
+
+
+         dojo.require("dojox.xml.parser");
+
+
+         dojo.require("dojo.NodeList-traverse");
+
+
+         dojo.addOnLoad(function() {
+
+
+             dojo.query("div[rel]").forEach(function(n) {
+
+
+                 var className = dojo.attr(n, "rel");
+
+
+                 // now set it
+
+
+                 dojo.attr(n, "dojoType", className);
+
+
+             });
+
+
+             dojo.parser.parse("progtabwrapper");
+
+
+         });
+   </script><script type="text/javascript">
+       ofwat.modelPage.populatePage("/Fountain/rest-services/table/8686?companyId=61");
+   </script>
+    <div class="footer">
+      <hr>
+      &copy; Ofwat 2011 <!--     build:   TimeStamp:   SVN revision:  -->
+    </div><script type="text/javascript">    
+    //<![CDATA[         
+    dojo.require("dijit.Tooltip");
+    dojo.require("dojo.parser");
+    dojo.require("dojo.fx");
+    dojo.require("dojo.fx.easing");
+    dojo.require("dojo.NodeList-traverse");
+	
+    dojo.addOnLoad(ofwat._initLoader);
+    //]]>
+    </script>
+  </body>
+</html>

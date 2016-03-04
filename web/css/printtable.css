@@ -1,0 +1,230 @@
+@CHARSET "ISO-8859-1";
+body {
+	font-size: 16px;
+}
+
+div#rightMenu {
+display:none;
+}
+
+div#fixeddiv {
+	display:none;
+}
+
+div#showFixedDiv {
+	display:none;
+}
+table.ICS {
+	border: thin;
+	border-collapse: collapse;
+	border-spacing: 2px;
+}
+td.sidePanel {
+	display: none;
+
+	}
+
+
+td.icsSpace {
+	vertical-align: top;
+	border-collapse: collapse; 
+}
+td {
+	border: thin;
+	border-style: solid;
+	border-color: black;
+	font-size: 90%;
+}
+
+tr.nonGroupRow, tr.groupRow {
+	height: 18px;
+}
+
+td.input {
+	background-color: lightyellow;
+}
+
+p.footer {	
+	text-align: center;
+	font-size: 80%;
+}
+
+td.calc {
+	background-color: lightcyan;
+}
+
+td.copy {
+	background-color: #FFCCCC;
+}
+
+td.alignRight {
+	text-align: right;
+}
+
+td.alignLeft {
+	text-align: left;
+}
+
+td.colHeading {
+	text-align: left;
+	background-color: yellow;
+	font-weight: bold;
+}
+
+td.rowHeading {
+	font-weight: normal;
+}
+
+td.empty {
+	border: none;
+}
+
+div.header {
+	font-weight: bold;
+	font-size: 85%;
+}
+div.editButtons {
+display:none;
+}
+div.tableHeader {
+	font-weight: bold;
+	color: navy;
+	font-size: 85%;
+}
+#company, #acronym {
+	display : inline;
+}
+
+.tabContainer {
+	display: none;
+}
+
+
+
+input {
+	border: 0px;
+	font-family: "Myriad Web",Verdana,Helvetica,Arial,sans-serif;
+	width: 70px;
+}
+
+.inputWide2 {
+	width: 140px; 
+	background-color: lightyellow;
+}
+
+.inputWide3 {
+	width: 210px; 
+	background-color: lightyellow;
+}
+
+.inputWide4 {
+	width: 280px; 
+	background-color: lightyellow;
+}
+
+.inputWide5 {
+	width: 350px; 
+	background-color: lightyellow;
+}
+
+
+input.input {
+	background-color: lightyellow;
+	border: 0px;
+}
+
+input.calc, input.copy {
+	background-color: #FFCCCC;
+	
+}
+
+input.editing {
+	border: 1px #000000 inset;
+	background-color: #ffffff;
+}
+
+input.locked {
+	background : url(../images/lock.png) no-repeat left top; 
+}
+
+select.locked {
+	background : url(../images/lock.png) no-repeat center center; 
+}
+
+option.locked {
+	background : url(../images/lock.png) no-repeat center center; 
+}
+
+input.alignRight{
+	text-align: right;
+}
+
+input.alignLeft {
+	text-align: left;
+}
+
+input.disabled {
+	
+}
+
+select.cg {
+	font-size: 90%;
+}
+
+select.input {
+	background-color: lightyellow;
+}
+
+select.calc, select.copy {
+	background-color: #FFCCCC;
+}
+
+select.disabled {
+	
+}
+
+select.editing {
+	background-color: #ffffff;
+}
+
+th {
+	background-color:#002664;
+	border-left:1px solid #002664;
+	border-right:1px solid #002664;
+	color:#FFFFFF;
+	font-weight:bold;
+}
+
+caption, th {
+	text-align:left;
+}
+
+tr.tableListOdd {
+	font-family: helvetica, arial, sans-serif;
+	font-size: 90%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: silver;
+}
+
+tr.tableListEven {
+	font-family: helvetica, arial, sans-serif;
+	font-size: 90%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: white;
+	color: black;
+}
+
+div.invisible {
+	display: none;
+}
+div.show {
+	display: block;
+}
+
+.dark_overlay, .white_content {
+	display: none;
+}

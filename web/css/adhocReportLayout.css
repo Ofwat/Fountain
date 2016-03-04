@@ -1,0 +1,68 @@
+@CHARSET "ISO-8859-1";
+
+div.red {
+	background-color: red;
+	color: white;
+	font-weight: bold;
+}
+
+td {
+	vertical-align: top;
+}
+
+tr.tableListOdd {
+	font-size: 90%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: silver;
+}
+
+tr.tableListEven {
+	font-size: 90%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid silver;
+	background-color: white;
+}
+.interval {
+	 
+}
+
+.moreReports {
+	cursor: pointer;
+}
+
+div.showTables{
+	font-size: 90%;
+	font-weight: bold;
+	border: 1px solid black;
+	padding: 2px;
+	
+}
+
+td.display {
+	padding: 5px;
+	margin: 2px;
+}
+
+select.itemChosenListLeft {
+	 width: 500px;
+}
+
+select.itemChosenListRight {
+ width: 300px;
+}
+
+div.saveDialog{
+	display: none;
+}
+
+span.displayButton {
+	visibility: visible;
+	display: inline;
+}
+span.hiddenButton {
+	display:none;
+	visibility: hidden;
+}

@@ -1,0 +1,207 @@
+@CHARSET "ISO-8859-1";
+
+table.mainTable {
+	border: 0;
+}
+
+table.companies, td.companies{
+	vertical-align: middle;
+	background-color: #ddeeff;
+	border: 0;
+	height: 25px;
+}
+
+table.selector {
+	border-width: thin;
+}
+
+td.selector {
+	vertical-align: top;
+	font-size: 75%;	
+}
+
+div.tables {
+	vertical-align: top;
+	font-size: 75%;
+	height: 210px;
+	width: 240px;
+	overflow: auto;	
+}
+
+.select {
+	font-size: 75%;
+} 
+
+select.chosenList {
+ width: 400px;
+}
+
+
+table.dataTable {
+	border: thin;
+	background-color: silver;
+}
+	
+
+tr.tabEven {
+	background-color: #DCDCDC;
+}
+
+tr.tabOdd {
+	background-color: #FFFFFF;
+}
+
+td.tableName {
+	width: 200px;
+}
+
+p.text {
+	text-align: left;
+	font-size: 75%;
+}
+
+p.exception {
+	font-family: "Courier New", Courier, "Times New Roman";
+	font-size: 75%;
+	text-align: left;
+	padding-left: 50pt;
+}
+
+div.dictionary, div.audit {
+	width: 400px;
+	display: none;
+}
+
+th {
+	/*background-color: #002664;*/
+	/*border-left: solid 1px #002664;*/
+	/*border-right: solid 1px #002664;*/
+	/*color: #ffffff;*/
+	/*font-weight: bold;*/
+}
+
+
+.dark_overlay{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color:  #002664;
+	z-index:1001;
+	-moz-opacity: 0.6;
+	opacity:.60;
+	filter: alpha(opacity=60);
+}
+ 
+.white_content {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 40%;
+	height: 45%;
+	padding: 16px;
+	border: 2px solid black;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+	font-size: 80%;
+}
+
+#rss-bar { 
+    margin: 0 auto 0px;
+}
+
+#rss-bar table td#rss-channel {
+    background-repeat: no-repeat;
+    background-position: top left;
+    font-size: 14px;
+    font-weight: bold;
+    vertical-align: top;
+    text-align: center;
+    width: 254px;
+}
+
+#rss-bar table td#rss-item {
+    background-repeat: no-repeat;
+    font-size: 14px;
+    width: 534px;
+    text-align: left;
+}
+
+#rss-bar table a {
+    color: white;
+    text-decoration: none;
+}
+#rss-bar table a:hover { color: #ffff00;}
+
+table.reports {
+	margin: 2px;
+	border-collapse: collapse;
+	width: 75%;
+}
+
+table.reportType {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+div#teamReportHeader, div#publicReportHeader {
+	font-weight: bold;	
+}
+
+td.reportListEven {
+	font-size: 90%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid #DCDCDC;
+	background-color: white;
+	
+}
+
+td.reportListOdd {
+	font-size: 90%;
+	text-align: left;
+	vertical-align: middle;
+	border: 1px solid #DCDCDC;
+	background-color: #DCDCDC;
+	
+}
+
+div.right {
+	text-align: right;
+	font-size: 80%;
+}
+div.left {
+	text-align: left;
+}
+
+span.right {
+	text-align: right;
+	display: inline;
+	float: right;
+}
+span.left {
+	text-align: left;
+	display: inline;
+}
+
+label.export {
+	margin-right: 5px;
+	margin-bottom: 3px;
+}
+
+input.export {
+	margin-left: 5px;
+}
+
+h2 {
+	font-weight: bold;
+}
+
+p.selector {
+	margin-bottom: 3px;
+}
+

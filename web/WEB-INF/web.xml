@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<display-name>Fountain</display-name>
+	
+	<context-param>
+		<param-name>javax.ws.rs.Application</param-name>
+		<param-value>uk.gov.ofwat.fountain.rest.FountainApplication</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>resteasy.servlet.mapping.prefix</param-name>
+		<param-value>/rest-services</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+    		classpath:beans.xml
+    		classpath:net/bull/javamelody/monitoring-spring-datasource.xml
+    		<!-- Not monitoring spring beans, see: https://code.google.com/p/javamelody/issues/detail?id=172  -->
+  		</param-value>  		
+	</context-param>
+
+
+	<!-- turn on security -->
+	<context-param>
+		<param-name>resteasy.role.based.security</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- 
+	<listener>
+    	<listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
+   	</listener>
+	-->
+
+	<listener>
+	   <listener-class>
+	      org.springframework.web.context.ContextLoaderListener
+	   </listener-class>
+	</listener>
+
+
+	<listener>
+		<listener-class>
+			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+		</listener-class>
+	</listener>
+	
+      <filter>
+      	<filter-name>monitoring</filter-name>
+        <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+                <init-param>
+                        <param-name>disabled</param-name>
+                        <param-value>true</param-value>
+                </init-param>        
+       </filter>
+       <filter-mapping>
+       	<filter-name>monitoring</filter-name>
+        <url-pattern>/*</url-pattern>
+       </filter-mapping>
+       <listener>
+       	<listener-class>net.bull.javamelody.SessionListener</listener-class>
+       </listener>	
+	 
+	<servlet>
+		<servlet-name>Resteasy</servlet-name>
+		<servlet-class>
+			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+	</servlet>
+
+
+
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Resteasy</servlet-name>
+		<url-pattern>/rest-services/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.page</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+        	<servlet-name>jsp</servlet-name>
+	         <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+        	 <init-param>
+	             <param-name>fork</param-name>
+        	     <param-value>false</param-value>
+	         </init-param>
+        	 <init-param>
+	             <param-name>xpoweredBy</param-name>
+        	     <param-value>false</param-value> 
+	        </init-param>
+ 		<init-param> 
+	            <param-name>mappedfile</param-name>
+        	     <param-value>false</param-value>
+	     	</init-param>
+        	<load-on-startup>3</load-on-startup>
+     	</servlet> 
+
+	
+	<!-- 
+	<error-page>
+		<error-code>500</error-code>
+		<location>/jsp/ajaxerror.jsp</location>
+	</error-page>
+	-->
+	<error-page>
+		<error-code>400</error-code>
+		<location>/jsp/ajaxerror.jsp</location>
+	</error-page>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/jsp/ajaxerror.jsp</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/jsp/ajaxerror.jsp</location>
+	</error-page>
+
+	<!-- Security constraint for roles -->
+	<!--
+		Users will be challenged to log in for jsps rest services will be
+		unprotected for easy debugging The only role required for login is
+		'user' other roles will be checked programatically when checking for
+		item roles
+	-->
+
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>item page</web-resource-name>
+			<url-pattern>/jsp/protected/itemRoles.jsp</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+        		<!-- Anyone with one of the listed roles may access this area -->
+       			<role-name>OFWAT\Fountain.Admins</role-name>
+      		</auth-constraint>
+	</security-constraint>
+
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>pages</web-resource-name>
+			<url-pattern>/jsp/protected/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+        		<!-- Anyone with one of the listed roles may access this area -->
+       			<role-name>OFWAT\Fountain.Editors</role-name>
+       			<role-name>OFWAT\Fountain.Admins</role-name>
+        		<role-name>OFWAT\Fountain.Users</role-name>
+      		</auth-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>pages</web-resource-name>
+			<url-pattern>/rest-services/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+        		<!-- Anyone with one of the listed roles may access this area -->
+       			<role-name>OFWAT\Fountain.Editors</role-name>
+       			<role-name>OFWAT\Fountain.Admins</role-name>
+        		<role-name>OFWAT\Fountain.Users</role-name>
+      		</auth-constraint>
+	</security-constraint>
+	
+    <security-constraint>
+    	<web-resource-collection>
+        	<web-resource-name>Monitoring</web-resource-name>
+            <url-pattern>/monitoring</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+        	<role-name>OFWAT\Fountain.Admins</role-name>
+        </auth-constraint>
+    </security-constraint>	
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>JNDIRealm</realm-name>
+		<form-login-config>
+			<form-login-page>/jsp/login.jsp</form-login-page>
+			<form-error-page>/jsp/loginfail.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+
+
+	 <!-- Security roles referenced by this web application    -->
+	<security-role>
+		<role-name>OFWAT\Fountain.Admins</role-name>
+	</security-role>
+   	<security-role>
+     		<role-name>OFWAT\Fountain.Users</role-name>
+   	</security-role>
+   	<security-role>
+     		<role-name>OFWAT\Fountain.Editors</role-name>
+   	</security-role> 
+   	<security-role>
+   		<role-name>OFWAT\G IMT</role-name>
+   	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G KMT</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G FINMOD</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G CustCharges</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G Compeffic</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G Regaccs</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G Asset Strategy</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G ServPerf</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G SuppDemand</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G Qualenhan</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G Corpfin</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G Consaffs</role-name>
+    	</security-role>  
+	<security-role>
+     		<role-name>OFWAT\G Fountain IPL</role-name>
+    	</security-role>  
+</web-app>

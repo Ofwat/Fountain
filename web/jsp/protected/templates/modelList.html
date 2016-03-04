@@ -1,0 +1,29 @@
+<table class="table table-striped table-bordered table-condensed">
+<tbody>
+<tr><th></th><th>Name</th><th>Code</th><th>ID</th><th>Branch</th></tr>
+{{#each this}}
+<tr>
+	<td>
+		<button type="button" class="btn btn-mini btn-link nounderline" data-toggle="collapse" data-target="#demo_{{this.id}}">
+  			+
+		</button>
+	</td>
+	<td class="">{{this.name}}</td>
+	<td class="">{{this.code}}</td>	
+	<td class="">{{this.id}}</td>
+	<td class="">{{this.branch.name}}</td>
+</tr>
+<tr class="">
+	<td colspan="5">
+		<div id="demo_{{this.id}}" data-id="{{this.id}}" class="collapse innerModelCompanies">
+		<table class="table table-condensed table-hover tableModelCompanies">
+			<tr>
+				<td><div class="dependencyPicker" data-id="{{this.id}}"></div></td>
+			</tr>
+		</table>
+		</div>
+	</td>
+</tr>
+{{/each}}
+</tbody>
+</table>

@@ -1,0 +1,177 @@
+	<form class="form-horizontal">
+	<fieldset>
+	
+	<!-- Form Name -->
+	<legend>View/Edit Run</legend>
+	<div class="row-fluid">
+	<div class="span6">
+	
+	<!-- Text input-->
+	<div class="control-group">
+	  <label class="control-label" for="txtName">Name:</label>
+	  <div class="controls">
+	    <input id="txtName" name="txtName" type="text" placeholder="" class="input-large" required="required" value="{{name}}" disabled="disabled">
+	    </input>
+	  </div>
+	</div>
+	
+	<!-- Textarea -->
+	<div class="control-group">
+	  <label class="control-label" for="txtDescription">Description:</label>
+	  <div class="controls">                     
+	    <textarea id="txtDescription" name="txtDescription" disabled="disabled">{{description}}</textarea>
+	  </div>
+	</div>
+	
+	</div>
+	<div class="span6">
+	
+	<!-- Select Basic -->
+	<div class="control-group">
+	  <label class="control-label" for="selectRuntemplate">Run Template:</label>
+	  <div class="controls">
+	    <select id="selectRuntemplate" name="selectRuntemplate" class="input-xlarge" disabled="disabled">
+	    	<option selected="selected">{{runTemplateName}}</option>
+	    </select>
+	  </div>
+	</div>
+	
+	<!-- Select Basic -->
+	<div class="control-group">
+	  <label class="control-label" for="selectDatasource">Base Run:</label>
+	  <div class="controls">
+	    <select id="selectDatasource" name="selectDatasource" class="input-xlarge" disabled="disabled">
+	    	<option selected="selected">{{dataSourceName}}</option>
+	    </select>
+	  </div>
+	</div>
+	
+	<div class="control-group">
+	  <label class="control-label" for="selectTag">Base Checkpoint:</label>
+	  <div class="controls">
+	    <select id="selectTag" name="selectTag" class="input-xlarge" disabled="disabled">
+	    	<option selected="selected">{{baseTagName}}</option>
+	    </select>
+	  </div>
+	</div>		
+	
+	</div>
+	</div>
+	<!-- List of processed models? Is this a partial..? -->	
+	<table class="table table-striped table-bordered table-condensed">
+		<tr>
+			<th style="width:20px"></th><th>Model</th><!-- <th>Completed?</th><th>Completed by</th><th>Completed On</th><th>Undo?</th> -->
+		</tr>
+		{{#each runModels}}
+			<tr>
+				<td><button type="button" class="btn btn-mini btn-link nounderline" data-toggle="collapse" data-target="#demo_{{model.id}}">
+  						+
+					</button>
+				</td>
+				<td class="modelHeaderTd"><img src="/Fountain/images/cube.png" class="modelHeaderImage"></img>{{model.name}}</td>
+				<!-- 
+				<td><input type="checkbox" data-modelId="{{model.id}}" class="chkModelCompleted"
+					{{#if completed}}
+						disabled="disabled" 
+						checked="checked"
+					{{/if}}
+					/></td>
+				<td>{{completedBy}}</td>
+				<td>{{completedDate}}</td>
+				<td>
+				{{#if completed}}
+						<button class="btn undoModel" disabled="disabled">Undo?</button>
+				{{else}}
+						<button class="btn completeModel" disabled="disabled">Complete</button>
+				{{/if}}
+			</td>
+			-->
+			</tr>
+			<tr class="">
+				<td colspan="6">
+					<div id="demo_{{model.id}}" data-id="{{model.id}}" class="collapse innerModelCompanies">		
+						<table class="table table-condensed table-hover tableModelCompanies">
+							<tr><th>Company Name</th><!-- ><th>Completed</th> --><th>Completed By</th><th>Completed Date</th><th>Checkpoint on completion</th><th></th></tr>
+							<!-- <tr><td>All</td><td></td><td></td><td></td><td></td></tr> -->
+							{{#each runModelCompanies}}
+							<tr class="" data-companyId="{{companyId}}" data-companyname="{{companyName}}" data-modelId="{{../model.id}}" data-runId="{{../../id}}" data-modelName="{{../model.name}}" data-runName="{{../../name}}">
+								<td class="companyName">{{companyName}}</td>
+								<!-- 
+								<td class="completed">
+									<input type="checkbox" disabled="disabled" {{checked completed}}/>
+								</td>
+								-->
+								<td class="completedBy">{{completedBy}}</td><td class="completedDate">{{completedDate}}</td>
+								<td class="tagOnCompletionTd"><input class="tagOnCompletion" type="checkbox" {{disabled completed}} {{checked tagged}}/></td>
+								<td>
+								{{#if completed}}
+									<button class="btn btn-small btn-warning undoCompanyModel" type="button"
+									{{#if ../../../completed}}
+										disabled
+									{{/if}}
+									>Undo?</button>
+									<button class="btn btn-small btn-primary completeCompanyModel hide" type="button" {{disabled ../../../completed}}"
+									{{#if ../../../completed}}
+										disabled
+									{{/if}}
+									>Complete</button>		
+								{{else}}
+									<button class="btn btn-small btn-warning undoCompanyModel hide" type="button" 
+									{{#if ../../../completed}}
+										disabled
+									{{/if}}
+									>Undo?</button>
+									<button class="btn btn-small btn-primary completeCompanyModel" type="button" 
+									{{#if ../../../completed}}
+										disabled
+									{{/if}}
+									>Complete</button>											
+								{{/if}}
+								</td>
+							</tr>
+							{{/each}}
+						</table>
+					</div>
+				</td>
+			</tr>
+		{{/each}}
+	</table>
+	
+	</fieldset>
+	</form>
+	
+	<!-- Complete run button! -->
+	{{#if completed}}
+		<button id="btnUndoRun" class="btn btn-large btn-block btn-warning" type="button" {{disabled updating}}>Undo Run</button>
+	{{else}}
+		<button id="btnCompleteRun" class="btn btn-large btn-block btn-primary" type="button" {{disabled updating}}>Complete Run</button>
+	{{/if}}
+
+	<div id="myModalUndo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+	    <h3 id="myModalLabel">Undo Run?</h3>
+	  </div>
+	  <div class="modal-body">
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    <button id="btnUndoRunConfirm" class="btn btn-success">Undo Run</button>
+	  </div>
+	</div>			
+
+	<div id="myModalComplete" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+	    <h3 id="myModalLabel">Complete Run?</h3>
+	  </div>
+	  <div class="modal-body">
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    <button id="btnCompleteRunConfirm" class="btn btn-success">Complete Run</button>
+	  </div>
+	</div>		
+				
+					
+		

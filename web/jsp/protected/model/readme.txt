@@ -1,0 +1,1 @@
+The model directory is where model jsp's are generated to. Each model has its own subdirectory into which generated jsp's are put, one for each table.   

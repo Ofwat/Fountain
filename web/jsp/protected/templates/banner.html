@@ -1,0 +1,114 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#ttLogo').tooltip();
+	//$('#ttReports').tooltip();
+	$('#ttReportSearch').tooltip();
+	$('#ttCreateReport').tooltip();
+	$('#ttListReports').tooltip();
+	//$('#ttTableSuites').tooltip();
+	$('#ttViewTableSuites').tooltip();
+	$('#ttExportTableSuites').tooltip();
+	//$('#ttUpload').tooltip();
+	$('#ttUploadDictionary').tooltip();
+	$('#ttUploadTableSuite').tooltip();
+	$('#ttUploadData').tooltip();
+	$('#ttUploadTable').tooltip();
+	//$('#ttRuns').tooltip();
+	$('#ttRunsList').tooltip();
+	$('#ttRunsListTemplates').tooltip();
+	$('#ttRunsListCompanySets').tooltip();
+	$('#ttRunsTag').tooltip();
+	$('#ttRunsCreate').tooltip();
+	$('#ttRunsCreateDataStream').tooltip();
+	$('#ttRunsCreateCompanySet').tooltip();
+	//$('#ttAdmin').tooltip();
+	$('#ttAdminAssignItemsToTeams').tooltip();
+	$('#ttAdminRemoveEditLocks').tooltip();
+	$('#ttAdminReportCacheLevels').tooltip();
+	$('#ttAdminTableSuiteInformation').tooltip();
+	$('#ttAdminReIndexSearch').tooltip();
+	$('#wikiHelpLink').tooltip();
+});
+</script>
+
+<div class="ribbonRight" style="">
+</div>
+
+<div class="navbar navbar-inverse">
+	<div class="navbar-inner" style="border-radius:0px; webkit-border-radius:0px;">
+		<a class="brand" href="/Fountain/jsp/protected/index.jsp" id="ttLogo" data-toggle="tooltip" data-placement="right" title="Search for reports"><img src="/Fountain/images/banner_logo_xsm_.png"></img></a>
+		<ul class="nav">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="ttReports" title="Report menu">
+					Reports
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/Fountain/jsp/protected/index.jsp" id="ttReportSearch" data-toggle="tooltip" data-placement="right" title="Search for reports">Report Search</a></li>
+					<li><a href="/Fountain/jsp/protected/adhocReport.jsp" id="ttCreateReport" data-toggle="tooltip" data-placement="right" title="Create a new report">Create A Report</a></li>
+					<li><a href="/Fountain/jsp/protected/customReports.jsp" id="ttListReports" data-toggle="tooltip" data-placement="right" title="View a list of reports">View Reports</a></li>		
+				</ul>
+			</li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="ttTableSuites" title="Table Suite menu">Table Suites<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="/Fountain/jsp/protected/tables.jsp" id="ttViewTableSuites" data-toggle="tooltip" data-placement="right" title="Select a table to view">View Tables</a></li>
+					<li><a href="/Fountain/jsp/protected/excelExport.jsp" id="ttExportTableSuites" data-toggle="tooltip" data-placement="right" title="Export multiple tables to Excel">Export Tables To Excel</a></li>
+				</ul>
+			</li>
+			{{#inRole "OFWAT\Fountain.Admins" roles}}
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="ttUpload" title="Upload menu">
+					Upload
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/Fountain/jsp/protected/dictionaryUpload.jsp" id="ttUploadDictionary" data-toggle="tooltip" data-placement="right" title="Upload a dictionary file">Dictionary Upload</a></li>
+					<li><a href="/Fountain/jsp/protected/modelUpload.jsp" id="ttUploadTableSuite" data-toggle="tooltip" data-placement="right" title="Upload a table suite file">Table Suite Upload</a></li>
+					<li><a href="/Fountain/jsp/protected/dataUpload.jsp" id="ttUploadData" data-toggle="tooltip" data-placement="right" title="Upload a data file">Data Upload</a></li>
+					<li><a href="/Fountain/jsp/protected/tableUpload.jsp" id="ttUploadTable" data-toggle="tooltip" data-placement="right" title="Upload a table file">Table Upload</a></li>		
+				</ul>
+			</li>
+			{{/inRole}}
+			{{#inRole "OFWAT\G Fountain Run Admin" roles}}
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="ttRuns" title="Runs menu">
+					Runs
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/Fountain/jsp/protected/runs/listRuns.jsp" id="ttRunsList" data-toggle="tooltip" data-placement="right" title="View the list of runs">List Runs</a></li>
+					<li><a href="/Fountain/jsp/protected/runs/listRunTemplates.jsp" id="ttRunsListTemplates" data-toggle="tooltip" data-placement="right" title="View the list of run templates">List Run Templates</a></li>
+					<li><a href="/Fountain/jsp/protected/runs/listRunCompanyTemplates.jsp" id="ttRunsListCompanySets" data-toggle="tooltip" data-placement="right" title="View the list of company sets">List Company Sets</a></li>
+					<li><a href="/Fountain/jsp/protected/runs/tagRun.jsp" id="ttRunsTag" data-toggle="tooltip" data-placement="right" title="Take a snapshot of a run">Checkpoint a Run</a></li>
+					<li><a href="/Fountain/jsp/protected/runs/createRun.jsp" id="ttRunsCreate" data-toggle="tooltip" data-placement="right" title="Create a new run by branching from another run">Create Run</a></li>
+					<li><a href="/Fountain/jsp/protected/runs/createAgenda.jsp" id="ttRunsCreateDataStream" data-toggle="tooltip" data-placement="right" title="Create a new Data Stream">Create Data Stream</a></li>
+					<li><a href="/Fountain/jsp/protected/runs/createRunCompanyTemplate.jsp" id="ttRunsCreateCompanySet" data-toggle="tooltip" data-placement="right" title="Create a set of companies to use in a run">Create Company Set</a></li>
+				</ul>
+			</li>
+			{{/inRole}}			
+			{{#inRole "OFWAT\Fountain.Admins" roles}}
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="ttAdmin" title="Admin menu">
+					Admin
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/Fountain/jsp/protected/itemRoles.jsp" id="ttAdminAssignItemsToTeams" data-toggle="tooltip" data-placement="right" title="Assign Items To Teams">Assign Items To Teams</a></li>
+					<li><a href="/Fountain/jsp/protected/admin.jsp" id="ttAdminRemoveEditLocks" data-toggle="tooltip" data-placement="right" title="Remove a users edit session">Remove Edit Locks</a></li>
+					<li><a href="/Fountain/jsp/protected/cache.jsp" id="ttAdminReportCacheLevels" data-toggle="tooltip" data-placement="right" title="View how full the caches are">Report Cache Levels</a></li>
+					<li><a href="/Fountain/jsp/protected/ModelInformation.jsp" id="ttAdminTableSuiteInformation" data-toggle="tooltip" data-placement="right" title="View information about a table suite">Table Suite Information</a></li>
+					<li><a href="/Fountain/jsp/protected/reIndex.jsp" id="ttAdminReIndexSearch" data-toggle="tooltip" data-placement="right" title="Re-index the search indexes">Re-Index Search</a></li>
+					<li><a href="/Fountain/jsp/protected/updates/listReleases.jsp" id="ttAdminListReleases" data-toggle="tooltip" data-placement="right" title="Admin release and updates">Release Notes Admin</a></li>
+				</ul>
+			</li>	
+			{{/inRole}}
+			<li>
+				<div id="wikiHelpLink" style="padding-top:10px; color:white !important;" data-toggle="tooltip" data-placement="right" title="Link to help pages on the Bubble"></div>
+			</li>											
+		</ul>
+		<ul class="nav pull-right">
+			<li><a href="#">{{remoteUserName}}</a></li>
+		</ul>
+	</div>
+</div>
