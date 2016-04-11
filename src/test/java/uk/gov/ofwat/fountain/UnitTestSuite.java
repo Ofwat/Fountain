@@ -18,28 +18,19 @@
 
 package uk.gov.ofwat.fountain;
 
-import java.io.File;
-
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import uk.gov.ofwat.fountain.api.APIUnitTestSuite;
 import uk.gov.ofwat.fountain.aspect.DaoCachingTestSuite;
-import uk.gov.ofwat.fountain.dao.DaoTestSuite;
 import uk.gov.ofwat.fountain.domain.DomainTestSuite;
-import uk.gov.ofwat.fountain.rest.RestTestSuite;
 import uk.gov.ofwat.fountain.rest.dto.DtoTestSuite;
-import uk.gov.ofwat.fountain.util.DBSetup;
-import uk.gov.ofwat.fountain.util.DBSetupWithScripts;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { 
 		APIUnitTestSuite.class, 
-		DaoTestSuite.class, 
 		DomainTestSuite.class,  
 		DtoTestSuite.class,
-		RestTestSuite.class, 
 		DaoCachingTestSuite.class
 		})
 public class UnitTestSuite {
@@ -47,13 +38,5 @@ public class UnitTestSuite {
 	public class AllTests {
 	}
 	
-	@BeforeClass
-	public static void setUp() throws Exception {
-		File baseScript = new File("db/testSetup.sql");
-		File updateFolder = new File("db/updates");
-		
-		DBSetup setup = new DBSetupWithScripts(baseScript, updateFolder);
-		setup.startup();
-	}
 
 }

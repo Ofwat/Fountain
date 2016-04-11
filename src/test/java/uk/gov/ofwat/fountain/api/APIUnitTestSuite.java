@@ -20,8 +20,15 @@ package uk.gov.ofwat.fountain.api;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
-import uk.gov.ofwat.fountain.api.table.reader.MetaDataExtractorTest;
+import uk.gov.ofwat.fountain.api.DataServiceTest; 
+import uk.gov.ofwat.fountain.api.ItemServiceTest;
+import uk.gov.ofwat.fountain.api.ReferenceServiceTest; 
+import uk.gov.ofwat.fountain.api.ModelServiceTest;
+import uk.gov.ofwat.fountain.api.UserServiceTest;
+import uk.gov.ofwat.fountain.api.AuditServiceTest; 
+import uk.gov.ofwat.fountain.api.LockServiceTest;
+import uk.gov.ofwat.fountain.api.BasketServiceTest; 
+import uk.gov.ofwat.fountain.api.TableServiceTest;
 
 /**
  * Unit test suite for the API package
@@ -39,15 +46,7 @@ import uk.gov.ofwat.fountain.api.table.reader.MetaDataExtractorTest;
 		AuditServiceTest.class, 
 		LockServiceTest.class,
 		BasketServiceTest.class, 
-		ReportServiceTest.class,
-		TableServiceTest.class,
-//		OrderedLineReaderTest.class, 
-//		TableReaderTest.class, 
-		MetaDataExtractorTest.class
-//		,
-//		ElasticSearchServiceTest.class,
-//		MongoServiceTest.class
-		//AuditAspectTest.class
+		TableServiceTest.class
 		})
 public class APIUnitTestSuite {
 

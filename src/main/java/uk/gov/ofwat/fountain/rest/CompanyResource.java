@@ -77,7 +77,8 @@ public class CompanyResource extends RestResource {
 		logger.debug("invoked getCompanies");
 		List<Company> companies =  referenceService.getCurrentCompanies();
 		logger.debug("finished getCompanies");
-		GenericEntity<List<Company>> entity = new GenericEntity<List<Company>>(companies){};
+//		GenericEntity<List<Company>> entity = new GenericEntity<List<Company>>(companies){};
+		GenericEntity<List<Company>> entity = null;
 		return Response.ok(entity).build();
 	}
 	

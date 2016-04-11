@@ -32,6 +32,7 @@ if(project.hasProperty('targetVersion')){
 }
 
 def libs = files(
+		"lib/scannotation-1.0.2.jar",
 		"lib/jtor/jtor-1.3.1.jar",
 		"lib/jtor/json-20080701.jar",
 		"lib/xml/dictionary.jar",
@@ -64,6 +65,7 @@ def spockVersion = '0.7-groovy-2.0'
 def gebVersion = "0.9.0-SNAPSHOT"
 def seleniumVersion = "2.47.0"
 def restEasyVersion = "1.2.1.GA" // was using "2.3.6.Final"
+//def restEasyVersion = "2.2.0.GA" 
 def springVersion = "3.2.5.RELEASE"
 def tomcatVersion = '7.0.11' //For functional testing
 
@@ -106,7 +108,11 @@ apply plugin: 'project-report'
 apply plugin: 'eclipse-wtp'
 
 buildscript {
-	repositories { mavenCentral() }
+	repositories { 	mavenCentral()
+					flatDir {
+						dirs 'lib'
+					}
+	}
 	dependencies { classpath "net.saliman:gradle-cobertura-plugin:1.2.1" }
 }
 
@@ -118,28 +124,6 @@ cobertura {
 	coverageSourceDirs << file('src/main/groovy')
 }
 
-/*
- apply plugin: 'jmeter'
- buildscript {
- repositories {
- mavenCentral()
- }
- dependencies {
- classpath "com.github.kulya:jmeter-gradle-plugin:1.3.2-2.6"
- }
- }
- jmeterRun.configure {
- //jmeterTestFiles = [file("src/test/jmeter/test1.jmx"), file("src/test/jmeter/test2.jmx"), file("src/test/jmeter/test3.jmx")]
- jmeterUserProperties = [
- "generateResponse=false",
- "jsonPath=${project.path}/src/test/jmeter/json/",
- "jsonFailurePath==${project.path}/src/test/jmeter/json/",
- "serverAddress=fnttest201",
- "serverPort=8082"
- ]
- }
- */
-
 eclipse.classpath.plusConfigurations += configurations.provided
 
 //include existing Fountain Ant tasks by using: 'antbuild.taskName'; this stops conflicts with existing tasks that are declared in Gradle and Ant e.g.'test'
@@ -147,12 +131,15 @@ eclipse.classpath.plusConfigurations += configurations.provided
 
 //External repositories.
 repositories {
-	//mavenRepo urls:"http://resdev01:9090/artifactory/libs-release"
-	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/Ofwat"
-	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/central"
-	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/sonatype"
-	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/publicjboss"
-	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/jboss"
+//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/Ofwat"
+//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/central"
+//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/sonatype"
+//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/publicjboss"
+//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/jboss"
+	mavenCentral()
+	flatDir {
+        dirs 'lib'
+    }
 }
 
 dependencies{
@@ -389,7 +376,9 @@ task copyTestResources(type:Copy){
 	from("environment/${environment}/mongodb.test.properties")
 	from("environment/${environment}/chunker.test.properties")
 	from('src/test/java/test_beans.xml')
+//	from('src/test/resources/test_beans.xml')
 	into file(classDir)
+//	into file(testClassesDir)
 }
 
 compileTestGroovy{ dependsOn  compileGroovy, copyTestResources }
@@ -412,9 +401,8 @@ compileTestGroovy{ dependsOn  compileGroovy, copyTestResources }
 //}
 
 test {
-// 	include '**/UnitTestSuite.class'
-//	include '**/IntegrationTestSuite.class'
-	include '**/NotATestSuite.class'
+	classpath = files(classDir)
+ 	include '**/UnitTestSuite.class'
 	testResultsDir = file('test/reports')
 	doLast{
 		def timestamp = System.currentTimeMillis()
@@ -422,6 +410,17 @@ test {
 	}
 }
 
+//task extraTests2(type:Test){
+//	classpath = files(classDir)
+// 	include '**/UnitTestSuite.class'
+////	include '**/IntegrationTestSuite.class'
+////	include '**/NotATestSuite.class'
+//	testResultsDir = file('test/reports')
+//	doLast{
+//		def timestamp = System.currentTimeMillis()
+//		test.testResultsDir.eachFile { it.lastModified = timestamp }
+//	}
+//}
 
 
 task functionalTests(type:Test){
