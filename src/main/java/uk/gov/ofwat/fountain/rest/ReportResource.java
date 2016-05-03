@@ -189,7 +189,7 @@ public class ReportResource extends RestResource {
 	@POST
 	@Produces({"application/json"})
 	@Consumes({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response saveReport(@BadgerFish CustomReportDto dto,
 							@Context SecurityContext securityContext) {
 		logger.debug("starting report save");
@@ -235,7 +235,7 @@ public class ReportResource extends RestResource {
 
 	@GET
 	@Produces({"application/json", "application/xml"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getReportsForUser(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @QueryParam("showSummary") boolean showSummary, @QueryParam("limit") Integer limit){
 		logger.debug("starting getReportsForUser");
 		
@@ -261,7 +261,7 @@ public class ReportResource extends RestResource {
 			dto.setPublicReport(summary.isPublicReport());
 			Team reportTeam = teamService.getTeamById(summary.getTeamId());
 			dto.setTeam(reportTeam.getName());
-			dto.setRedesign(securityContext.isUserInRole("OFWAT\\Fountain.Users"));
+			dto.setRedesign(securityContext.isUserInRole("ROLE_OFWAT\\FOUNTAIN.USERS"));
 			dto.setInterchangeableCompany(summary.isInterchangeableCompany());
 			dto.setInterchangeableRun(summary.isInterchangeableRun());
 			reports.add(dto);
@@ -274,7 +274,7 @@ public class ReportResource extends RestResource {
 	@GET
 	@Produces({"application/json"})
 	@Path("/trending/{period}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getReportPopularity(@PathParam("period") String period,
 	                        @Context SecurityContext securityContext, @Context UriInfo uriInfo){
 		
@@ -333,7 +333,7 @@ public class ReportResource extends RestResource {
 			dto.setPublicReport(summary.isPublicReport());
 			Team reportTeam = teamService.getTeamById(summary.getTeamId());
 			dto.setTeam(reportTeam.getName());
-			dto.setRedesign(securityContext.isUserInRole("OFWAT\\Fountain.Users"));
+			dto.setRedesign(securityContext.isUserInRole("ROLE_OFWAT\\FOUNTAIN.USERS"));
 			dto.setInterchangeableCompany(summary.isInterchangeableCompany());
 			reports.add(dto);
 		}
@@ -355,7 +355,7 @@ public class ReportResource extends RestResource {
 	@Produces({"application/json", "application/xml"})
 	@Path("{id}")
 	@Wrapped(element="report")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getReport(@PathParam("id") int id,
 							@QueryParam("companyId") int companyId,
 							@QueryParam("runId") int runId,
@@ -398,7 +398,7 @@ public class ReportResource extends RestResource {
 	@GET
 	@Produces({"application/json"})
 	@Path("/chunk/{chunkSetId}/{chunkId}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getReportChunk(@PathParam("chunkSetId") String chunkSetId,
 							@PathParam("chunkId") String chunkId,
 	                        @Context SecurityContext securityContext){
@@ -458,7 +458,7 @@ public class ReportResource extends RestResource {
 	@Produces({"application/xml"})
 	@Path("{id}/xml")
 	@Wrapped(element="report")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getXmlReport(@PathParam("id") int id,
 			                           @Context SecurityContext securityContext){
 		User user = userService.getUser(securityContext);
@@ -471,7 +471,7 @@ public class ReportResource extends RestResource {
 	@Path("{id}/excel")
 	@Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	@NoCache
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getExcelReport(@PathParam("id") int id,
 									@QueryParam("companyId") int companyId,
 									@QueryParam("runId") int runId,
@@ -489,7 +489,7 @@ public class ReportResource extends RestResource {
 	@Produces({"application/json", "application/xml"})
 	@Path("/table/{id}")
 	@Wrapped(element="reportTable")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getReportTable(	@PathParam("id") int id,
 									@QueryParam("companyId") int companyId,
 									@QueryParam("runId") int runId,
@@ -537,7 +537,7 @@ public class ReportResource extends RestResource {
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Path("/description/{id}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response postReportDescription(@PathParam("id") int id,
 									@QueryParam("description") String description){
 		//User user = userService.getUser(securityContext);
@@ -550,7 +550,7 @@ public class ReportResource extends RestResource {
 	@Consumes({"application/json", "application/xml"})
 	@Produces({"application/json", "application/xml"})
 	@Path("/table/{id}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response postReportTable(	@PathParam("id") int id,
 									@QueryParam("companyId") int companyId,
 									@QueryParam("auditComment") String auditComment,
@@ -703,7 +703,7 @@ public class ReportResource extends RestResource {
 	@Consumes({"application/json", "application/xml"})
 	@Produces({"application/json", "application/xml"})
 	@Path("/table/equality/{id}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response reportEquality(	@PathParam("id") int id,
 									@QueryParam("companyId") int companyId,
 									@QueryParam("runId") int runId,
@@ -744,7 +744,7 @@ public class ReportResource extends RestResource {
 	@Produces({"application/json", "application/xml"})
 	@Path("/table/structure/{id}")
 	@Wrapped(element="reportTable")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getReportTableStructure(@PathParam("id") int id,
 											@QueryParam("companyId") int companyId,
 											@QueryParam("runId") int runId,
@@ -771,7 +771,7 @@ public class ReportResource extends RestResource {
 	@Produces({"application/json"})
 	@Consumes({"application/json"})
 	@Path("/table/structure")
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response createReportDefinition(@BadgerFish TableDto tableDto,
 										@QueryParam("companyId") int companyId,
 										@QueryParam("runId") int runId,
@@ -869,7 +869,7 @@ public class ReportResource extends RestResource {
 	@POST
 	@Produces({"application/json"})
 	@Path("/readOnly/{reportIds}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response markReportReadOnly(@PathParam("reportIds") String reportIds,	
 									@QueryParam("readOnly") Boolean readOnly,
 			 @Context SecurityContext securityContext) {
@@ -899,7 +899,7 @@ public class ReportResource extends RestResource {
 	@DELETE
 	@Produces({"application/json"})
 	@Path("{reportIds}/bulk")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response deleteReport(@PathParam("reportIds") String reportIds,	
 			 @Context SecurityContext securityContext) {
 		logger.debug("Invoked bulk delete reports.");
@@ -925,7 +925,7 @@ public class ReportResource extends RestResource {
 	
 	@DELETE
 	@Path("{id}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response deleteReport(@PathParam("id") int id,
 								 @Context SecurityContext securityContext) {
 		logger.debug("invoked deleteReport");
@@ -952,7 +952,7 @@ public class ReportResource extends RestResource {
 	@GET
 	@Path("{id}/edit")
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getReportDetails(@PathParam("id") int id,
 			@Context SecurityContext securityContext){
 		logger.debug("starting getReportDetails");
@@ -1034,7 +1034,7 @@ public class ReportResource extends RestResource {
 	@Path("{id}/edit")
 	@Produces({"application/json"})
 	@Consumes({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response saveUpdatedReport(@PathParam("id") int id,
 			@BadgerFish CustomReportDto dto,
 			@Context SecurityContext securityContext){
@@ -1086,7 +1086,7 @@ public class ReportResource extends RestResource {
 	@POST
 	@Path("{id}/publish")
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response publishReport(@PathParam("id") int id,
 								@Context SecurityContext securityContext){
 		logger.debug("starting publishReport");
@@ -1109,7 +1109,7 @@ public class ReportResource extends RestResource {
 	@POST
 	@Path("{id}/unpublish")
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response hideReport(@PathParam("id") int id,
 								@Context SecurityContext securityContext){
 		logger.debug("starting hideReport");
@@ -1133,7 +1133,7 @@ public class ReportResource extends RestResource {
 	@Produces({"application/json"})
 	@Consumes({"application/json"})
 	@Path("/MaxConcurrentRunningReports/{maxConcurrentRunningReports}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response overrideMaxConcurrentRunningReports(@PathParam("maxConcurrentRunningReports") int maxConcurrentRunningReports,
 			@Context SecurityContext securityContext) {
 		logger.info("Maximum concurrent running reports changed from " + this.maxConcurrentRunningReports + " to " + maxConcurrentRunningReports);

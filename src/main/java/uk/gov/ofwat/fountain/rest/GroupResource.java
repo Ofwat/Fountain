@@ -54,7 +54,7 @@ public class GroupResource extends RestResource{
 
 	@GET
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getGroups(){
 		List<Group> groups = groupService.getGroups();
 		List<GroupDto> dtos = new ArrayList<GroupDto>();
@@ -69,7 +69,7 @@ public class GroupResource extends RestResource{
 	@Path("/{groupId}/company/{companyId}")
 	@Produces({"application/xml", "application/json"})
 	
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getCompanyGroupEntries(@PathParam("companyId") int companyId, @PathParam("groupId")int groupId){
 		List<GroupEntry> entries = groupService.getGroupEntriesForCompany(companyId, groupId);
 		List<GroupEntryDto> dtos = new ArrayList<GroupEntryDto>();
@@ -83,7 +83,7 @@ public class GroupResource extends RestResource{
 	@POST
 	@Path("/group-entry/")
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response updateGroupName(@BadgerFish GroupEntryDto groupEntryDto){
 		//
 		groupService.setGroupEntryDescription(groupEntryDto.getId(), groupEntryDto.getDescription());

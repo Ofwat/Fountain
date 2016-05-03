@@ -84,7 +84,7 @@ public class ItemResource extends RestResource{
 	
 	@GET
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response searchItem(@QueryParam("criteria") String criteria,
 									@QueryParam("filters") String filters,
 								    @QueryParam("extended") @DefaultValue("false") boolean extended){
@@ -129,7 +129,7 @@ public class ItemResource extends RestResource{
 	@GET
 	@Path("{id}")
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getItem(@PathParam("id") int id, 
             			@Context SecurityContext securityContext,
             			@Context HttpServletRequest httpServletRequest){
@@ -142,7 +142,7 @@ public class ItemResource extends RestResource{
 	
 	@POST
 	@Path("{id}/team/{teamId}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response setTeamOnItem(@PathParam("id") int itemId, 
 			@PathParam("teamId") int teamId,
 			@Context SecurityContext securityContext,
@@ -157,7 +157,7 @@ public class ItemResource extends RestResource{
 	@POST
 	@Consumes({"application/xml", "application/json"})
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response createItems(@BadgerFish TableDto tableDto,
 								@Context SecurityContext securityContext) {
 

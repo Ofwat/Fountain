@@ -90,7 +90,7 @@ public class ModelResource extends RestResource {
 	@Path("/external")
 	@Consumes({"application/xml", "application/json"})
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getExternalModelSummaryForFinOrFout(@QueryParam("fInputId") int fInputId,
 														@QueryParam("fOutputId") int fOutputId,
 														@Context SecurityContext securityContext){
@@ -123,7 +123,7 @@ public class ModelResource extends RestResource {
    @GET
    @Path("{id}")
    @Produces({"application/json"})
-   @RolesAllowed(value={"OFWAT\\Fountain.Users"})
+   @RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
    public Response getModel(@PathParam("id") int id, @Context UriInfo uriInfo, @Context SecurityContext securityContext) {
 	  log.debug("starting getModel");
       Model model = modelService.getModel(id);
@@ -141,7 +141,7 @@ public class ModelResource extends RestResource {
 	@GET
 	@Produces({"application/json"})
 	@Wrapped(element="Model-list")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getModels(@QueryParam("typeId") int typeId, @Context UriInfo uriInfo){
 		log.debug("starting getModels");
 		List<ModelSummaryDto> dtos = new ArrayList<ModelSummaryDto>();
@@ -188,7 +188,7 @@ public class ModelResource extends RestResource {
 	@Produces({"application/json", "application/xml" })
 	@Wrapped(element="table-list")
 	@Path("{id}/company")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getPageLinks(@PathParam("id") int modelId, @QueryParam("companyId") int companyId, @Context UriInfo uriInfo, @Context SecurityContext securityContext){			
 		GenericEntity<List<Link>> entity = new GenericEntity<List<Link>>(createLinks(modelService.getTablesForModelAndCompany(modelId, companyId),"table/", uriInfo, securityContext)){};
 		return Response.ok(entity).build();
@@ -198,7 +198,7 @@ public class ModelResource extends RestResource {
 	@Produces({"application/json", "application/xml" })
 	@Wrapped(element="table-list")
 	@Path("{id}/table/structure")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getTableStructureLinks(@PathParam("id") int modelId, @Context UriInfo uriInfo, @Context SecurityContext securityContext){	
 		GenericEntity<List<Link>> entity = new GenericEntity<List<Link>>(createLinks(modelService.getTableAddressesForModelId(modelId),"table/", "/structure" , uriInfo, securityContext)){};
 		return Response.ok(entity).build();		
@@ -207,7 +207,7 @@ public class ModelResource extends RestResource {
 	@GET
 	@Produces({"application/json", "application/xml" })
 	@Path("/families")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getModelFamilies(@Context UriInfo uriInfo, @Context SecurityContext securityContext){			
 		//GenericEntity<List<Link>> entity = new GenericEntity<List<Link>>(createLinks(modelService.getTablesForModelAndCompany(modelId, companyId),"table/", uriInfo, securityContext)){};
 		List<ModelFamily> modelFamilies = modelService.getAllModelFamilies();
@@ -218,7 +218,7 @@ public class ModelResource extends RestResource {
 
 	@PUT
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response updateModel(@BadgerFish ModelSummaryDto modelSummaryDto,
 			                @Context SecurityContext securityContext){
 
@@ -251,7 +251,7 @@ public class ModelResource extends RestResource {
 	@Path("/external")
 	@Consumes({"application/xml", "application/json"})
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response putExternalModelSummary(@BadgerFish ModelSummaryDto modelSummaryDto,
 								@QueryParam("companyId") int companyId,
 								@Context SecurityContext securityContext){
@@ -403,7 +403,7 @@ public class ModelResource extends RestResource {
 	@Path("/external/{id}")
 	@Consumes({"application/xml", "application/json"})
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getExternalModelSummary(@PathParam("id") int modelId,
 										@QueryParam("companyId") int companyId,
 //										@QueryParam("runId") int runId,
@@ -431,7 +431,7 @@ public class ModelResource extends RestResource {
 	@GET
 	@Path("/dependency/{id}")
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getModelRunDependencies(@PathParam("id") int modelId, @Context UriInfo uriInfo){
 		log.debug("starting getModels deps");
 		List<ModelSummaryDto> dtos = new ArrayList<ModelSummaryDto>();
@@ -448,7 +448,7 @@ public class ModelResource extends RestResource {
 	
 	@POST
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response addModelRunDependency(@PathParam("id") int modelId, 
 										@QueryParam("dependencyId") int dependencyId){
 		modelService.addDependency(modelId, dependencyId);
@@ -459,7 +459,7 @@ public class ModelResource extends RestResource {
 	@Path("/dependency/{id}")
 	//Add a queryParam?
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response removeModelRunDependency(@PathParam("id") int modelId, 
 										@QueryParam("dependencyId") int dependencyId){
 		//the path param is the model and the dependencyId is well the dependency...

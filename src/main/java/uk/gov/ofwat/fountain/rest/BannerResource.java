@@ -66,24 +66,24 @@ public class BannerResource extends RestResource implements ApplicationContextAw
 	
 	@GET
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})	
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})	
 	public Response getBannerInformation(@Context SecurityContext securityContext){  
 		logger.debug("Getting banner information");
 		RoleChecker rc = new RestServiceRoleChecker(securityContext);
 		User user = userService.getUser(securityContext);
 		HashMap<String, Boolean> roles = new HashMap<String, Boolean>();
 		
-		if(rc.isUserInRole("OFWAT\\Fountain.Users")){
-			roles.put("OFWAT\\Fountain.Users", true);
+		if(rc.isUserInRole("ROLE_OFWAT\\FOUNTAIN.USERS")){
+			roles.put("ROLE_OFWAT\\FOUNTAIN.USERS", true);
 		}
-		if(rc.isUserInRole("OFWAT\\Fountain.Editors")){
-			roles.put("OFWAT\\Fountain.Editors", true);
+		if(rc.isUserInRole("ROLE_OFWAT\\FOUNTAIN.EDITORS")){
+			roles.put("ROLE_OFWAT\\FOUNTAIN.EDITORS", true);
 		}
-		if(rc.isUserInRole("OFWAT\\Fountain.Admins")){
-			roles.put("OFWAT\\Fountain.Admins", true);
+		if(rc.isUserInRole("ROLE_OFWAT\\FOUNTAIN.ADMINS")){
+			roles.put("ROLE_OFWAT\\FOUNTAIN.ADMINS", true);
 		}
-		if(rc.isUserInRole("OFWAT\\G Fountain Run Admin")){
-			roles.put("OFWAT\\G Fountain Run Admin", true);
+		if(rc.isUserInRole("ROLE_OFWAT\\G FOUNTAIN RUN ADMIN")){
+			roles.put("ROLE_OFWAT\\G FOUNTAIN RUN ADMIN", true);
 		}		
 			    
 		BannerDto bdto = new BannerDto();

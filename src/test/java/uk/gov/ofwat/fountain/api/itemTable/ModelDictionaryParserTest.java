@@ -163,7 +163,7 @@ public class ModelDictionaryParserTest extends TestCase {
 		team = new Team();
 		team.setId(1);
 		team.setName(teamName);
-		team.setCode("OFWAT\\Fountain.Users");
+		team.setCode("ROLE_OFWAT\\FOUNTAIN.USERS");
 	}
 
 	private void setupParams() {

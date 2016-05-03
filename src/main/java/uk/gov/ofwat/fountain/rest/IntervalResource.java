@@ -57,7 +57,7 @@ public class IntervalResource extends RestResource{
 	@GET
 	@Produces({"application/xml", "application/json"})
 	@Wrapped(element="intervals")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getIntervals(@QueryParam("filters") String filters){
 		logger.debug("started getIntervals");
 		List<IntervalTypeDto>dtos = new ArrayList<IntervalTypeDto>();

@@ -53,7 +53,7 @@ public class UpdateResource extends RestResource {
 
 	@GET
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	@Path("/")
 	public Response getAllReleases(@Context SecurityContext securityContext, @Context UriInfo uriInfo){
 		logger.debug("invoked getAllReleases");
@@ -66,7 +66,7 @@ public class UpdateResource extends RestResource {
 	@GET
 	@Produces({"application/json"})
 	@Consumes({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	@Path("/latest")
 	public Response getLatestRelease(@Context SecurityContext securityContext, @Context UriInfo uriInfo){
 		logger.debug("invoked getLatestUpdates");
@@ -78,7 +78,7 @@ public class UpdateResource extends RestResource {
 	//TODO
 	@POST
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	@Path("/create")
 	public Response createRelease(@BadgerFish Release release, @Context SecurityContext securityContext, @Context UriInfo uriInfo){
 		logger.debug("invoked createRelease");
@@ -90,7 +90,7 @@ public class UpdateResource extends RestResource {
 	//TODO
 	@POST
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	@Path("/{id}")
 	public Response updateRelease(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @PathParam("id") Long id, @FormParam("name") String name, @FormParam("version") String version, @FormParam("releaseDate") String strDate, @FormParam("published") Boolean published){
 		logger.debug("invoked updateRelease");
@@ -111,7 +111,7 @@ public class UpdateResource extends RestResource {
 	
 	@GET
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	@Path("/{id}")
 	public Response getRelease(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @PathParam("id") Long id){
 		logger.debug("invoked getRelease");
@@ -122,7 +122,7 @@ public class UpdateResource extends RestResource {
 	
 	@POST
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	@Path("/{id}/update/")
 	public Response addUpdate(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @PathParam("id") Long id, @FormParam("title") String title, @FormParam("externalLink") String externalLink, @FormParam("description") String description, @FormParam("sortOrder") Long sortOrder){
 		//@Param("title") String title, @FormParam("externalLink") String externalLink, @FormParam("description") String description
@@ -139,7 +139,7 @@ public class UpdateResource extends RestResource {
 	
 	@DELETE
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	@Path("/update/{id}")
 	public Response removeUpdate(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @PathParam("id") Long id){
 		logger.debug("invoked removeUpdate");
@@ -151,7 +151,7 @@ public class UpdateResource extends RestResource {
 	
 	@POST
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})	
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})	
 	@Path("/publish/{id}")
 	public Response publishRelease(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @PathParam("id") Long id){
 		logger.debug("invoked publishRelease");
@@ -162,7 +162,7 @@ public class UpdateResource extends RestResource {
 	
 	@POST
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	@Path("/hide/{id}")
 	public Response hideRelease(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @PathParam("id") Long id){
 		logger.debug("invoked hideRelease");

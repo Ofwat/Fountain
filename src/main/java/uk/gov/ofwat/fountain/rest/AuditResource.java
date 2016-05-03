@@ -53,7 +53,7 @@ public class AuditResource extends RestResource{
 	@GET
 	@Path("/{dataKey}")
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getAuditedValues(@PathParam("dataKey") String key) {
 
 		DataKey dataKey = new DataKey(key);
@@ -74,6 +74,4 @@ public class AuditResource extends RestResource{
 		ResponseBuilder responseBuilder = Response.ok(dtos);
 		return responseBuilder.build();
 	}
-
-
 }

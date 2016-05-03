@@ -54,7 +54,7 @@ public class CacheResource extends RestResource{
 	 */
 	@Path("levels")
 	@GET
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response reportCacheLevels(){
 		GenericEntity<List<CacheLevel>> entity = new GenericEntity<List<CacheLevel>>(daoCacheService.reportCacheLevels()){};
 		return Response.ok(entity).build();
@@ -62,7 +62,7 @@ public class CacheResource extends RestResource{
 
 	@Path("persist")
 	@PUT
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response cacheToDisk(){
 		try {
 			daoCacheService.writeToDisk();
@@ -74,7 +74,7 @@ public class CacheResource extends RestResource{
 	
 	@Path("hydrate")
 	@PUT
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response cacheFromDisk(){
 		daoCacheService.readFromDisk();
 		return Response.ok().build();
@@ -82,7 +82,7 @@ public class CacheResource extends RestResource{
 	
 	@Path("clear")
 	@PUT
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response clearCaches(){
 		daoCacheService.clearCaches();
 		return Response.ok().build();

@@ -72,7 +72,7 @@ public class LockResource extends RestResource{
 	@Path("users")
 	@GET
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response getLockingUsers(){
 		GenericEntity<List<User>> entity = new GenericEntity<List<User>>(lockService.getLockingUsers()){};
 		return Response.ok(entity).build();			
@@ -85,7 +85,7 @@ public class LockResource extends RestResource{
 	@Path("{userId}")
 	@PUT
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response addLocks(@BadgerFish List<Lock> locks,
          					@Context SecurityContext securityContext){
 
@@ -104,7 +104,7 @@ public class LockResource extends RestResource{
 	 */
 	@Path("{userId}")
 	@DELETE
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response removeLocksForUser(@PathParam("userId") int userId){
 		User user = userService.getUser(userId);
 		lockService.clearLocksForUser(user.getId());

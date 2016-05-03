@@ -56,7 +56,7 @@ $(document).ready(function() {
 					<li><a href="/Fountain/jsp/protected/excelExport.jsp" id="ttExportTableSuites" data-toggle="tooltip" data-placement="right" title="Export multiple tables to Excel">Export Tables To Excel</a></li>
 				</ul>
 			</li>
-			{{#inRole "OFWAT\Fountain.Admins" roles}}
+			{{#inRole "ROLE_OFWAT\FOUNTAIN.ADMINS" roles}}
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="ttUpload" title="Upload menu">
 					Upload
@@ -70,7 +70,7 @@ $(document).ready(function() {
 				</ul>
 			</li>
 			{{/inRole}}
-			{{#inRole "OFWAT\G Fountain Run Admin" roles}}
+			{{#inRole "ROLE_OFWAT\G FOUNTAIN RUN ADMIN" roles}}
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="ttRuns" title="Runs menu">
 					Runs
@@ -87,7 +87,7 @@ $(document).ready(function() {
 				</ul>
 			</li>
 			{{/inRole}}			
-			{{#inRole "OFWAT\Fountain.Admins" roles}}
+			{{#inRole "ROLE_OFWAT\FOUNTAIN.ADMINS" roles}}
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="ttAdmin" title="Admin menu">
 					Admin

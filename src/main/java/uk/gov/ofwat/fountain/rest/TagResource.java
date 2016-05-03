@@ -98,7 +98,7 @@ public class TagResource extends RestResource {
 
 	@PUT
 	@Path("/data/{tagName}")
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	@Produces({"application/json" })
 	public Response createDataTag(@PathParam("tagName") String tagName,
 			@QueryParam("runId") int runId, 
@@ -144,7 +144,7 @@ public class TagResource extends RestResource {
 	
 	@PUT
 	@Path("/data/free/{tagName}")
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	@Produces({"application/json" })
 	public Response freeDataTag(@PathParam("tagName") String tagName,
 			@QueryParam("runId") int runId, 
@@ -177,7 +177,7 @@ public class TagResource extends RestResource {
 	@Path("/data/{tagName}")
 	@Produces({ "application/xml", "application/json" })
 	@Consumes({ "application/xml", "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response deleteDataTag(@PathParam("tagName") String tagName,
 			@QueryParam("runId") int runId, 
 			@QueryParam("modelId") int modelId,
@@ -214,7 +214,7 @@ public class TagResource extends RestResource {
 	@GET
 	@Path("/run")
 	@Produces({"application/json" })
-	@RolesAllowed(value = {"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value = {"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response listTags(
 			@QueryParam("companyId") int companyId,
 			@QueryParam("runId") int runId,

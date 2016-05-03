@@ -52,7 +52,7 @@ public class TeamResource {
 	@GET
 	@Produces({"application/xml", "application/json"})
 	@Wrapped(element="teams")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getTeams(){
 		GenericEntity<List<Team>> entity = new GenericEntity<List<Team>>(teamService.getAllTeams()){};
 		return Response.ok(entity).build();
@@ -62,7 +62,7 @@ public class TeamResource {
 	@Path("/user")
 	@Produces({"application/xml", "application/json"})
 	@Wrapped(element="teams")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getTeamsForUser(@Context SecurityContext securityContext){
 		RoleChecker roleChecker = new RestServiceRoleChecker(securityContext);
 		final GenericEntity<List<Team>> entity = new GenericEntity<List<Team>>(teamService.findTeamsForUser(roleChecker)){};

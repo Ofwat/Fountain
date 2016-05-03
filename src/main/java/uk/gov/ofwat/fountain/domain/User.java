@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
 public class User implements Serializable, Entity {
 	
 
-	public static final String FOUNTAIN_ADMIN_ROLE = "OFWAT\\Fountain.Admins";
+	public static final String FOUNTAIN_ADMIN_ROLE = "ROLE_OFWAT\\FOUNTAIN.ADMINS";
 
 	/**
 	 * 

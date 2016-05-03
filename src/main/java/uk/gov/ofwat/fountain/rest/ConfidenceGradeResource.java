@@ -55,7 +55,7 @@ public class ConfidenceGradeResource extends RestResource {
 	@GET
 	@Produces({"application/xml", "application/json"})
 	@Wrapped(element="Confidence-Grades")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getConfidenceGrades(){
 		logger.debug("invoked getConfidenceGrades");
 		List<ConfidenceGrade> cgs =  confidenceGradeService.getConfidenceGrades();

@@ -251,13 +251,13 @@ public class AuditAdvice {
 		restAudit.setUser(servletRequest.getUserPrincipal().getName());
 		restAudit.setStartDate(startTime);
 		restAudit.setFountainUsers(servletRequest
-				.isUserInRole("OFWAT\\Fountain.Users"));
+				.isUserInRole("ROLE_OFWAT\\FOUNTAIN.USERS"));
 		restAudit.setFountainEditors(servletRequest
-				.isUserInRole("OFWAT\\Fountain.Editors"));
+				.isUserInRole("ROLE_OFWAT\\FOUNTAIN.EDITORS"));
 		restAudit.setFountainAdmins(servletRequest
-				.isUserInRole("OFWAT\\Fountain.Admins"));
+				.isUserInRole("ROLE_OFWAT\\FOUNTAIN.ADMINS"));
 		restAudit.setFountainRunAdmin(servletRequest
-				.isUserInRole("OFWAT\\G Fountain Run Admin"));
+				.isUserInRole("ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"));
 		restAudit.setResourceClass("" + pjp.getTarget().getClass().getName());
 		restAudit.setResourceMethod("" + pjp.getSignature().getName());
 

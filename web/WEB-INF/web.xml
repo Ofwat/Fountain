@@ -20,6 +20,7 @@
 		<param-value>
     		classpath:beans.xml
     		classpath:net/bull/javamelody/monitoring-spring-datasource.xml
+    		classpath:applicationContext-security.xml
     		<!-- Not monitoring spring beans, see: https://code.google.com/p/javamelody/issues/detail?id=172  -->
   		</param-value>  		
 	</context-param>
@@ -30,6 +31,16 @@
 		<param-name>resteasy.role.based.security</param-name>
 		<param-value>true</param-value>
 	</context-param>
+
+        <filter>
+            <filter-name>springSecurityFilterChain</filter-name>
+            <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        </filter>
+
+        <filter-mapping>
+           <filter-name>springSecurityFilterChain</filter-name>
+           <url-pattern>/*</url-pattern>
+        </filter-mapping>
 
 	<!-- 
 	<listener>
@@ -130,120 +141,5 @@
 		<location>/jsp/ajaxerror.jsp</location>
 	</error-page>
 
-	<!-- Security constraint for roles -->
-	<!--
-		Users will be challenged to log in for jsps rest services will be
-		unprotected for easy debugging The only role required for login is
-		'user' other roles will be checked programatically when checking for
-		item roles
-	-->
 
-
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>item page</web-resource-name>
-			<url-pattern>/jsp/protected/itemRoles.jsp</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-        		<!-- Anyone with one of the listed roles may access this area -->
-       			<role-name>OFWAT\Fountain.Admins</role-name>
-      		</auth-constraint>
-	</security-constraint>
-
-
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>pages</web-resource-name>
-			<url-pattern>/jsp/protected/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-        		<!-- Anyone with one of the listed roles may access this area -->
-       			<role-name>OFWAT\Fountain.Editors</role-name>
-       			<role-name>OFWAT\Fountain.Admins</role-name>
-        		<role-name>OFWAT\Fountain.Users</role-name>
-      		</auth-constraint>
-	</security-constraint>
-
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>pages</web-resource-name>
-			<url-pattern>/rest-services/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-        		<!-- Anyone with one of the listed roles may access this area -->
-       			<role-name>OFWAT\Fountain.Editors</role-name>
-       			<role-name>OFWAT\Fountain.Admins</role-name>
-        		<role-name>OFWAT\Fountain.Users</role-name>
-      		</auth-constraint>
-	</security-constraint>
-	
-    <security-constraint>
-    	<web-resource-collection>
-        	<web-resource-name>Monitoring</web-resource-name>
-            <url-pattern>/monitoring</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-        	<role-name>OFWAT\Fountain.Admins</role-name>
-        </auth-constraint>
-    </security-constraint>	
-
-	<login-config>
-		<auth-method>FORM</auth-method>
-		<realm-name>JNDIRealm</realm-name>
-		<form-login-config>
-			<form-login-page>/jsp/login.jsp</form-login-page>
-			<form-error-page>/jsp/loginfail.jsp</form-error-page>
-		</form-login-config>
-	</login-config>
-
-
-	 <!-- Security roles referenced by this web application    -->
-	<security-role>
-		<role-name>OFWAT\Fountain.Admins</role-name>
-	</security-role>
-   	<security-role>
-     		<role-name>OFWAT\Fountain.Users</role-name>
-   	</security-role>
-   	<security-role>
-     		<role-name>OFWAT\Fountain.Editors</role-name>
-   	</security-role> 
-   	<security-role>
-   		<role-name>OFWAT\G IMT</role-name>
-   	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G KMT</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G FINMOD</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G CustCharges</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G Compeffic</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G Regaccs</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G Asset Strategy</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G ServPerf</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G SuppDemand</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G Qualenhan</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G Corpfin</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G Consaffs</role-name>
-    	</security-role>  
-	<security-role>
-     		<role-name>OFWAT\G Fountain IPL</role-name>
-    	</security-role>  
 </web-app>

@@ -45,7 +45,7 @@ public class WikiAddressResource extends RestResource {
 
 	@GET
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response wikiAddress(){
 		logger.debug("invoked wikiAddress");
 		Link link = new Link();

@@ -51,11 +51,11 @@ public class AuditInterceptor implements PreProcessInterceptor {
         restAudit.setUser(servletRequest.getUserPrincipal().getName());
         restAudit.setStartDate(new Date());
         restAudit.setEndDate(new Date());
-        restAudit.setFountainUsers(servletRequest.isUserInRole("OFWAT\\Fountain.Users"));
-        restAudit.setFountainEditors(servletRequest.isUserInRole("OFWAT\\Fountain.Editors"));
-        restAudit.setFountainAdmins(servletRequest.isUserInRole("OFWAT\\Fountain.Admins"));
+        restAudit.setFountainUsers(servletRequest.isUserInRole("ROLE_OFWAT\\FOUNTAIN.USERS"));
+        restAudit.setFountainEditors(servletRequest.isUserInRole("ROLE_OFWAT\\FOUNTAIN.EDITORS"));
+        restAudit.setFountainAdmins(servletRequest.isUserInRole("ROLE_OFWAT\\FOUNTAIN.ADMINS"));
 //        logger.info(" " + servletRequest.isUserInRole(""));
-        restAudit.setFountainRunAdmin(servletRequest.isUserInRole("OFWAT\\G Fountain Run Admin"));
+        restAudit.setFountainRunAdmin(servletRequest.isUserInRole("ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"));
         restAudit.setResourceClass(resourceMethod.getClass().getName());
         restAudit.setResourceMethod(resourceMethod.getMethod().getName());
         restAudit.setResponseCode("");

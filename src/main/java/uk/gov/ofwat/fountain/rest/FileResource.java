@@ -107,7 +107,7 @@ public class FileResource extends RestResource {
 	@Path("/dictionary")
 	@Consumes("multipart/form-data")
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response uploadDictionary(@Context SecurityContext securityContext,
 									 @Context HttpServletRequest httpServletRequest,
 									 MultipartFormDataInput input
@@ -153,7 +153,7 @@ public class FileResource extends RestResource {
 	@Path("/table")
 	@Consumes("multipart/form-data")
 	@Produces({"application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response uploadTable(@Context SecurityContext securityContext,
 									 @Context HttpServletRequest httpServletRequest,
 									 MultipartFormDataInput input) throws Exception {
@@ -209,7 +209,7 @@ public class FileResource extends RestResource {
 	@GET
 	@Path("/table/log/{id}")
 	@Produces({"text/plain"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response getTableUploadLog(@PathParam("id") long id) throws Exception {
 		logger.debug("started getTableUploadLog");
 		
@@ -225,7 +225,7 @@ public class FileResource extends RestResource {
 	@POST
 	@Path("/model")
 	@Consumes("multipart/form-data")
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response uploadModel(@Context SecurityContext securityContext,
 								@Context HttpServletRequest httpServletRequest,
 			                     MultipartFormDataInput input)throws Exception{
@@ -287,7 +287,7 @@ public class FileResource extends RestResource {
 	@POST
 	@Path("/modelJSPs")
 	@Consumes("multipart/form-data")
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response generateJSPs(@Context SecurityContext securityContext,
 								@Context HttpServletRequest httpServletRequest,
 			                     MultipartFormDataInput input)throws Exception{
@@ -343,7 +343,7 @@ public class FileResource extends RestResource {
 	@POST
 	@Path("/data")
 	@Consumes("multipart/form-data")
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response uploadAuditData(@Context SecurityContext securityContext,
 			@Context HttpServletRequest httpServletRequest,
             MultipartFormDataInput input)throws Exception{
@@ -387,7 +387,7 @@ public class FileResource extends RestResource {
 	
 	@POST
 	@Path("/bulkUpload")
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response bulkDataUpload(@Context SecurityContext securityContext,
 			                       @Context HttpServletRequest httpServletRequest)
 								throws Exception{
@@ -412,7 +412,7 @@ public class FileResource extends RestResource {
 
 	@POST
 	@Path("/bulkModelUpload")
-	@RolesAllowed(value={"OFWAT\\Fountain.Admins"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
 	public Response bulkModelUpload(@Context SecurityContext securityContext,
 			                       @Context HttpServletRequest httpServletRequest)
 								throws Exception{

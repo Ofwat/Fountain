@@ -57,7 +57,7 @@ public class CompanyResource extends RestResource {
 	@Path("/links")
 	@Produces({"application/xml", "application/json"})
 	@Wrapped(element="Company-links")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getCompanyLinks(@Context UriInfo uriInfo, @Context SecurityContext securityContext){
 		logger.debug("invoked putBasket");
 		List<Link> links =  createLinks(referenceService.getCompanies(), "company/", uriInfo, securityContext);
@@ -72,7 +72,7 @@ public class CompanyResource extends RestResource {
 	@GET
 	@Produces({"application/xml", "application/json"})
 	@Wrapped(element="Company-list")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getCompanies(){
 		logger.debug("invoked getCompanies");
 		List<Company> companies =  referenceService.getCurrentCompanies();
@@ -86,7 +86,7 @@ public class CompanyResource extends RestResource {
 	@Produces({"application/xml", "application/json"})
 	@Wrapped(element="Company-types")
 	@Path("/types")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getCompanyTypes(){
 		logger.debug("invoked getCompanies");
 		List<CompanyType> types = referenceService.getCompanyTypes();
@@ -100,7 +100,7 @@ public class CompanyResource extends RestResource {
 	@GET
 	@Produces({"application/xml", "application/json"})
 	@Wrapped(element="Company-list")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	@Path("/all")
 	public Response getAllCompanies(){
 		logger.debug("invoked getAllCompanies");
@@ -113,7 +113,7 @@ public class CompanyResource extends RestResource {
 	@GET
    @Path("{id}")
    @Produces({"application/json"})
-   @RolesAllowed(value={"OFWAT\\Fountain.Users"})
+   @RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
    public Response getCompany(@PathParam("id") int id){
 		logger.debug("invoked getCompany");
 		Company company =  referenceService.getCompany(id);

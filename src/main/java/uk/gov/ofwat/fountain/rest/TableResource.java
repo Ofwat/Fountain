@@ -109,7 +109,7 @@ public class TableResource extends RestResource {
 	@Produces({"application/xml", "application/json"})
 	@NoCache
 	@Wrapped(element="dataTable")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getTableForCompany(@PathParam("id") int id, 
 			                            @QueryParam("companyId") int companyId, 
 			                            @Context SecurityContext securityContext,
@@ -144,7 +144,7 @@ public class TableResource extends RestResource {
 	@GET
 	@Path("/{id}/structure")
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getTableAsStructure(@PathParam("id") int id){
 
 		
@@ -211,7 +211,7 @@ public class TableResource extends RestResource {
 	@Path("/excel/tables")
 	@Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	@NoCache
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getTables(@QueryParam("tableId") List<Integer> tableIds, 
 			@QueryParam("companyId")List<Integer> companyIds, @Context SecurityContext securityContext){
 	

@@ -178,11 +178,6 @@ lib/gradle-tomcat-plugin-0.9.5.jar -text
 lib/jtor/json-20080701.jar -text
 lib/jtor/jtor-1.3.1.jar -text
 lib/scannotation-1.0.2.jar -text
-lib/waffle/commons-logging-1.1.1.jar -text
-lib/waffle/guava-r07.jar -text
-lib/waffle/jna.jar -text
-lib/waffle/platform.jar -text
-lib/waffle/waffle-jna.jar -text
 lib/xml/FountainDataFormat.jar -text
 lib/xml/dictionary.jar -text
 lib/xml/newdictionary.jar -text
@@ -690,8 +685,10 @@ src/main/java/uk/gov/ofwat/fountain/tools/Water2000Reader/FileProcessor.java -te
 src/main/java/uk/gov/ofwat/fountain/tools/Water2000Reader/RecordReader.java -text
 src/main/java/uk/gov/ofwat/fountain/tools/Water2000Reader/Water2000Reader.java -text
 src/main/java/uk/gov/ofwat/fountain/tools/Water2000Reader/Water2000record.java -text
+src/main/java/uk/gov/ofwat/fountain/util/FtnGrantedAuthorityFactory.java -text
 src/main/java/uk/gov/ofwat/fountain/util/LoggerPostInitialisationBean.java -text
 src/main/java/uk/gov/ofwat/fountain/util/SpringApplicationContext.java -text
+src/main/resources/applicationContext-security.xml -text
 src/main/resources/beans.xml -text
 src/main/resources/hibernate.cfg.xml -text
 src/main/resources/log4j.dtd -text

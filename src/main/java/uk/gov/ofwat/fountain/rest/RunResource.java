@@ -100,7 +100,7 @@ public class RunResource extends RestResource {
 
 	@GET
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response listRuns(	@Context SecurityContext securityContext,
 								@QueryParam("agendaId") int agendaId,
 								@QueryParam("standardRole") boolean standardRole,
@@ -157,7 +157,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("{id}")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response getRun(@PathParam("id") int id) {
 		logger.debug("Getting Individual Run data");
 		RunDto runDto = new RunDto(runService.getRun(id), DATE_FORMAT_STRING, referenceService);
@@ -168,7 +168,7 @@ public class RunResource extends RestResource {
 	@POST
 	@Path("/default/{id}")
 	@Consumes({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response changeDefaultRun(@PathParam("id") int id) {
 		runService.setDefaultRun(id);
 		ResponseBuilder responseBuilder = Response.ok();
@@ -178,7 +178,7 @@ public class RunResource extends RestResource {
 	@POST
 	@Path("/{id}/toggleAdminOnly")
 	@Consumes({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response toggleAdminOnly(@PathParam("id") int id) {
 		runService.toggleRunAdminOnly(id);
 		ResponseBuilder responseBuilder = Response.ok();
@@ -188,7 +188,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("{id}/models")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response getRunModels(@PathParam("id") int runId) {
 		logger.debug("Getting Individual Run data with run models");
 		SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_STRING);
@@ -276,7 +276,7 @@ public class RunResource extends RestResource {
 	@Path("/{runName}")
 	@Produces({ "application/json" })
 	@Consumes({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response createRun(@PathParam("runName") String runName,
 			@QueryParam("agendaId") int agendaId,
 			@QueryParam("sourceRunId") int sourceRunId,
@@ -327,7 +327,7 @@ public class RunResource extends RestResource {
 	@Path("/{runId}")
 	@Produces({ "application/json" })
 	@Consumes({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response completeRun(@PathParam("runId") int runId,
 								@QueryParam("completed") boolean completed,
 								@Context SecurityContext securityContext) {
@@ -396,14 +396,14 @@ public class RunResource extends RestResource {
 //	@PUT
 //	@Produces({ "application/xml", "application/json" })
 //	@Consumes({ "application/xml", "application/json" })
-//	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+//	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 //	public Response createUpdateRun(@BadgerFish RunDto runDto,
 //			@Context SecurityContext securityContext) {
 //		return null;
 //	}
 
 //	@DELETE
-//	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+//	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 //	public Response deleteRun(@QueryParam("runId") int runId,
 //			@Context SecurityContext securityContext) {
 //		return null;
@@ -412,7 +412,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("/templates")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response listRunTemplates() {
 		SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_STRING);
 		List<RunTemplateDto> runTemplateDtos = new ArrayList<RunTemplateDto>();
@@ -453,7 +453,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("/templates/{id}")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response getRunTemplate(@PathParam("id") int id) {
 		SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_STRING);
 		RunTemplateDto runTemplateDto = new RunTemplateDto();
@@ -471,7 +471,7 @@ public class RunResource extends RestResource {
 	@DELETE
 	@Path("/templates/{id}")
 	@Produces({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response deleteRunTemplate(@PathParam("id") int id) {
 		boolean result = runTemplateService.deleteRunTemplate(id);
 		ResponseBuilder responseBuilder;
@@ -504,7 +504,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("/templates/{id}/models")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response getRunTemplateModels(@PathParam("id") int id) {
 		List<ModelDto> models = new ArrayList<ModelDto>();
 		try {
@@ -526,7 +526,7 @@ public class RunResource extends RestResource {
 	@POST
 	@Path("/templates/{id}/models")
 	@Consumes({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response addRunTemplateModel(@PathParam("id") int id, List<HashMap<String, Integer>> listMap) {
 		//Remove all models from a runTemplate. 
 		RunTemplate rt = runTemplateService.getRunTemplate(id);
@@ -542,7 +542,7 @@ public class RunResource extends RestResource {
 	@DELETE
 	@Path("/templates/{id}/models")
 	@Produces({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response removeRunTemplateModel(@PathParam("id") int id,
 			@QueryParam("modelId") int modelId) {
 		runTemplateService.removeModel(modelId, id);
@@ -553,7 +553,7 @@ public class RunResource extends RestResource {
 	@PUT
 	@Path("/templates")
 	@Produces({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response createUpdateRunTemplate(
 			@FormParam("name") String runTemplateName,
 			@FormParam("description") String runTemplateDescription,
@@ -577,7 +577,7 @@ public class RunResource extends RestResource {
 	}
 
 //	@DELETE
-//	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+//	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 //	public Response deleteRunTemplate(
 //			@QueryParam("runTemplateId") int runTemplateId,
 //			@Context SecurityContext securityContext) {
@@ -587,7 +587,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("/datasources")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response listRunDatasources() {
 		// Get a list of datasources... This is a list of runs excluding the
 		// passed run.
@@ -613,7 +613,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("/companyTemplate")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response listRunCompanyTemplates() {
 		SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_STRING);
 //		List<RunCompanyTemplateDto> runCompanyTemplateDtos = new ArrayList<RunCompanyTemplateDto>();
@@ -638,7 +638,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("/companyTemplate/{id}")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response getRunCompanyTemplate(@PathParam("id") int id) {
 		SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT_STRING);
 //		RunCompanyTemplateDto runCompanyTemplateDto = new RunCompanyTemplateDto();
@@ -656,7 +656,7 @@ public class RunResource extends RestResource {
 	@DELETE
 	@Path("/companyTemplate/{id}")
 	@Produces({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response deleteRunCompanyTemplate(@PathParam("id") int id) {
 		boolean result = runCompanyTemplateService.deleteRunCompanyTemplate(id);
 		ResponseBuilder responseBuilder;
@@ -671,7 +671,7 @@ public class RunResource extends RestResource {
 	@GET
 	@Path("/companyTemplate/{id}/company")
 	@Produces({ "application/json" })
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response getRunCompanyTemplateModels(@PathParam("id") int id) {
 		List<Company> companies = new ArrayList<Company>();
 		RunCompanyTemplate runCompanyTemplate = runCompanyTemplateService.getRunCompanyTemplate(id);
@@ -682,7 +682,7 @@ public class RunResource extends RestResource {
 	@POST
 	@Path("/companyTemplate/{id}/company")
 	@Consumes({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response addRunCompanyTemplateModel(@PathParam("id") int id, List<HashMap<String, Integer>> listMap) {
 
 		RunCompanyTemplate rt = runCompanyTemplateService.getRunCompanyTemplate(id);
@@ -698,7 +698,7 @@ public class RunResource extends RestResource {
 	@DELETE
 	@Path("/companyTemplate/{id}/company")
 	@Produces({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response removeRunCompanyTemplateModel(@PathParam("id") int id,
 			@QueryParam("companyId") int companyId) {
 		runCompanyTemplateService.removeCompany(companyId, id);
@@ -709,7 +709,7 @@ public class RunResource extends RestResource {
 	@PUT
 	@Path("/companyTemplate")
 	@Produces({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response createUpdateRunCompanyTemplate(
 			@FormParam("name") String runCompanyTemplateName,
 			@FormParam("description") String runCompanyTemplateDescription,

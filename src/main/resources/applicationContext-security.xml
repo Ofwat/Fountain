@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:sec="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+  	<sec:ldap-server url="ldap://DC201.ofwat.net:389" manager-dn="fountain.live@ofwat.net" manager-password="AdamJB0806#"/>
+
+	<!-- windows authentication provider -->
+	<bean id="waffleWindowsAuthProvider" class="waffle.windows.auth.impl.WindowsAuthProviderImpl" />
+	
+	
+	<!-- collection of security filters -->
+	<bean id="negotiateSecurityFilterProvider" class="waffle.servlet.spi.NegotiateSecurityFilterProvider">
+		<constructor-arg ref="waffleWindowsAuthProvider" />
+	</bean>
+	
+	<bean id="basicSecurityFilterProvider" class="waffle.servlet.spi.BasicSecurityFilterProvider">
+		<constructor-arg ref="waffleWindowsAuthProvider" />
+	</bean>
+	
+	<bean id="waffleSecurityFilterProviderCollection" class="waffle.servlet.spi.SecurityFilterProviderCollection">
+		<constructor-arg>
+			<list>
+				<ref bean="negotiateSecurityFilterProvider" />   			
+				<ref bean="basicSecurityFilterProvider" />   			
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<!-- spring filter entry point -->
+	<sec:http entry-point-ref="negotiateSecurityFilterEntryPoint" use-expressions="true">
+        <sec:intercept-url pattern="/secure/extreme/**" access="hasRole('ROLE_OFWAT\FOUNTAIN.EDITORS')"/>
+    	<sec:intercept-url pattern="/jsp/protected/*" access="hasAnyRole('ROLE_OFWAT\FOUNTAIN.EDITORS', 'ROLE_OFWAT\FOUNTAIN.ADMINS', 'ROLE_OFWAT\FOUNTAIN.USERS')"/>
+    	<sec:intercept-url pattern="/rest-services/*" access="hasAnyRole('ROLE_OFWAT\FOUNTAIN.EDITORS', 'ROLE_OFWAT\FOUNTAIN.ADMINS', 'ROLE_OFWAT\FOUNTAIN.USERS')"/>    
+        <sec:intercept-url pattern="/**" access="permitAll()" />
+		<sec:custom-filter ref="waffleNegotiateSecurityFilter" position="BASIC_AUTH_FILTER" />
+	</sec:http>
+
+	<bean id="negotiateSecurityFilterEntryPoint" class="waffle.spring.NegotiateSecurityFilterEntryPoint">
+		<property name="Provider" ref="waffleSecurityFilterProviderCollection" />
+	</bean>
+	
+	<!-- spring authentication provider -->
+	<sec:authentication-manager alias="authenticationProvider">
+	</sec:authentication-manager>
+
+	<!-- <property name="GrantedAuthorityFactory" ref="ftnGrantedAuthorityFactory" /> -->
+
+    <bean id="ftnGrantedAuthorityFactory" class="uk.gov.ofwat.fountain.util.FtnGrantedAuthorityFactory">
+    	<constructor-arg value="ROLE_"></constructor-arg>
+    </bean> 
+		
+	<!-- spring security filter -->
+	<bean id="waffleNegotiateSecurityFilter" class="waffle.spring.NegotiateSecurityFilter">
+		<property name="Provider" ref="waffleSecurityFilterProviderCollection" />
+		<property name="AllowGuestLogin" value="false" />
+		<property name="PrincipalFormat" value="fqn" />
+		<property name="RoleFormat" value="both" />
+	</bean>
+</beans>

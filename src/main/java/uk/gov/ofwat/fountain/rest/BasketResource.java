@@ -90,7 +90,7 @@ public class BasketResource extends RestResource{
 	// create basket
 	@PUT
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response putBasket(	@Context SecurityContext securityContext){
 		logger.debug("invoked putBasket");
 		
@@ -110,7 +110,7 @@ public class BasketResource extends RestResource{
 
 	@GET
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getBasket(@Context SecurityContext securityContext) {
 		logger.debug("invoked getBasket");
 
@@ -129,7 +129,7 @@ public class BasketResource extends RestResource{
 	}
 	
 	@DELETE
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response deleteBasket(@Context SecurityContext securityContext) {
 		logger.debug("invoked deleteBasket");
 
@@ -146,7 +146,7 @@ public class BasketResource extends RestResource{
 	@GET
 	@Path("/edits/{id}")
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response getValueEdit(@PathParam("id") String id, 
 								@Context SecurityContext securityContext, @Context UriInfo uriInfo){
 		logger.debug("invoked getValueEdit");
@@ -172,7 +172,7 @@ public class BasketResource extends RestResource{
 
 	@DELETE
 	@Path("/edits/{id}")
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response deleteEdit(	@PathParam("id") String id,
 							@Context SecurityContext securityContext){
 		logger.debug("invoked deleteEdit");
@@ -192,7 +192,7 @@ public class BasketResource extends RestResource{
 	@POST
 	@Path("/edits")
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response addEdit(@BadgerFish DataDto dataDto,
 			                @Context SecurityContext securityContext, @Context UriInfo uriInfo){
 		logger.debug("invoked addEdit");

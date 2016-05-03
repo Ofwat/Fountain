@@ -75,7 +75,7 @@ public class CheckoutResource extends RestResource{
 	
 	@POST
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Editors"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.EDITORS"})
 	public Response postBasketToCheckout(@BadgerFish String auditComment,
 							@Context SecurityContext securityContext){
 		logger.debug("invoked postBasketToCheckout");

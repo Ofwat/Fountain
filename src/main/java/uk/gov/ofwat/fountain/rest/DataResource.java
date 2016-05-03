@@ -54,7 +54,7 @@ public class DataResource extends RestResource {
 	@GET
 	@Path("auditedValues/{id}")
 	@Produces({"application/xml", "application/json"})
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getAuditedValues(@PathParam("id") String id) {
 		logger.debug("invoked getAuditedValues");
 		DataKey dataKey = new DataKey(id);

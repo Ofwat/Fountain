@@ -60,7 +60,7 @@ public class AgendaResource extends RestResource {
 	@GET
 	@Produces({"application/json"})
 	@Wrapped(element="Agenda-list")
-	@RolesAllowed(value={"OFWAT\\Fountain.Users"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response getAllAgenda(){
 		logger.debug("invoked getAllAgenda");
 		List<Agenda> agenda =  runService.getAllAgenda();
@@ -73,7 +73,7 @@ public class AgendaResource extends RestResource {
 	@Path("/{agendaName}")
 	@Produces({ "application/json" })
 	@Consumes({ "application/json" })
-	@RolesAllowed(value={"OFWAT\\G Fountain Run Admin"})
+	@RolesAllowed(value={"ROLE_OFWAT\\G FOUNTAIN RUN ADMIN"})
 	public Response createRun(@PathParam("agendaName") String agendaName,
 			@QueryParam("agendaCode") String agendaCode,
 			@QueryParam("agendaDescription") String agendaDescription,

@@ -36,7 +36,7 @@ public class SearchResource extends RestResource {
 
 	@GET
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })
 	public Response searchMe(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @QueryParam("query") String query, @QueryParam("start") Integer start, @QueryParam("type") String type, @QueryParam("deleted") Boolean deleted,  @QueryParam("showMyDataOnly") Boolean showMyDataOnly, @QueryParam("sort") String sortString){
 		//Run the query using the query builder
 		String json;
@@ -62,7 +62,7 @@ public class SearchResource extends RestResource {
 	@DELETE
 	@Path("/favorite")
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })		
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })		
 	public Response removeSearchFromFavorites(@Context SecurityContext securityContext, @QueryParam("searchId") Long searchId){
 		Boolean result = searchService.removeSearchFromFavorites(securityContext, searchId);
 		if(result){
@@ -76,7 +76,7 @@ public class SearchResource extends RestResource {
 	@Path("/favorite")
 	@Produces({"application/json"})
 	@Consumes({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })		
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })		
 	public Response addSearchToFavorites(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @BadgerFish SaveSearchDto dto){
 		Boolean result = searchService.addSearchToFavorites(securityContext, dto);
 		if(result){
@@ -89,7 +89,7 @@ public class SearchResource extends RestResource {
 	@POST
 	@Path("/history")
 	@Consumes({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })		
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })		
 	public Response addSearchToHistory(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @BadgerFish SaveSearchDto dto){
 		Boolean result = searchService.addSearchToHistory(securityContext, dto);
 		if(result){
@@ -102,7 +102,7 @@ public class SearchResource extends RestResource {
 	@GET
 	@Path("/favorite")
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })		
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })		
 	public Response getMySearchFavorites(@Context SecurityContext securityContext, @Context UriInfo uriInfo){
 		String username = securityContext.getUserPrincipal().getName();
 		return Response.ok(searchService.getUserFavoriteSearches(50, username)).build();
@@ -111,7 +111,7 @@ public class SearchResource extends RestResource {
 	@GET
 	@Path("/history")
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })		
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })		
 	public Response getSearchHistory(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @QueryParam("user") Boolean user){
 		if((user != null) && (user == true)){
 			String username = securityContext.getUserPrincipal().getName();
@@ -124,7 +124,7 @@ public class SearchResource extends RestResource {
 	@GET
 	@Path("/history/{id}")
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })		
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })		
 	public Response getSearch(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @PathParam("id") Long id){
 		if((id != null)){
 			SaveSearchDto search = searchService.getSearch(id);
@@ -138,7 +138,7 @@ public class SearchResource extends RestResource {
 	@DELETE
 	@Path("/history/{id}")
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Users" })		
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.USERS" })		
 	public Response deleteSearch(@Context SecurityContext securityContext, @Context UriInfo uriInfo, @PathParam("id") Long id){
 		if((id != null)){
 			Boolean removed = searchService.deleteSearch(id, securityContext);
@@ -156,7 +156,7 @@ public class SearchResource extends RestResource {
 	@POST
 	@Path("/index/report")
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Admins" })	
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.ADMINS" })	
 	public Response indexReports(@QueryParam("reportIds") String reportIds){
 		Boolean result = false;
 		if(reportIds == null || reportIds.isEmpty()){
@@ -181,7 +181,7 @@ public class SearchResource extends RestResource {
 	@POST
 	@Path("/index/item")
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Admins" })	
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.ADMINS" })	
 	public Response indexItems(@QueryParam("itemIds") String itemIds){
 		Boolean result = false;
 		if(itemIds == null || itemIds.isEmpty()){
@@ -202,7 +202,7 @@ public class SearchResource extends RestResource {
 	@POST
 	@Path("/index/table")
 	@Produces({"application/json"})
-	@RolesAllowed(value = { "OFWAT\\Fountain.Admins" })	
+	@RolesAllowed(value = { "ROLE_OFWAT\\FOUNTAIN.ADMINS" })	
 	public Response indexTables(@QueryParam("tableIds") String tableIds){
 		Boolean result = false;
 		if(tableIds == null || tableIds.isEmpty()){
