@@ -27,7 +27,7 @@ import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.SqlParameterValue;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -37,7 +37,7 @@ import uk.gov.ofwat.fountain.domain.AuditedValue;
 import uk.gov.ofwat.fountain.domain.Company;
 import uk.gov.ofwat.fountain.domain.User;
 
-public class AuditDaoImpl extends SimpleJdbcDaoSupport implements AuditDao {
+public class AuditDaoImpl extends JdbcDaoSupport implements AuditDao {
 
 	private static final String TABLE_NAME = "tbl_audit";
 	private static final String USER_TABLE_NAME = "tbl_user";
@@ -150,7 +150,7 @@ public class AuditDaoImpl extends SimpleJdbcDaoSupport implements AuditDao {
 	 */
 	public Audit findById(int id) {
 		String sql = "SELECT a.*, u.id as userid, u.name as userName FROM " + TABLE_NAME + " a INNER JOIN "+ USER_TABLE_NAME + " u ON a.userId = u.id  WHERE a.id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	/* (non-Javadoc)
@@ -158,7 +158,7 @@ public class AuditDaoImpl extends SimpleJdbcDaoSupport implements AuditDao {
 	 */
 	public List<Audit> findByUser(User user) {
 		String sql = "SELECT a.*, u.id as userid, u.name as userName  FROM " + TABLE_NAME + " a INNER JOIN " + USER_TABLE_NAME + " u ON a.userId = u.id  " + "WHERE u.id = ?";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, user.getId());
+		return getJdbcTemplate().query(sql, ROW_MAPPER, user.getId());
 	}
 
 	public List<AuditedValue> getAuditedValues(int itemId, int intervalId, int companyId, int groupEntryId) {
@@ -171,7 +171,7 @@ public class AuditDaoImpl extends SimpleJdbcDaoSupport implements AuditDao {
 					 			"INNER JOIN tbl_user AS U ON A.userId=U.ID " +
 					 			
 					 "WHERE D.itemId=? AND D.intervalId=? AND D.companyId=? AND D.groupEntryId=? ORDER BY A.timestamp DESC;";
-		return getSimpleJdbcTemplate().query(sql, VALUE_ROW_MAPPER, itemId, intervalId, companyId, groupEntryId);		
+		return getJdbcTemplate().query(sql, VALUE_ROW_MAPPER, itemId, intervalId, companyId, groupEntryId);
 	}
 
 	public List<AuditedValue> getAuditedValues(int itemId, int intervalId, int companyId, int groupEntryId, int runId, int tagId) {
@@ -194,18 +194,18 @@ public class AuditDaoImpl extends SimpleJdbcDaoSupport implements AuditDao {
 					"AND R.id=?  " + 
 					((0 == tagId) ? "" : "AND auditId <= (select id from tbl_audit where tbl_audit.timestamp <= (select dateCreated from tbl_run_model_company_tag where id = " + tagId + ") order by id desc limit 1)") +
 					"ORDER BY A.timestamp DESC; ";
-		return getSimpleJdbcTemplate().query(sql, VALUE_ROW_MAPPER_WITH_RUN, itemId, intervalId, companyId, groupEntryId, runId);		
+		return getJdbcTemplate().query(sql, VALUE_ROW_MAPPER_WITH_RUN, itemId, intervalId, companyId, groupEntryId, runId);
 	}
 
 	public void delete(int id) {
 		String sql = "DELETE FROM " + TABLE_NAME + " WHERE ID = ?";
-		getSimpleJdbcTemplate().update(sql, id);
+		getJdbcTemplate().update(sql, id);
 		
 	}
 
 	public List<Audit> findByUserCompanyAndTimestamp(User user, Company company, long timestamp) {
 		String sql = "SELECT a.*, u.id as userid, u.name as userName  FROM " + TABLE_NAME + " a INNER JOIN " + USER_TABLE_NAME + " u ON a.userId = u.id  INNER JOIN " + COMPANY_TABLE_NAME + " c ON a.companyId = c.id " + "WHERE u.id = ? and c.id = ? and a.timestamp = ?";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, user.getId(), company.getId(), new SqlParameterValue(Types.TIMESTAMP, new Timestamp(timestamp)));
+		return getJdbcTemplate().query(sql, ROW_MAPPER, user.getId(), company.getId(), new SqlParameterValue(Types.TIMESTAMP, new Timestamp(timestamp)));
 	}
 
 }

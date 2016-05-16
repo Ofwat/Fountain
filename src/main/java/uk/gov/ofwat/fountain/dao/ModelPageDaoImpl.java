@@ -23,7 +23,7 @@ import java.sql.Types;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -32,7 +32,7 @@ import uk.gov.ofwat.fountain.domain.Model;
 import uk.gov.ofwat.fountain.domain.Table;
 import uk.gov.ofwat.fountain.domain.form.ModelPage;
 
-public class ModelPageDaoImpl extends SimpleJdbcDaoSupport  implements ModelPageDao {    
+public class ModelPageDaoImpl extends JdbcDaoSupport  implements ModelPageDao {
 	
 	private TableDao tableDao;
 	private ModelDao modelDao;
@@ -101,13 +101,13 @@ public class ModelPageDaoImpl extends SimpleJdbcDaoSupport  implements ModelPage
 
 	public ModelPage findById(int id) {
         String sql = "SELECT * FROM " + MODEL_PAGE_TABLE_NAME + " WHERE ID=?";
-        ModelPage modelPage = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+        ModelPage modelPage = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
         return modelPage;
 	}
 	
 	public ModelPage findByTableId(int tableId) {
         String sql = "SELECT * FROM " + MODEL_PAGE_TABLE_NAME + " WHERE tableId=?";
-        ModelPage modelPage = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, tableId);
+        ModelPage modelPage = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, tableId);
         return modelPage;
 	}
 	

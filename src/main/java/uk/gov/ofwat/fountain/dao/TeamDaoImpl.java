@@ -24,11 +24,11 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import uk.gov.ofwat.fountain.domain.Team;
 
-public class TeamDaoImpl extends SimpleJdbcDaoSupport implements TeamDao{
+public class TeamDaoImpl extends JdbcDaoSupport implements TeamDao{
 
 	private static final String TEAM_TABLE_NAME = "tbl_team";
 	
@@ -44,13 +44,13 @@ public class TeamDaoImpl extends SimpleJdbcDaoSupport implements TeamDao{
 	
 	public Team findById(int id) {
 		String sql = "SELECT * FROM " + TEAM_TABLE_NAME+ " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	public Team findByName(String name) {
 		String sql = "SELECT * FROM " + TEAM_TABLE_NAME+ " WHERE name = ?";
 		try {
-			return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, name);
+			return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, name);
 		} catch (DataAccessException e) {
 			// Its OK to find no team.
 			return null;
@@ -59,7 +59,7 @@ public class TeamDaoImpl extends SimpleJdbcDaoSupport implements TeamDao{
 
 	public List<Team> getAllTeams() {
 		String sql = "SELECT * FROM "+ TEAM_TABLE_NAME ;
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER,  new Object[]{});
+		return getJdbcTemplate().query(sql, ROW_MAPPER,  new Object[]{});
 	}
 
 }

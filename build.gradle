@@ -64,10 +64,11 @@ def testClassesDir = 'build/classes/test'
 def spockVersion = '0.7-groovy-2.0'
 def gebVersion = "0.9.0-SNAPSHOT"
 def seleniumVersion = "2.47.0"
-def restEasyVersion = "1.2.1.GA" // was using "2.3.6.Final"
-def springVersion = "3.2.5.RELEASE"
+def restEasyVersion = "3.0.16.Final"//"1.2.1.GA" // was using "2.3.6.Final"
+def springVersion = "4.2.6.RELEASE"//"3.2.5.RELEASE"
+def springSecurityVersion = "4.0.4.RELEASE"
 def tomcatVersion = '7.0.11' //For functional testing
-
+def hibernateVersion = '4.3.11.Final'
 
 //def environment
 //Pick up the env from cmd line if running in Jenkins etc.
@@ -104,7 +105,8 @@ apply plugin: 'groovy'
 apply plugin: 'war'
 //apply plugin: 'checkstyle'
 apply plugin: 'project-report'
-apply plugin: 'eclipse-wtp'
+//apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
 
 buildscript {
 	repositories { 	mavenCentral()
@@ -123,7 +125,7 @@ cobertura {
 	coverageSourceDirs << file('src/main/groovy')
 }
 
-eclipse.classpath.plusConfigurations += configurations.provided
+//eclipse.classpath.plusConfigurations += configurations.provided
 
 //include existing Fountain Ant tasks by using: 'antbuild.taskName'; this stops conflicts with existing tasks that are declared in Gradle and Ant e.g.'test'
 //ant.importBuild 'antWrapper.xml'
@@ -156,10 +158,15 @@ dependencies{
 	compile "org.apache.ant:ant:1.8.2"
 	compile "org.apache.poi:poi-ooxml:3.8"
 	runtime "taglibs:standard:1.1.0"
-	compile ("org.jboss.resteasy:resteasy-jaxrs:${restEasyVersion}"){
-		exclude (group:"commons-logging", module: 'commons-logging')
+	runtime ("org.jboss.resteasy:resteasy-jaxrs:${restEasyVersion}"){
+		exclude (group:"commons-logging", module:'commons-logging')
+		exclude (group:"org.slf4j", module:'slf4j-simple')
+		exclude (group:"org.slf4j", module:'jcl-over-slf4j')
 	}
-	compile "org.jboss.resteasy:resteasy-multipart-provider:${restEasyVersion}"
+	compile ("org.jboss.resteasy:resteasy-multipart-provider:${restEasyVersion}"){
+		exclude (group:"org.slf4j", module:'slf4j-simple')
+		exclude (group:"org.slf4j", module:'jcl-over-slf4j')
+	}
 	compile "org.jboss.resteasy:resteasy-jaxb-provider:${restEasyVersion}"
 	compile "org.jboss.resteasy:resteasy-jettison-provider:${restEasyVersion}"
 	compile "org.jboss.resteasy:resteasy-spring:${restEasyVersion}"
@@ -178,8 +185,10 @@ dependencies{
 	compile "org.springframework:spring-instrument-tomcat:${springVersion}"
 	compile "org.springframework:spring-jms:${springVersion}"
 	compile "org.springframework:spring-orm:${springVersion}"
+	compile "org.springframework:spring-jdbc:${springVersion}"
 	compile "org.springframework:spring-webmvc-portlet:${springVersion}"
-	compile ("org.springframework:spring-struts:${springVersion}"){exclude module: 'commons-logging'}
+	//compile ("org.springframework:spring-struts:${springVersion}"){exclude module: 'commons-logging'}
+	compile ("org.springframework:spring-struts:3.2.17.RELEASE"){exclude module: 'commons-logging'}
 	compile "org.springframework:spring-test:${springVersion}"
 	compile "jakarta-regexp:jakarta-regexp:1.4"
 	compile "commons-collections:commons-collections:3.2"
@@ -197,11 +206,12 @@ dependencies{
 	runtime 'cglib:cglib-nodep:2.1_3'
 
 	//Hibernate
-	compile "org.hibernate:hibernate-core:3.5.6-Final"
-	compile "org.hibernate:hibernate-jmx:3.5.6-Final"
-	compile "org.hibernate:hibernate-annotations:3.5.6-Final"
-	compile 'org.hibernate:hibernate-entitymanager:3.5.6-Final'
-	compile "net.sf.ehcache:ehcache-core:2.2.0"
+	compile "org.hibernate:hibernate-core:${hibernateVersion}"
+	//compile "org.hibernate:hibernate-jmx:${hibernateVersion}"
+	//compile "org.hibernate:hibernate-annotations:${hibernateVersion}"
+	compile "org.hibernate.common:hibernate-commons-annotations:4.0.5.Final"
+	compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
+	compile "org.hibernate:hibernate-ehcache:${hibernateVersion}"
 	//compile 'org.slf4j:slf4j-api:1.6.1'
 
 	//Mongo + mapping
@@ -222,15 +232,22 @@ dependencies{
 	
 	
 	//Waffle Spring Security deps
-	compile "org.springframework.security:spring-security-core:${springVersion}"
-	compile "org.springframework.security:spring-security-taglibs:${springVersion}"
-	compile "org.springframework.security:spring-security-config:${springVersion}"
-	compile "org.springframework.security:spring-security-ldap:${springVersion}"
-	compile "org.springframework.security:spring-security-web:${springVersion}"
-	compile "com.github.dblock.waffle:waffle-spring-security3:1.8.0"
+	compile "org.springframework.security:spring-security-core:${springSecurityVersion}"
+	compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
+	compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
+	compile "org.springframework.security:spring-security-ldap:${springSecurityVersion}"
+	compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
+	compile "com.github.dblock.waffle:waffle-spring-security4:1.8.0"
 	compile "com.github.dblock.waffle:waffle-jna:1.8.0"
-	
-	
+
+
+	//Just for LDAP
+	//compile 'org.apache.directory.server:apacheds-all:2.0.0-M21'
+	compile 'org.apache.directory.server:apacheds-server-jndi:1.5.5'
+	compile 'org.slf4j:slf4j-simple:1.7.12'
+	compile 'org.slf4j:jcl-over-slf4j:1.7.12'
+	//compile 'org.apache.directory.server:apacheds-core:1.5.7'
+	//compile 'org.apache.directory.server:apacheds-shared:1.5.7'
 	//Quartz scheduling
 	/*
 	compile ('org.quartz-scheduler:quartz:2.2.1'){
@@ -245,7 +262,7 @@ dependencies{
 
 	runtime 'net.bull.javamelody:javamelody-core:1.46.0'
 
-	compile 'com.mchange:c3p0:0.9.5'
+	compile 'com.mchange:c3p0:0.9.5.2'
 	runtime runtimelibs
 
 	testCompile "org.jboss:jboss-common-core:2.2.10.GA"
@@ -275,7 +292,7 @@ dependencies{
 
 	testRuntime testlibs
 
-	groovy group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.1.0'
+	groovy group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.3.10'
 
 }
 

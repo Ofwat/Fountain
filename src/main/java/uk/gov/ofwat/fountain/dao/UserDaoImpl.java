@@ -26,7 +26,7 @@ import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -41,7 +41,7 @@ import uk.gov.ofwat.fountain.domain.User;
  * 
  * 
  */
-public class UserDaoImpl extends SimpleJdbcDaoSupport implements UserDao{
+public class UserDaoImpl extends JdbcDaoSupport implements UserDao{
 
 	private final static String TABLE_NAME = "tbl_user";
 //	 private static Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
@@ -61,7 +61,7 @@ public class UserDaoImpl extends SimpleJdbcDaoSupport implements UserDao{
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE name = ?";
 		User user = null;
 		try{
-			user = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, name);
+			user = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, name);
 		}
 		catch(EmptyResultDataAccessException e){
 			// create the user on the local database (they're authenticated by Active Directory so
@@ -74,7 +74,7 @@ public class UserDaoImpl extends SimpleJdbcDaoSupport implements UserDao{
 	
 	public User findById(int userId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id  = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, userId);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, userId);
 	}
 
 	public User create(String name) {
@@ -91,12 +91,12 @@ public class UserDaoImpl extends SimpleJdbcDaoSupport implements UserDao{
         // return the new user by id;
 		String returnSql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? ";
 		int id = keyHolder.getKey().intValue();
-		return getSimpleJdbcTemplate().queryForObject(returnSql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(returnSql, ROW_MAPPER, id);
 	}
 	
 	public List<User> getAll() {
 		String sql = "SELECT * FROM " + TABLE_NAME;
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER);
+		return getJdbcTemplate().query(sql, ROW_MAPPER);
 	}
 	
 }

@@ -28,7 +28,7 @@ import org.springframework.dao.DeadlockLoserDataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -36,7 +36,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import uk.gov.ofwat.fountain.domain.Lock;
 import uk.gov.ofwat.fountain.domain.User;
 
-public class LockDaoImpl extends SimpleJdbcDaoSupport implements LockDao {
+public class LockDaoImpl extends JdbcDaoSupport implements LockDao {
 	private static final org.apache.commons.logging.Log log = LogFactory.getLog(LockDaoImpl.class);
 	private static final String TABLE_NAME = "tbl_lock"; // TODO this may not stay as this table
 	private UserDao userDao;
@@ -72,23 +72,23 @@ public class LockDaoImpl extends SimpleJdbcDaoSupport implements LockDao {
 	// TODO Not cached
 	public Lock findByLockId(int lockId){
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, new Object[]{lockId});
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, new Object[]{lockId});
 	}
 	
 	public void deleteLocksForUser(User user){
 		String sql = "DELETE FROM " + TABLE_NAME + " WHERE user = ?";
-		getSimpleJdbcTemplate().update(sql, user.getName());
+		getJdbcTemplate().update(sql, user.getName());
 	}
 
 	// TODO Not cached
 	public List<Lock> getExpiredLocks() {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE TIMESTAMP < (NOW() - INTERVAL 60 SECOND)"; // timestamp is older than a minute
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER);
+		return getJdbcTemplate().query(sql, ROW_MAPPER);
 	}
 	
 	public void deleteExpiredLocks() {
 		String sql = "DELETE FROM " + TABLE_NAME + " WHERE TIMESTAMP < (NOW() - INTERVAL 60 SECOND)"; // timestamp is older than a minute
-		getSimpleJdbcTemplate().update(sql);
+		getJdbcTemplate().update(sql);
 	}
 
 	// TODO Not cached
@@ -102,17 +102,17 @@ public class LockDaoImpl extends SimpleJdbcDaoSupport implements LockDao {
 			batchArgs.add(lockIdObjectArray);
 		}
 		try{
-			getSimpleJdbcTemplate().batchUpdate(sql, batchArgs);
+			getJdbcTemplate().batchUpdate(sql, batchArgs);
 		}catch(DeadlockLoserDataAccessException dldae){
 			//retry
-			getSimpleJdbcTemplate().batchUpdate(sql, batchArgs);			
+			getJdbcTemplate().batchUpdate(sql, batchArgs);
 		}
 	}
 	
 	// TODO Not cached
 	public List<Lock>getLocksForUser(User user){
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE user = ?";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, user.getName());
+		return getJdbcTemplate().query(sql, ROW_MAPPER, user.getName());
 	}
 
 	/* (non-Javadoc)
@@ -148,7 +148,7 @@ public class LockDaoImpl extends SimpleJdbcDaoSupport implements LockDao {
 		String sql = "SELECT user FROM " + TABLE_NAME + " WHERE itemId = ? AND yearId = ? AND companyId = ? and runId = ? ";
 		String lockUserName = null;
 		try{
-			lockUserName = getSimpleJdbcTemplate().queryForObject(sql, String.class, itemId, intervalId, companyId, runId);
+			lockUserName = getJdbcTemplate().queryForObject(sql, String.class, itemId, intervalId, companyId, runId);
 		}
 		catch(EmptyResultDataAccessException erdae){
 			System.out.println("Empty data for itemId " + itemId);
@@ -164,7 +164,7 @@ public class LockDaoImpl extends SimpleJdbcDaoSupport implements LockDao {
 		String sql = "SELECT user FROM " + TABLE_NAME + " WHERE itemId = ? AND yearId = ? AND companyId = ? and runId = ? ";
 		String userName = null;
 		try{
-			userName = getSimpleJdbcTemplate().queryForObject(sql, String.class, itemId, intervalId, companyId, runId);
+			userName = getJdbcTemplate().queryForObject(sql, String.class, itemId, intervalId, companyId, runId);
 		}
 		catch(EmptyResultDataAccessException erdae){
 			return null;
@@ -177,7 +177,7 @@ public class LockDaoImpl extends SimpleJdbcDaoSupport implements LockDao {
 		String sql = "update " + TABLE_NAME + " set timestamp = CURRENT_TIMESTAMP where itemId = ? AND yearId = ? AND companyId = ? and user = ? and runId = ? " +
 					"and timestamp < CURRENT_TIMESTAMP";  // Only refresh locks that don't belong to edits.
 		try {
-			getSimpleJdbcTemplate().update(sql, lock.getItemId(), lock.getIntervalId(), lock.getCompanyId(), lock.getUser().getName(), lock.getRunId());
+			getJdbcTemplate().update(sql, lock.getItemId(), lock.getIntervalId(), lock.getCompanyId(), lock.getUser().getName(), lock.getRunId());
 		} catch (DeadlockLoserDataAccessException e) {
 			// caller deals with this.
 			return false;
@@ -196,13 +196,13 @@ public class LockDaoImpl extends SimpleJdbcDaoSupport implements LockDao {
 			lockIdObjectArray[0] = lockId;
 			batchArgs.add(lockIdObjectArray);
 		}
-		getSimpleJdbcTemplate().batchUpdate(sql, batchArgs);
+		getJdbcTemplate().batchUpdate(sql, batchArgs);
 	}
 
 	// TODO Not cached
 	public void lockForEdit(Lock lock) {
 		String sql = "update " + TABLE_NAME + " set timestamp = (CURRENT_TIMESTAMP + INTERVAL 1 YEAR) where itemId = ? AND yearId = ? AND companyId = ? and user = ? and runId = ?";
-		getSimpleJdbcTemplate().update(sql, lock.getItemId(), lock.getIntervalId(), lock.getCompanyId(), lock.getUser().getName(), lock.getRunId());
+		getJdbcTemplate().update(sql, lock.getItemId(), lock.getIntervalId(), lock.getCompanyId(), lock.getUser().getName(), lock.getRunId());
 	}
 
 	public List<User> getAllLockingUsers() {
@@ -213,12 +213,12 @@ public class LockDaoImpl extends SimpleJdbcDaoSupport implements LockDao {
 		        	return user;
 		        }
 		 };
-		return getSimpleJdbcTemplate().query(sql, rm, new Object[]{});
+		return getJdbcTemplate().query(sql, rm, new Object[]{});
 	}
 
 	public List<Lock> getAllLocks() {
 		String sql = "SELECT * FROM " + TABLE_NAME;
-		List<Lock> locks = getSimpleJdbcTemplate().query(sql, ROW_MAPPER); 
+		List<Lock> locks = getJdbcTemplate().query(sql, ROW_MAPPER);
 		return locks;
 	}
 }

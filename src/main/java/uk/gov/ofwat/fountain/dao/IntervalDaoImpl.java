@@ -25,7 +25,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -33,7 +33,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import uk.gov.ofwat.fountain.domain.Interval;
 import uk.gov.ofwat.fountain.domain.IntervalType;
 
-public class IntervalDaoImpl extends SimpleJdbcDaoSupport  implements IntervalDao{
+public class IntervalDaoImpl extends JdbcDaoSupport  implements IntervalDao{
 	
 	private static final String INTERVAL_TABLE_NAME = "tbl_interval";
 	private static final String INTERVAL_TYPE_TABLE_NAME = "tbl_intervaltype";
@@ -81,24 +81,24 @@ public class IntervalDaoImpl extends SimpleJdbcDaoSupport  implements IntervalDa
 
 	public synchronized Interval findById(int id) {
 		 String sql = "SELECT i.*, t.name as intervalTypeName, t.displayOrder  FROM " +INTERVAL_TABLE_NAME  + " as i INNER JOIN " + INTERVAL_TYPE_TABLE_NAME + " as t ON i.intervalTypeid = t.id WHERE i.Id=?";
-	     return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+	     return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 	
 	public synchronized List<Interval> getAll(){
 		String sql = "SELECT i.*, t.name as intervalTypeName , t.displayOrder FROM " +INTERVAL_TABLE_NAME  + " as i INNER JOIN " + INTERVAL_TYPE_TABLE_NAME + " as t ON i.intervalTypeid = t.id order by intervalTypeId, intervalIndex";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, new Object[]{});
+		return getJdbcTemplate().query(sql, ROW_MAPPER, new Object[]{});
 		
 	}
 
 	public List<Interval> getIntervalsByTypeId(int intervalTypeId) {
 		String sql = "SELECT i.*, t.name as intervalTypeName, t.displayOrder  FROM " +INTERVAL_TABLE_NAME  + " as i INNER JOIN " + INTERVAL_TYPE_TABLE_NAME + " as t ON i.intervalTypeid = t.id WHERE t.id=? order by intervalTypeId, intervalIndex";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, new Object[]{intervalTypeId});
+		return getJdbcTemplate().query(sql, ROW_MAPPER, new Object[]{intervalTypeId});
 		
 	}
 
 	public List<IntervalType> getAllIntervalTypes() {
 		String sql = "SELECT * FROM " + INTERVAL_TYPE_TABLE_NAME + " ORDER BY displayOrder ASC";
-		return getSimpleJdbcTemplate().query(sql, TYPE_ROW_MAPPER, new Object[]{});
+		return getJdbcTemplate().query(sql, TYPE_ROW_MAPPER, new Object[]{});
 		
 	}
 
@@ -106,7 +106,7 @@ public class IntervalDaoImpl extends SimpleJdbcDaoSupport  implements IntervalDa
 		 String sql = "SELECT i.*, t.name as intervalTypeName, t.displayOrder  FROM " +INTERVAL_TABLE_NAME  + " as i INNER JOIN " + INTERVAL_TYPE_TABLE_NAME + " as t ON i.intervalTypeid = t.id WHERE i.name=?";
 	     Interval interval = null;
 		 try{
-		 	interval = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, intervalName);	
+		 	interval = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, intervalName);
 		 	}
 		 catch(DataAccessException dae){
 			 System.out.println("Can't find interval "+ intervalName);

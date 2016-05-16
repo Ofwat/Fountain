@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,7 +19,7 @@ import uk.gov.ofwat.fountain.domain.update.Release;
 import uk.gov.ofwat.fountain.domain.update.Update;
 import uk.gov.ofwat.fountain.rest.dto.SaveSearchDto;
 
-class UpdateDaoImpl extends SimpleJdbcDaoSupport implements UpdateDao{
+class UpdateDaoImpl extends JdbcDaoSupport implements UpdateDao{
 
 	private static final String RELEASE_TABLE_NAME = "tbl_release";
 	private static final String UPDATE_TABLE_NAME = "tbl_update";
@@ -55,9 +55,9 @@ class UpdateDaoImpl extends SimpleJdbcDaoSupport implements UpdateDao{
 		Release release
 		List<Update> updates
 		try{
-			release = getSimpleJdbcTemplate().queryForObject(releaseSql, RELEASE_ROW_MAPPER, releaseId)
+			release = getJdbcTemplate().queryForObject(releaseSql, RELEASE_ROW_MAPPER, releaseId)
 			//Get all the updates.
-			updates = getSimpleJdbcTemplate().query(updateSql, UPDATE_ROW_MAPPER, releaseId)
+			updates = getJdbcTemplate().query(updateSql, UPDATE_ROW_MAPPER, releaseId)
 			release.updates = updates
 		}catch(Exception e){
 			println e
@@ -73,10 +73,10 @@ class UpdateDaoImpl extends SimpleJdbcDaoSupport implements UpdateDao{
 		List<Release> releases
 		List<Update> updates
 		try{
-			releases = getSimpleJdbcTemplate().query(releaseSql, RELEASE_ROW_MAPPER)
+			releases = getJdbcTemplate().query(releaseSql, RELEASE_ROW_MAPPER)
 			//Get all the updates for a release.
 			for(Release release : releases){
-				updates = getSimpleJdbcTemplate().query(updateSql, UPDATE_ROW_MAPPER, release.id)
+				updates = getJdbcTemplate().query(updateSql, UPDATE_ROW_MAPPER, release.id)
 				release.updates = updates
 			}
 		}catch(Exception e){
@@ -125,7 +125,7 @@ class UpdateDaoImpl extends SimpleJdbcDaoSupport implements UpdateDao{
 	@Override
 	public Update getUpdate(Long updateId) {
 		String updateSql = "SELECT u.id, u.title, u.sortOrder, u.description, u.link from tbl_update u where u.id = ?"
-		Update update = getSimpleJdbcTemplate().queryForObject(updateSql, UPDATE_ROW_MAPPER, updateId)
+		Update update = getJdbcTemplate().queryForObject(updateSql, UPDATE_ROW_MAPPER, updateId)
 		return update
 	}
 	

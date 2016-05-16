@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -33,7 +33,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import uk.gov.ofwat.fountain.domain.form.PageForm;
 import uk.gov.ofwat.fountain.domain.form.PageSection;
 
-public class PageFormDaoImpl extends SimpleJdbcDaoSupport implements
+public class PageFormDaoImpl extends JdbcDaoSupport implements
 		PageFormDao {
 	private static final String TABLE_NAME = "tbl_page_form";
 	
@@ -59,7 +59,7 @@ public class PageFormDaoImpl extends SimpleJdbcDaoSupport implements
 	
 	public PageForm findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	public int create(PageForm pageForm) {
@@ -86,7 +86,7 @@ public class PageFormDaoImpl extends SimpleJdbcDaoSupport implements
 
 	public List<PageForm> findByPageSectionId(int pageSectionId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE pageSectionId = ?";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, pageSectionId);
+		return getJdbcTemplate().query(sql, ROW_MAPPER, pageSectionId);
 	}
 
 }

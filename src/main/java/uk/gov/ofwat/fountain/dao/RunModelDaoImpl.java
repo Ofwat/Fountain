@@ -28,7 +28,7 @@ import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -36,7 +36,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import uk.gov.ofwat.fountain.api.UserService;
 import uk.gov.ofwat.fountain.domain.RunModel;
 
-public class RunModelDaoImpl extends SimpleJdbcDaoSupport implements RunModelDao {    
+public class RunModelDaoImpl extends JdbcDaoSupport implements RunModelDao {
 	
 	private RunDao runDao;
 	private UserService userService;
@@ -125,7 +125,7 @@ public class RunModelDaoImpl extends SimpleJdbcDaoSupport implements RunModelDao
 	@Override
 	public RunModel findById(int id) {
 		String sql = "SELECT * FROM " + RUN_MODEL_TABLE_NAME +  " WHERE id=?";
-        RunModel runModel = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+        RunModel runModel = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
         return runModel;
 	}
 
@@ -133,7 +133,7 @@ public class RunModelDaoImpl extends SimpleJdbcDaoSupport implements RunModelDao
 	public RunModel findByRunAndModelAndCompany(int runId, int modelId, int companyId) {
 		String sql = "SELECT * FROM " + RUN_MODEL_TABLE_NAME +  " WHERE runId=? and modelId=? and companyId=?";
 		try {
-			RunModel runModel = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, runId, modelId, companyId);
+			RunModel runModel = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, runId, modelId, companyId);
 			return runModel;
 		} catch (EmptyResultDataAccessException e) {
 			// Its OK to have no RunModel. 
@@ -144,21 +144,21 @@ public class RunModelDaoImpl extends SimpleJdbcDaoSupport implements RunModelDao
 	@Override
 	public ArrayList<RunModel> findByRun(int runId) {
 		String sql = "SELECT * FROM " + RUN_MODEL_TABLE_NAME +  " WHERE runId=? ORDER BY runOrder ASC";
-		ArrayList<RunModel> runModels = (ArrayList<RunModel>) getSimpleJdbcTemplate().query(sql, ROW_MAPPER, runId);
+		ArrayList<RunModel> runModels = (ArrayList<RunModel>) getJdbcTemplate().query(sql, ROW_MAPPER, runId);
         return runModels;
 	}
 
 	@Override
 	public ArrayList<RunModel> findByModel(int modelId) {
 		String sql = "SELECT * FROM " + RUN_MODEL_TABLE_NAME +  " WHERE runId=? and modelId=? ORDER BY runOrder ASC";
-		ArrayList<RunModel> runModels = (ArrayList<RunModel>) getSimpleJdbcTemplate().query(sql, ROW_MAPPER, modelId);
+		ArrayList<RunModel> runModels = (ArrayList<RunModel>) getJdbcTemplate().query(sql, ROW_MAPPER, modelId);
         return runModels;
 	}
 
 	@Override
 	public List<RunModel> findByRunAndCompany(int runId, int companyId) {
 		String sql = "SELECT * FROM " + RUN_MODEL_TABLE_NAME +  " WHERE runId=? AND companyId=? ORDER BY runOrder ASC";
-		ArrayList<RunModel> runModels = (ArrayList<RunModel>) getSimpleJdbcTemplate().query(sql, ROW_MAPPER, runId, companyId);
+		ArrayList<RunModel> runModels = (ArrayList<RunModel>) getJdbcTemplate().query(sql, ROW_MAPPER, runId, companyId);
         return runModels;
 	}
 

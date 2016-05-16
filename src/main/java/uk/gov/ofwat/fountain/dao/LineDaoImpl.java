@@ -25,14 +25,14 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import uk.gov.ofwat.fountain.domain.Line;
 
-public class LineDaoImpl extends SimpleJdbcDaoSupport implements LineDao {
+public class LineDaoImpl extends JdbcDaoSupport implements LineDao {
 
 	private final static String TABLE_NAME = "tbl_line";
 
@@ -71,7 +71,7 @@ public class LineDaoImpl extends SimpleJdbcDaoSupport implements LineDao {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE tableId = ? and itemId = ? and lineNumber = ?";
 		Line line = null;
 		try {
-			line = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, new Object[]{tableId}, new Object[]{itemId}, new Object[]{lineNumber}); 
+			line = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, new Object[]{tableId}, new Object[]{itemId}, new Object[]{lineNumber});
 		} catch (DataAccessException e) {
 	    	 // Its OK to find no data. 
 	    	 // TODO log this.
@@ -83,7 +83,7 @@ public class LineDaoImpl extends SimpleJdbcDaoSupport implements LineDao {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE tableId = ? and itemId = ?";
 		List<Line> lines = null;
 		try {
-			lines = getSimpleJdbcTemplate().query(sql, ROW_MAPPER, tableId, itemId);
+			lines = getJdbcTemplate().query(sql, ROW_MAPPER, tableId, itemId);
 		} catch (DataAccessException e) {
 	    	 // Its OK to find no data. 
 	    	 // TODO log this.

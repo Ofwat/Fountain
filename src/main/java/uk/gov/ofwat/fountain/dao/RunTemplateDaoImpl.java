@@ -11,7 +11,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,7 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import uk.gov.ofwat.fountain.domain.ModelType;
 import uk.gov.ofwat.fountain.domain.run.RunTemplate;
 
-public class RunTemplateDaoImpl extends SimpleJdbcDaoSupport  implements RunTemplateDao {
+public class RunTemplateDaoImpl extends JdbcDaoSupport  implements RunTemplateDao {
 
 	private ModelDao modelDao;
 	
@@ -57,7 +57,7 @@ public class RunTemplateDaoImpl extends SimpleJdbcDaoSupport  implements RunTemp
 	@Override
 	public List<RunTemplate> getAll() {
 		String sql = "SELECT id, description, name, created, createdBy FROM " + RUN_TEMPLATE_TABLE_NAME + " where deleted = 0";
-        List<RunTemplate> runTemplates = getSimpleJdbcTemplate().query(sql, RUN_TEMPLATE_ROW_MAPPER);
+        List<RunTemplate> runTemplates = getJdbcTemplate().query(sql, RUN_TEMPLATE_ROW_MAPPER);
         return runTemplates;		
 	}	
 	
@@ -84,7 +84,7 @@ public class RunTemplateDaoImpl extends SimpleJdbcDaoSupport  implements RunTemp
 	@Override
 	public boolean delete(int runTemplateId) {
 		String sql = "UPDATE " + RUN_TEMPLATE_TABLE_NAME + " SET DELETED = 1 WHERE id = ?";
-		int result = getSimpleJdbcTemplate().update(sql, runTemplateId);
+		int result = getJdbcTemplate().update(sql, runTemplateId);
 		if(result == 1){
 			return true;
 		}else{
@@ -110,21 +110,21 @@ public class RunTemplateDaoImpl extends SimpleJdbcDaoSupport  implements RunTemp
 	@Override
 	public void removeAllModels(int runTemplateId){
 		String sql = "DELETE FROM " + RUN_TEMPLATE_MODEL_JOIN_TABLE_NAME + " WHERE runTemplateId = ?";
-		getSimpleJdbcTemplate().update(sql, runTemplateId);		
+		getJdbcTemplate().update(sql, runTemplateId);
 	}
 
 	@Override
 	public void removeModel(int templateId, int modelId) {
 		// assuming the database will clear up the dependent tables
 		String sql = "DELETE FROM " + RUN_TEMPLATE_MODEL_JOIN_TABLE_NAME + " WHERE runTemplateId = ? and modelId = ?";
-		getSimpleJdbcTemplate().update(sql, templateId, modelId);
+		getJdbcTemplate().update(sql, templateId, modelId);
 	}
 
 	@Override
 	public RunTemplate findById(int id) {
 		String sql = "SELECT id, description, name, created, createdBy FROM " + RUN_TEMPLATE_TABLE_NAME +  " WHERE id=? and deleted = 0";
     	try {
-			return getSimpleJdbcTemplate().queryForObject(sql, RUN_TEMPLATE_ROW_MAPPER, id);
+			return getJdbcTemplate().queryForObject(sql, RUN_TEMPLATE_ROW_MAPPER, id);
 		} catch (DataAccessException e) {
 			// Its OK to find no RunTemplate.
 			return null;

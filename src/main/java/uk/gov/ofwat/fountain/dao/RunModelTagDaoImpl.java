@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -18,7 +18,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import uk.gov.ofwat.fountain.domain.runTag.RunModelCompanyTag;
 import uk.gov.ofwat.fountain.domain.runTag.RunModelTag;
 
-public class RunModelTagDaoImpl extends SimpleJdbcDaoSupport implements RunModelTagDao {
+public class RunModelTagDaoImpl extends JdbcDaoSupport implements RunModelTagDao {
 	
 	private static final String TABLE_NAME = "tbl_run_model_tag";
 
@@ -37,14 +37,14 @@ public class RunModelTagDaoImpl extends SimpleJdbcDaoSupport implements RunModel
 	@Override
 	public RunModelTag findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	@Override
 	public RunModelTag findTagByRunModel(int runId, int modelId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE runId=? and modelId=?";
 		try {
-			RunModelTag runModelTag = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, runId, modelId);
+			RunModelTag runModelTag = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, runId, modelId);
 			return runModelTag;
 		} catch (EmptyResultDataAccessException e) {
 			return RunModelTag.PLACE_HOLDER;
@@ -75,13 +75,13 @@ public class RunModelTagDaoImpl extends SimpleJdbcDaoSupport implements RunModel
 	@Override
 	public void delete(int id) {
 		String sql = "DELETE FROM " + TABLE_NAME + " WHERE ID = ?";
-		getSimpleJdbcTemplate().update(sql, id);
+		getJdbcTemplate().update(sql, id);
 	}
 
 	@Override
 	public List<RunModelTag> findByRunId(int runId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE runId = ?";
-		List<RunModelTag> runModelTags = getSimpleJdbcTemplate().query(sql, ROW_MAPPER, runId);
+		List<RunModelTag> runModelTags = getJdbcTemplate().query(sql, ROW_MAPPER, runId);
 		return runModelTags;
 	}
 

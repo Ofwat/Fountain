@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -20,7 +20,7 @@ import uk.gov.ofwat.fountain.domain.RunRole;
 import uk.gov.ofwat.fountain.domain.run.Run;
 import uk.gov.ofwat.fountain.domain.run.RunTemplate;
 
-public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
+public class RunDaoImpl extends JdbcDaoSupport implements RunDao {
 
 	private static final String RUN_TABLE_NAME = "tbl_run";
 
@@ -120,7 +120,7 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 				+ RUN_TABLE_NAME + " WHERE id=?";
 		Run run = null;
 		try {
-			run = getSimpleJdbcTemplate().queryForObject(sql, RUN_ROW_MAPPER, id);
+			run = getJdbcTemplate().queryForObject(sql, RUN_ROW_MAPPER, id);
 			readRunCompanies(run);
 		} catch (DataAccessException e) {
 			// Its OK to find no run
@@ -132,7 +132,7 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 		String sql = "select max(id) 'id' from tbl_run";
 		Integer maxId = null;
 		try {
-			maxId = getSimpleJdbcTemplate().queryForObject(sql, MAX_ID_RUN_ROW_MAPPER);
+			maxId = getJdbcTemplate().queryForObject(sql, MAX_ID_RUN_ROW_MAPPER);
 		} catch (DataAccessException e) {
 			// Its OK to find no run
 		}
@@ -142,7 +142,7 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 	private void readRunCompanies(Run run) {
 		String sql;
 		sql = "SELECT * FROM tbl_run_company where runId = ?";
-		List<Integer> companyIds = getSimpleJdbcTemplate().query(sql, RUN_COMPANY_ROW_MAPPER, run.getId());
+		List<Integer> companyIds = getJdbcTemplate().query(sql, RUN_COMPANY_ROW_MAPPER, run.getId());
 		run.setCompanyIds(companyIds);
 	}
 
@@ -201,7 +201,7 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 			sbuf.append(id);
 			sbuf.append(")");
 		}
-		getSimpleJdbcTemplate().update(sbuf.toString());
+		getJdbcTemplate().update(sbuf.toString());
 	}
 
 	public void update(Run run) {
@@ -225,7 +225,7 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 		} else {
 			runCompanyTemplateId = 0;
 		}
-		getSimpleJdbcTemplate().update(sql, run.getName(),
+		getJdbcTemplate().update(sql, run.getName(),
 				run.getDescription(), run.isCompleted(), runTemplateId,
 				runCompanyTemplateId,
 				run.getDataSourceId(), run.getBaseTagId(),
@@ -237,12 +237,12 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 	public void delete(int id) {
 		String sql = "UPDATE " + RUN_TABLE_NAME + " SET " + "deleted=? "
 				+ "WHERE ID=?";
-		getSimpleJdbcTemplate().update(sql, true, id);
+		getJdbcTemplate().update(sql, true, id);
 	}
 
 	public List<Run> getAll() {
 		String sql = "SELECT * FROM " + RUN_TABLE_NAME;
-		List<Run> runs = getSimpleJdbcTemplate().query(sql, RUN_ROW_MAPPER,
+		List<Run> runs = getJdbcTemplate().query(sql, RUN_ROW_MAPPER,
 				new Object[] {});
 		for (Run run : runs) {
 			readRunCompanies(run);
@@ -294,7 +294,7 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 	public Run findDefault(Run run) {
 		String sql = "SELECT id, description, name, completed, deleted, runTemplateId, runCompanyTemplateId, srcRunId, srcTagId, created, createdBy, lastModified, lastModifiedBy, updating, agendaId, roleId, adminOnly, code FROM "
 				+ RUN_TABLE_NAME + " WHERE agendaId=? AND roleId=?";
-		run = getSimpleJdbcTemplate().queryForObject(sql, RUN_ROW_MAPPER,
+		run = getJdbcTemplate().queryForObject(sql, RUN_ROW_MAPPER,
 				run.getAgendaId(), RunRole.DEFAULT.getId());
 		readRunCompanies(run);
 		return run;
@@ -306,7 +306,7 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 				+ RUN_TABLE_NAME + " WHERE code=?";
 		Run run = null;
 		try {
-			run = getSimpleJdbcTemplate().queryForObject(sql, RUN_ROW_MAPPER, code);
+			run = getJdbcTemplate().queryForObject(sql, RUN_ROW_MAPPER, code);
 			readRunCompanies(run);
 		} catch (DataAccessException e) {
 			// Its OK to find no run
@@ -320,7 +320,7 @@ public class RunDaoImpl extends SimpleJdbcDaoSupport implements RunDao {
 	// "roleId=? " +
 	// "WHERE agendaId=? " +
 	// "AND roleId=?";
-	// getSimpleJdbcTemplate().update(sql, RunRole.STANDARD.getId(), agendaId,
+	// getJdbcTemplate().update(sql, RunRole.STANDARD.getId(), agendaId,
 	// RunRole.DEFAULT.getId());
 	// }
 

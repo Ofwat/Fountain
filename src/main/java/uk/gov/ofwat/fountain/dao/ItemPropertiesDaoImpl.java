@@ -28,7 +28,7 @@ import java.util.Vector;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -41,7 +41,7 @@ import uk.gov.ofwat.fountain.domain.ItemPropertyInterval;
 /**
  * Not cachable as it contains item
  */
-public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
+public class ItemPropertiesDaoImpl extends JdbcDaoSupport implements
 		ItemPropertiesDao {
 
 	private static final String TABLE_NAME = "tbl_itemproperties";
@@ -221,7 +221,7 @@ public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
 					 "groupTotalFormula=?, " +
 					 "reservoirVersion=?, " + 
 					 "attachedToModel=?";
-		getSimpleJdbcTemplate().update(sql, itemProperties.getDescription(), 
+		getJdbcTemplate().update(sql, itemProperties.getDescription(),
 											itemProperties.getDefinition(), 
 											itemProperties.getGeneralFormula(),
 											itemProperties.getDecimalPlaces(),
@@ -232,17 +232,17 @@ public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
 
 	public ItemProperties findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	public List<ItemProperties> getAllForItemId(int itemId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE itemid=?";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, itemId);
+		return getJdbcTemplate().query(sql, ROW_MAPPER, itemId);
 	}
 
 	public ItemProperties getLatestVersionForItemId(int itemId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE itemid=? and version = (select max(version) from tbl_itemproperties where itemid = ?)";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, itemId, itemId);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, itemId, itemId);
 	}	
 	
 	public ItemProperties findByItemAndModel(int itemId, int modelId) {	
@@ -266,7 +266,7 @@ public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
 
 		ItemProperties ip = null;
 		try {
-			ip = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, modelId, itemId);
+			ip = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, modelId, itemId);
 	    }
 	    catch(EmptyResultDataAccessException erdae){
 	    	// ok to have no data
@@ -295,10 +295,10 @@ public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
 		"INNER JOIN " + TABLE_NAME + " ip ON (mpm.itemPropertiesId = ip.id) " +
 		"WHERE (mpm.modelId = ?) "  +
 		"AND (mpm.itemCode = ?)";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, modelId, itemCode);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, modelId, itemCode);
 		//String sql = "select itemPropertiesId from " + MODELMAP_TABLE_NAME + " where modelId=? and itemCode=?";
 		//int propertiesId = 0;
-		//propertiesId = getSimpleJdbcTemplate().queryForInt(sql, modelId, itemCode);
+		//propertiesId = getJdbcTemplate().queryForInt(sql, modelId, itemCode);
 		//return findById(propertiesId);		
 	}
 	
@@ -307,7 +307,7 @@ public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
 		
 		String sql = "SELECT p.* FROM " + TABLE_NAME + " p INNER JOIN " + ITEM_TABLE_NAME + " i ON p.itemId = i.id WHERE i.code=? AND p.version = ?";
 		try {
-			return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, itemCode, version);
+			return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, itemCode, version);
 	    }
 	    catch(EmptyResultDataAccessException erdae){
 	    	// ok to have no data
@@ -342,7 +342,7 @@ public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
 			}
 			b.append(");");
 			String sql = b.toString();
-			List<ItemProperties> ips = getSimpleJdbcTemplate().query(sql, IP_ROW_MAPPER);
+			List<ItemProperties> ips = getJdbcTemplate().query(sql, IP_ROW_MAPPER);
 			allIps.addAll(ips);
 		}
 
@@ -367,7 +367,7 @@ public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
 			}
 			b.append(");");
 			String sql = b.toString();
-			List<ItemPropertyInterval> ipis = getSimpleJdbcTemplate().query(sql, IPI_ROW_MAPPER);
+			List<ItemPropertyInterval> ipis = getJdbcTemplate().query(sql, IPI_ROW_MAPPER);
 			
 			// Make sure that we cross map all intervals and properties
 			for (ItemPropertyInterval ipi : ipis) {
@@ -384,7 +384,7 @@ public class ItemPropertiesDaoImpl extends SimpleJdbcDaoSupport implements
 
 	public void attachToModel(int itemPropertiesId) {
 		String sql = "UPDATE " + TABLE_NAME + " SET attachedToModel=1 WHERE id=?";
-		getSimpleJdbcTemplate().update(sql, itemPropertiesId);
+		getJdbcTemplate().update(sql, itemPropertiesId);
 	}
 	
 	private void clearCache() {

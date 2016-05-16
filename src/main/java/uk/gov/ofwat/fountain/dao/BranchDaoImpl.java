@@ -24,7 +24,7 @@ import java.sql.Types;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -32,7 +32,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import uk.gov.ofwat.fountain.domain.Branch;
 
 
-public class BranchDaoImpl extends SimpleJdbcDaoSupport  implements BranchDao {
+public class BranchDaoImpl extends JdbcDaoSupport  implements BranchDao {
 	
 	
 	private static final String TABLE_NAME = "tbl_branch_tag";
@@ -55,7 +55,7 @@ public class BranchDaoImpl extends SimpleJdbcDaoSupport  implements BranchDao {
 		 String sql = "SELECT * FROM " + TABLE_NAME  + " WHERE id=?";
 		 Branch bt = null;
 	     try{
-	    	 bt = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+	    	 bt = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	     }
 	     catch(EmptyResultDataAccessException ex){
 	    	 // Its OK to find no data. 
@@ -67,7 +67,7 @@ public class BranchDaoImpl extends SimpleJdbcDaoSupport  implements BranchDao {
 		 String sql = "SELECT * FROM " + TABLE_NAME  + " WHERE companyId=? and runId=?";
 		 Branch bt = null;
 	     try{
-	    	 bt = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, companyId, runId);
+	    	 bt = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, companyId, runId);
 	     }
 	     catch(EmptyResultDataAccessException ex){
 	    	 // Its OK to find no data. 
@@ -79,7 +79,7 @@ public class BranchDaoImpl extends SimpleJdbcDaoSupport  implements BranchDao {
 		 String sql = "SELECT * FROM " + TABLE_NAME  + " WHERE runId=?";
 		 Branch bt = null;
 	     try{
-	    	 bt = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, runId);
+	    	 bt = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, runId);
 	     }
 	     catch(EmptyResultDataAccessException ex){
 	    	 // Its OK to find no data. 
@@ -91,7 +91,7 @@ public class BranchDaoImpl extends SimpleJdbcDaoSupport  implements BranchDao {
 		 String sql = "SELECT * FROM " + TABLE_NAME  + " WHERE tag=?";
 		 Branch bt = null;
 	     try{
-	    	 bt = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, name);
+	    	 bt = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, name);
 	     }
 	     catch(EmptyResultDataAccessException ex){
 	    	 // Its OK to find no data. 
@@ -140,7 +140,7 @@ public class BranchDaoImpl extends SimpleJdbcDaoSupport  implements BranchDao {
 		         "companyId=?, " +
 		         "runId=? " +
 		         "where id=?"; 
-		 getSimpleJdbcTemplate().update(sql, branch.getName(), branch.isEditable(), branch.getCompanyId(), branch.getRunId(), branch.getId());   
+		 getJdbcTemplate().update(sql, branch.getName(), branch.isEditable(), branch.getCompanyId(), branch.getRunId(), branch.getId());
 	}
 
 }

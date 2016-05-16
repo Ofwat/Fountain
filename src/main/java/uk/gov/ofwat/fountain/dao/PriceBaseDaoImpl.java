@@ -23,14 +23,14 @@ import java.sql.Types;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import uk.gov.ofwat.fountain.domain.PriceBase;
 
-public class PriceBaseDaoImpl extends SimpleJdbcDaoSupport implements PriceBaseDao {
+public class PriceBaseDaoImpl extends JdbcDaoSupport implements PriceBaseDao {
 	private static final String TABLE_NAME = "tbl_pricebase";
 	
 	private final RowMapper<PriceBase> ROW_MAPPER = new RowMapper<PriceBase>() {
@@ -45,7 +45,7 @@ public class PriceBaseDaoImpl extends SimpleJdbcDaoSupport implements PriceBaseD
 	
 	public PriceBase findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	public int create(PriceBase priceBase) {
@@ -71,7 +71,7 @@ public class PriceBaseDaoImpl extends SimpleJdbcDaoSupport implements PriceBaseD
 
 	public PriceBase findByCode(String code) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE code=?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
 	}
 
 }

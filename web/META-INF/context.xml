@@ -2,6 +2,7 @@
 <Context>
    <Valve className="waffle.apache.NegotiateAuthenticator"  />
 
+
  <Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
       		
       		connectionURL="ldap://DC201.ofwat.net:389"      
@@ -16,6 +17,5 @@
             roleSubtree="true"
             userSubtree="true" 
       		
-      />
 
 </Context>

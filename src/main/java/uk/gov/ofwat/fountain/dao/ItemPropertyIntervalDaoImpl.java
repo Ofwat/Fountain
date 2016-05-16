@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -38,7 +38,7 @@ import uk.gov.ofwat.fountain.domain.ItemPropertyInterval;
 /**
  * Not cachable as it calls on itemPropertiesDAO
  */
-public class ItemPropertyIntervalDaoImpl extends SimpleJdbcDaoSupport implements ItemPropertyIntervalDao{
+public class ItemPropertyIntervalDaoImpl extends JdbcDaoSupport implements ItemPropertyIntervalDao{
 	
 	
 	private final static String TABLE_NAME = "tbl_itempropertyinterval";
@@ -132,19 +132,19 @@ public class ItemPropertyIntervalDaoImpl extends SimpleJdbcDaoSupport implements
 
 	public ItemPropertyInterval findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ? ";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, new Object[]{id});
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, new Object[]{id});
 	}
 
 	public List<ItemPropertyInterval> getIntervalPropertiesForItemPropertyId(
 			int itemPropertiesId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE itemPropertyId = ? ";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER_LITE, itemPropertiesId);
+		return getJdbcTemplate().query(sql, ROW_MAPPER_LITE, itemPropertiesId);
 	}
 
 	public List<Interval> getPropertyIntervalsForItemProperties(
 			int itemPropertiesId) {
 		String sql = "SELECT i.* from " + INTERVAL_TABLE_NAME + " i INNER JOIN " + TABLE_NAME + " p ON i.id = p.intervalId WHERE p.itemPropertyId = ?";
-		return getSimpleJdbcTemplate().query(sql, INTERVAL_ROW_MAPPER, itemPropertiesId);
+		return getJdbcTemplate().query(sql, INTERVAL_ROW_MAPPER, itemPropertiesId);
 	}
 
 }

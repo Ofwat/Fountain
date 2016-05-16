@@ -10,7 +10,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
-import org.jboss.resteasy.core.ResourceMethod;
+import org.jboss.resteasy.core.ResourceMethodInvoker;
+import org.jboss.resteasy.spi.metadata.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
@@ -27,7 +28,7 @@ public class LoggingInterceptor implements PreProcessInterceptor {
     HttpServletRequest servletRequest;
 
     public ServerResponse preProcess(HttpRequest request,
-            ResourceMethod resourceMethod) throws Failure,
+            ResourceMethodInvoker resourceMethod) throws Failure,
             WebApplicationException {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

@@ -28,7 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -40,7 +40,7 @@ import uk.gov.ofwat.fountain.domain.Interval;
 import uk.gov.ofwat.fountain.domain.Item;
 import uk.gov.ofwat.fountain.domain.Value;
 
-public class ValueDaoImpl extends SimpleJdbcDaoSupport  implements ValueDao {
+public class ValueDaoImpl extends JdbcDaoSupport  implements ValueDao {
 
 	private static final Log log = LogFactory.getLog(ValueDaoImpl.class);
 	
@@ -72,7 +72,7 @@ public class ValueDaoImpl extends SimpleJdbcDaoSupport  implements ValueDao {
 	
 	public synchronized Value findById(int id) {
 		 String sql = "SELECT * FROM " + VALUE_TABLENAME + " WHERE id=?";
-	     return getSimpleJdbcTemplate().queryForObject(sql, DATA_MAPPER, id);
+	     return getJdbcTemplate().queryForObject(sql, DATA_MAPPER, id);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class ValueDaoImpl extends SimpleJdbcDaoSupport  implements ValueDao {
 			//remove the last comma
 			inList = inList.substring(0,inList.length()-1);
 			String sql = "SELECT * FROM " + VALUE_TABLENAME + " WHERE id >= " + minId + " and id <= " + maxId + " and id in (" + inList + ")";
-			List<Map<String, Object>> rows = getSimpleJdbcTemplate().queryForList(sql);
+			List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
 			for(Map<String, Object> valueMap : rows){
 				result.add(getValue((int)valueMap.get("id")));
 			}
@@ -123,7 +123,7 @@ public class ValueDaoImpl extends SimpleJdbcDaoSupport  implements ValueDao {
 		}
 		String sql = "SELECT * FROM " + VALUE_TABLENAME + " WHERE id >= " + minId + " and id <= " + maxId;
 		List<Value> result = new ArrayList<Value>();
-		List<Map<String, Object>> rows = getSimpleJdbcTemplate().queryForList(sql);
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
 		for(Map<String, Object> valueMap : rows){
 			result.add(getValue((int)valueMap.get("id")));
 		}

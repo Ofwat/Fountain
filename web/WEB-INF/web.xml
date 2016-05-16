@@ -20,7 +20,8 @@
 		<param-value>
     		classpath:beans.xml
     		classpath:net/bull/javamelody/monitoring-spring-datasource.xml
-    		classpath:applicationContext-security.xml
+    		<!-- classpath:applicationContext-security.xml -->
+			classpath:applicationContext-security.dev.xml
     		<!-- Not monitoring spring beans, see: https://code.google.com/p/javamelody/issues/detail?id=172  -->
   		</param-value>  		
 	</context-param>

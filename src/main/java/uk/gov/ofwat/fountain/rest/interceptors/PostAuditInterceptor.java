@@ -10,9 +10,9 @@ import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.annotations.providers.jaxb.json.BadgerFish;
-import org.jboss.resteasy.core.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
+import org.jboss.resteasy.spi.metadata.ResourceMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

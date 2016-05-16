@@ -26,7 +26,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -36,7 +36,7 @@ import uk.gov.ofwat.fountain.domain.Group;
 import uk.gov.ofwat.fountain.domain.Item;
 import uk.gov.ofwat.fountain.domain.Team;
 
-public class ItemDaoImpl extends SimpleJdbcDaoSupport  implements ItemDao{
+public class ItemDaoImpl extends JdbcDaoSupport  implements ItemDao{
 	
 	private static final String ITEM_TABLE_NAME = "tbl_item";
 	private static final String ITEM_PROPERTIES_TABLE_NAME = "tbl_itemproperties";
@@ -125,15 +125,15 @@ public class ItemDaoImpl extends SimpleJdbcDaoSupport  implements ItemDao{
 //					"inner join tbl_item as i  " +
 //					"on i.id = p.itemId " +
 //					"where i.id = ?";
-//		 return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+//		 return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 		 String sql = "SELECT * FROM " + ITEM_TABLE_NAME + " WHERE Id=?";
-	     return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+	     return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 	
 	public synchronized List<Item>getItemsByPosition(int startRec, int noOfRecs){
 		String sql = "SELECT i.*, p.description, MAX(p.version) FROM " + ITEM_TABLE_NAME + " as i LEFT JOIN " + ITEM_PROPERTIES_TABLE_NAME + " as p ON i.id = p.itemID GROUP BY i.id limit " + startRec + ", " + noOfRecs;		
 		Object[] args = new Object[]{};
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, args);
+		return getJdbcTemplate().query(sql, ROW_MAPPER, args);
 	}
 
 	public Item findByCode(String code){
@@ -151,7 +151,7 @@ public class ItemDaoImpl extends SimpleJdbcDaoSupport  implements ItemDao{
 		String sql = "SELECT * FROM " + ITEM_TABLE_NAME + " WHERE Code=?";
 		Item item = null;
 		try{
-	    	item = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
+	    	item = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
 		}
 		catch(DataAccessException dae) {
 			// Deliberate behaviour. Returns null if no code found 
@@ -161,7 +161,7 @@ public class ItemDaoImpl extends SimpleJdbcDaoSupport  implements ItemDao{
 	
 	public Item findByName(String name) {
 		String sql = "SELECT i.*, p.description, MAX(p.version) FROM " + ITEM_TABLE_NAME + " as i LEFT JOIN " + ITEM_PROPERTIES_TABLE_NAME + " as p ON i.id = p.itemID WHERE i.name = ? GROUP BY i.id";
-	    return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, name);
+	    return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, name);
 	}
 	
 	/**
@@ -178,20 +178,20 @@ public class ItemDaoImpl extends SimpleJdbcDaoSupport  implements ItemDao{
         "and p.itemId = i.id " +
         "and ip.itemId = i.id " +
         "and t.id = ?";		
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, tableId);
+		return getJdbcTemplate().query(sql, ROW_MAPPER, tableId);
 	}
 
 	public List<Item> searchByCodeOrDescription(String criteria) {
 		String sqlCode = "SELECT i.*, p.description, MAX(p.version) FROM " + ITEM_TABLE_NAME + " as i LEFT JOIN " + ITEM_PROPERTIES_TABLE_NAME + " as p ON i.id = p.itemID WHERE i.CODE LIKE ? GROUP BY i.id";
 		String sqlName = "SELECT i.*, p.description, MAX(p.version) FROM " + ITEM_TABLE_NAME + " as i LEFT JOIN " + ITEM_PROPERTIES_TABLE_NAME + " as p ON i.id = p.itemID WHERE i.NAME LIKE ? GROUP BY i.id";
-		List<Item> results = getSimpleJdbcTemplate().query(sqlCode, ROW_MAPPER, criteria  + "%");// match beginning of item code
-		results.addAll(getSimpleJdbcTemplate().query(sqlName, ROW_MAPPER,"%" +  criteria  + "%"));// match anywhere in description
+		List<Item> results = getJdbcTemplate().query(sqlCode, ROW_MAPPER, criteria  + "%");// match beginning of item code
+		results.addAll(getJdbcTemplate().query(sqlName, ROW_MAPPER,"%" +  criteria  + "%"));// match anywhere in description
 		return results;
 	}
 
 	public List<Item> searchByLastestDefinitions(String criteria) {
 		String sql = "SELECT i.*, p.description, p.definition, p.id as propId, MAX(p.version) as maxP FROM " + ITEM_TABLE_NAME + " as i LEFT JOIN " + ITEM_PROPERTIES_TABLE_NAME + " as p ON i.id = p.itemID WHERE p.definition LIKE ? and p.version in (Select Max(version) from " + ITEM_PROPERTIES_TABLE_NAME + " p2 where p2.itemId = i.id) GROUP BY i.id";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, "%" + criteria  + "%");
+		return getJdbcTemplate().query(sql, ROW_MAPPER, "%" + criteria  + "%");
 	}
 
 	public List<Item> searchByCodeOrDescription(String criteria,
@@ -201,8 +201,8 @@ public class ItemDaoImpl extends SimpleJdbcDaoSupport  implements ItemDao{
 		}
 		String sqlCode = buildFilteredSearchQuery("Code", modelFilters);
 		String sqlName = buildFilteredSearchQuery("Description", modelFilters);
-		List<Item> results = getSimpleJdbcTemplate().query(sqlCode, ROW_MAPPER, criteria  + "%"); // match beginning of item code
-		results.addAll(getSimpleJdbcTemplate().query(sqlName, ROW_MAPPER,"%" +  criteria  + "%")); // match anywhere in description
+		List<Item> results = getJdbcTemplate().query(sqlCode, ROW_MAPPER, criteria  + "%"); // match beginning of item code
+		results.addAll(getJdbcTemplate().query(sqlName, ROW_MAPPER,"%" +  criteria  + "%")); // match anywhere in description
 		return results;
 	}
 
@@ -228,7 +228,7 @@ public class ItemDaoImpl extends SimpleJdbcDaoSupport  implements ItemDao{
 		sqlBuf.append(modelFilters[len-1]);
 		sqlBuf.append(")) GROUP BY i.id");
 		
-		return getSimpleJdbcTemplate().query(sqlBuf.toString(), ROW_MAPPER, "%" + criteria  + "%");
+		return getJdbcTemplate().query(sqlBuf.toString(), ROW_MAPPER, "%" + criteria  + "%");
 	} 
 	
 	private String buildFilteredSearchQuery(String aspect, int[] modelIds){
@@ -264,13 +264,13 @@ public class ItemDaoImpl extends SimpleJdbcDaoSupport  implements ItemDao{
 		if(null != item.getCodeList()){
 			listId = item.getCodeList().getId();
 		}
-		getSimpleJdbcTemplate().update(sql, new Object[]{item.getName(), item.getCode(), item.getUnit(), item.getGroup().getId(), teamId, listId, item.getId()});
+		getJdbcTemplate().update(sql, new Object[]{item.getName(), item.getCode(), item.getUnit(), item.getGroup().getId(), teamId, listId, item.getId()});
 		alertListeners();
 	}
 	
 	public List<Item> findAll(){
 		String sql = "SELECT i.*, p.description, MAX(p.version) FROM " + ITEM_TABLE_NAME + " as i LEFT JOIN " + ITEM_PROPERTIES_TABLE_NAME + " as p ON i.id = p.itemID GROUP BY i.id";		
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER);
+		return getJdbcTemplate().query(sql, ROW_MAPPER);
 	}
 	
 

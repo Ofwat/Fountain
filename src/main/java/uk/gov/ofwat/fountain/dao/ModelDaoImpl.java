@@ -28,8 +28,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -41,7 +41,7 @@ import uk.gov.ofwat.fountain.domain.ModelFamily;
 import uk.gov.ofwat.fountain.domain.ModelInput;
 import uk.gov.ofwat.fountain.domain.ModelType;
 
-public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {    
+public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 	
 	
 	private BranchDao branchDao;	
@@ -199,7 +199,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 
 	public Model findByCode(String code) {
         String sql = "SELECT m.*, t.id as modelTypeId, t.name as modelTypeName FROM " + MODEL_TABLE_NAME + " m inner join " + MODEL_TYPE_TABLE_NAME + " t on m.modelTypeId = t.id WHERE m.code=?";
-        List<Model> models = getSimpleJdbcTemplate().query(sql, MODEL_ROW_MAPPER, code);
+        List<Model> models = getJdbcTemplate().query(sql, MODEL_ROW_MAPPER, code);
         if (models.size() == 0) {
         	return null;
         }
@@ -210,7 +210,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 
 	public Model findById(int id){
 		String sql = "SELECT m.*, t.id as modelTypeId, t.name as modelTypeName FROM " + MODEL_TABLE_NAME + " m inner join " + MODEL_TYPE_TABLE_NAME + " t on m.modelTypeId = t.id WHERE m.id=?";
-        Model model = getSimpleJdbcTemplate().queryForObject(sql, MODEL_ROW_MAPPER, id);
+        Model model = getJdbcTemplate().queryForObject(sql, MODEL_ROW_MAPPER, id);
         return model;
 	}
 
@@ -220,7 +220,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 					 "FROM " + MODEL_TABLE_NAME + " AS m " + 
 					 	"INNER JOIN " + MODEL_TYPE_TABLE_NAME + " AS t on m.modelTypeId = t.id " +
 					 "ORDER BY M.displayOrder";
-		List<Model> models =  getSimpleJdbcTemplate().query(sql, MODEL_ROW_MAPPER);
+		List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER);
         return models;
 	}
 
@@ -230,7 +230,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 					 "FROM " + MODEL_TABLE_NAME + " AS m " + 
 					 	"INNER JOIN " + MODEL_TYPE_TABLE_NAME + " AS t on m.modelTypeId = t.id and t.id=? " +
 					 "ORDER BY M.displayOrder";
-		List<Model> models =  getSimpleJdbcTemplate().query(sql, MODEL_ROW_MAPPER, modelTypeId);
+		List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER, modelTypeId);
         return models;
 	}
 
@@ -252,22 +252,22 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 		 if (null != modelFamily) {
 			 familyId = modelFamily.getId();
 		 }
-		 getSimpleJdbcTemplate().update(sql, model.getCode(), model.getName(), model.getModelType().getId(), branchId, familyId, model.getId());   
+		 getJdbcTemplate().update(sql, model.getCode(), model.getName(), model.getModelType().getId(), branchId, familyId, model.getId());
 	}
 
 	public List<ModelType> getAllModelTypes() {
 		String sql = "SELECT * FROM " + MODEL_TYPE_TABLE_NAME ;
-		return getSimpleJdbcTemplate().query(sql, MODEL_TYPE_ROW_MAPPER);
+		return getJdbcTemplate().query(sql, MODEL_TYPE_ROW_MAPPER);
 	}
 
 	public ModelType findModelTypeByName(String name) {
 		String sql = "SELECT * FROM " + MODEL_TYPE_TABLE_NAME + " WHERE name = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, MODEL_TYPE_ROW_MAPPER, name);
+		return getJdbcTemplate().queryForObject(sql, MODEL_TYPE_ROW_MAPPER, name);
 	}
 	
 	public ModelType getModelType(int typeId) {
 		String sql = "SELECT * FROM " + MODEL_TYPE_TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, MODEL_TYPE_ROW_MAPPER, typeId);
+		return getJdbcTemplate().queryForObject(sql, MODEL_TYPE_ROW_MAPPER, typeId);
 	}
 
 	public void invalidateCache() {
@@ -277,17 +277,17 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 		
 		// assuming the database will clear up the dependent tables
 		String sql = "DELETE FROM " + MODEL_TABLE_NAME + " WHERE id = ?";
-		getSimpleJdbcTemplate().update(sql, id);
+		getJdbcTemplate().update(sql, id);
 	}
 
 	public String getInputModelCode(String inputCode, int modelId) {
 		String sql = "SELECT childModelCode FROM " + MODEL_INPUTS_TABLE_NAME + " WHERE code = ? and parentId = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, String.class, inputCode, modelId);
+		return getJdbcTemplate().queryForObject(sql, String.class, inputCode, modelId);
 	}
 
 	public Map<String, ModelInput> getModelInputs(int parentModelId) {
 		String sql = "SELECT * FROM " + MODEL_INPUTS_TABLE_NAME + " WHERE parentId = ?";
-		List<ModelInput> inputs = getSimpleJdbcTemplate().query(sql, MODEL_INPUT_ROW_MAPPER, parentModelId);
+		List<ModelInput> inputs = getJdbcTemplate().query(sql, MODEL_INPUT_ROW_MAPPER, parentModelId);
 		HashMap<String, ModelInput> mi = new HashMap<String, ModelInput>();
 		for (ModelInput modelInput : inputs) {
 			mi.put(modelInput.getCode(), modelInput);
@@ -317,7 +317,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 		String sql = "SELECT  m.*, t.id as modelTypeId, t.name as modelTypeName FROM " + MODEL_TABLE_NAME + " m inner join " + MODEL_TYPE_TABLE_NAME + " t on m.modelTypeId = t.id WHERE m.parent = true and m.familyId = ?";
 		Model model = null;
 		try{
-			model =  getSimpleJdbcTemplate().queryForObject(sql, MODEL_ROW_MAPPER, familyId);
+			model =  getJdbcTemplate().queryForObject(sql, MODEL_ROW_MAPPER, familyId);
 		}
 		catch(EmptyResultDataAccessException erdae){
 			logger.debug("no parent model for family id " + familyId);
@@ -347,13 +347,13 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
    		"WHERE finfout=? " +
    		"AND modelId=? " +
    		"AND companyId=?";
-		 getSimpleJdbcTemplate().update(sql, reportId, finfout, modelId, companyId);   
+		 getJdbcTemplate().update(sql, reportId, finfout, modelId, companyId);
     }
 
     public ModelCompanyReport findModelCompanyReport(String finfout, int modelId, int companyId) {
     	String sql = "SELECT * FROM " + MODEL_COMPANY_REPORT_TABLE_NAME + " WHERE finfout=? AND modelId=? AND companyId=?";
     	try {
-			return getSimpleJdbcTemplate().queryForObject(sql, MODEL_COMPANY_REPORT_ROW_MAPPER, finfout, modelId, companyId);
+			return getJdbcTemplate().queryForObject(sql, MODEL_COMPANY_REPORT_ROW_MAPPER, finfout, modelId, companyId);
 		} catch (DataAccessException e) {
 			// Its OK to find no ModelCommpanyReport.
 			return null;
@@ -363,7 +363,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 	public ModelCompanyReport findModelCompanyReport(int reportId) {
     	String sql = "SELECT * FROM " + MODEL_COMPANY_REPORT_TABLE_NAME + " WHERE reportId=? ";
     	try {
-			return getSimpleJdbcTemplate().queryForObject(sql, MODEL_COMPANY_REPORT_ROW_MAPPER, reportId);
+			return getJdbcTemplate().queryForObject(sql, MODEL_COMPANY_REPORT_ROW_MAPPER, reportId);
 		} catch (DataAccessException e) {
 			// Its OK to find no ModelCommpanyReport.
 			return null;
@@ -372,7 +372,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 
 	public void deleteModelCompanyReport(String finfout, int modelId, int companyId) {
     	String sql = "DELETE FROM " + MODEL_COMPANY_REPORT_TABLE_NAME + " WHERE finfout=? AND modelId=? AND companyId=?";
-		getSimpleJdbcTemplate().update(sql, finfout, modelId, companyId);
+		getJdbcTemplate().update(sql, finfout, modelId, companyId);
 	}
 
 	public List<Model> getModelRunDependencies(int modelId) {
@@ -382,7 +382,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 				" INNER JOIN " + MODEL_RUN_DEPENDENCY_TABLE_NAME + " AS d on m.id = d.dependencyId" +
 				" where d.modelId = ?" + 
 				" ORDER BY M.displayOrder;";
-			List<Model> models =  getSimpleJdbcTemplate().query(sql, MODEL_ROW_MAPPER, modelId);
+			List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER, modelId);
 		return models;
 	}
 
@@ -401,7 +401,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 
 	public void removeModelDependency(int modelId, int dependencyId) {
     	String sql = "DELETE FROM " + MODEL_RUN_DEPENDENCY_TABLE_NAME + " WHERE modelId=? AND dependencyId=?";
-		getSimpleJdbcTemplate().update(sql, modelId, dependencyId);
+		getJdbcTemplate().update(sql, modelId, dependencyId);
 	}
 
 	/*
@@ -414,7 +414,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 				"INNER JOIN " + RunTemplateDaoImpl.RUN_TEMPLATE_MODEL_JOIN_TABLE_NAME + " AS rtm on m.id = rtm.modelId " +
 				"INNER JOIN " + RunTemplateDaoImpl.RUN_TEMPLATE_TABLE_NAME + " as rt on rtm.runTemplateId = ? " +
 				"ORDER BY rtm.runOrder;";
-		List<Integer> ids = getSimpleJdbcTemplate().query(sql, MODELID_ROW_MAPPER, runTemplateId);
+		List<Integer> ids = getJdbcTemplate().query(sql, MODELID_ROW_MAPPER, runTemplateId);
 		return ids;
 	}
 
@@ -422,7 +422,7 @@ public class ModelDaoImpl extends SimpleJdbcDaoSupport  implements ModelDao {
 	public Model getModelByName(String name) {
         String sql = "SELECT m.*, t.id as modelTypeId, t.name as modelTypeName FROM " + MODEL_TABLE_NAME + " m inner join " + MODEL_TYPE_TABLE_NAME + " t on m.modelTypeId = t.id WHERE m.name=?";
         try {
-			return getSimpleJdbcTemplate().queryForObject(sql, MODEL_ROW_MAPPER, name);
+			return getJdbcTemplate().queryForObject(sql, MODEL_ROW_MAPPER, name);
 		} catch (EmptyResultDataAccessException e) {
 			// Its OK to find no ModelCommpanyReport.
 			return null;

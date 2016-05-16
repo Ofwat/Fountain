@@ -24,7 +24,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
-import org.jboss.resteasy.core.ResourceMethod;
+import org.jboss.resteasy.core.ResourceMethodInvoker;
+import org.jboss.resteasy.spi.metadata.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.spi.Failure;
@@ -36,7 +37,7 @@ import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 @ServerInterceptor
 public class ContentTypeSetterPreProcessorInterceptor implements PreProcessInterceptor, AcceptedByMethod  {
 
-	public ServerResponse preProcess(HttpRequest request, ResourceMethod method) throws Failure, WebApplicationException {
+	public ServerResponse preProcess(HttpRequest request, ResourceMethodInvoker method) throws Failure, WebApplicationException {
 		System.out.println("preprocessing ...............");
 		request.setAttribute(InputPart.DEFAULT_CONTENT_TYPE_PROPERTY, "*/*; charset=UTF-8");
 		

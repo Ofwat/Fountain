@@ -10,14 +10,14 @@ import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import uk.gov.ofwat.fountain.domain.runTag.RunModelCompanyTag;
 
-public class RunModelCompanyTagDaoImpl extends SimpleJdbcDaoSupport implements RunModelCompanyTagDao {
+public class RunModelCompanyTagDaoImpl extends JdbcDaoSupport implements RunModelCompanyTagDao {
 
 	private static final String TABLE_NAME = "tbl_run_model_company_tag";
 
@@ -37,20 +37,20 @@ public class RunModelCompanyTagDaoImpl extends SimpleJdbcDaoSupport implements R
 	@Override
 	public RunModelCompanyTag findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	@Override
 	public List<RunModelCompanyTag> findByRunModelTagId(int runModelTagId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE runModelTagId = ?";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, runModelTagId);
+		return getJdbcTemplate().query(sql, ROW_MAPPER, runModelTagId);
 	}
 
 	@Override
 	public RunModelCompanyTag findTagByRunModelTagAndCompany(int runModelTagId, int companyId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE runModelTagId=? and companyId=?";
 		try {
-			RunModelCompanyTag runModelCompanyTag = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, runModelTagId, companyId);
+			RunModelCompanyTag runModelCompanyTag = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, runModelTagId, companyId);
 			return runModelCompanyTag;
 		} catch (EmptyResultDataAccessException e) {
 			return RunModelCompanyTag.PLACE_HOLDER;
@@ -83,7 +83,7 @@ public class RunModelCompanyTagDaoImpl extends SimpleJdbcDaoSupport implements R
 	@Override
 	public void delete(int id) {
 		String sql = "DELETE FROM " + TABLE_NAME + " WHERE ID = ?";
-		getSimpleJdbcTemplate().update(sql, id);
+		getJdbcTemplate().update(sql, id);
 	}
 
 }

@@ -24,14 +24,14 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import uk.gov.ofwat.fountain.domain.Pot;
 
-public class PotDaoImpl extends SimpleJdbcDaoSupport implements PotDao {
+public class PotDaoImpl extends JdbcDaoSupport implements PotDao {
 	
 	private final static String TABLE_NAME = "tbl_pot";
 	private final static String POT_JOIN_TABLE_NAME = "tbl_table_pots";
@@ -107,7 +107,7 @@ public class PotDaoImpl extends SimpleJdbcDaoSupport implements PotDao {
 
 	public synchronized Pot findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID=?";
-        return getSimpleJdbcTemplate().queryForObject(sql, POT_MAPPER, id);
+        return getJdbcTemplate().queryForObject(sql, POT_MAPPER, id);
 	}
 
 
@@ -118,12 +118,12 @@ public class PotDaoImpl extends SimpleJdbcDaoSupport implements PotDao {
         "ModelId=? " +
         "RunId=? " +
         "WHERE ID=?";
-		 getSimpleJdbcTemplate().update(sql, pot.getItem().getId(), pot.getInterval().getId(), pot.getModel().getId(), pot.getId(), pot.getRunTag().getRun().getId());  
+		 getJdbcTemplate().update(sql, pot.getItem().getId(), pot.getInterval().getId(), pot.getModel().getId(), pot.getId(), pot.getRunTag().getRun().getId());
 	}
 
 	public List<Pot> findByTableId(int tableId) {
 		String sql = "SELECT * FROM "+TABLE_NAME+" t INNER JOIN "+POT_JOIN_TABLE_NAME+" p on t.id = p.potId WHERE p.tableId = ?";
-        return getSimpleJdbcTemplate().query(sql, POT_MAPPER, tableId);
+        return getJdbcTemplate().query(sql, POT_MAPPER, tableId);
 	}
 
 	

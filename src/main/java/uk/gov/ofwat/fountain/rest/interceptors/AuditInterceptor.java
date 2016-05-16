@@ -11,7 +11,8 @@ import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.annotations.providers.jaxb.json.BadgerFish;
-import org.jboss.resteasy.core.ResourceMethod;
+import org.jboss.resteasy.core.ResourceMethodInvoker;
+import org.jboss.resteasy.spi.metadata.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
@@ -37,7 +38,7 @@ public class AuditInterceptor implements PreProcessInterceptor {
     HttpServletRequest servletRequest;
 
     public ServerResponse preProcess(HttpRequest request,
-            ResourceMethod resourceMethod) throws Failure,
+            ResourceMethodInvoker resourceMethod) throws Failure,
             WebApplicationException {
     	
         if (!servletRequest.getMethod().equals("PUT") &&

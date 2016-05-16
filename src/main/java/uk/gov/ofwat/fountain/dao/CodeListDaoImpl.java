@@ -23,12 +23,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import uk.gov.ofwat.fountain.domain.CodeList;
 import uk.gov.ofwat.fountain.domain.ListItem;
 
-public class CodeListDaoImpl extends SimpleJdbcDaoSupport implements CodeListDao{
+public class CodeListDaoImpl extends JdbcDaoSupport implements CodeListDao{
 	
 	private static final String CODELIST_TABLE_NAME = "tbl_list";
 	private static final String LIST_ITEM_TABLE_NAME = "tbl_listItem";
@@ -56,23 +56,23 @@ public class CodeListDaoImpl extends SimpleJdbcDaoSupport implements CodeListDao
 
 	public CodeList findByCode(String code) {
 		String sql = "select * from " + CODELIST_TABLE_NAME + " where code = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, CODELIST_ROW_MAPPER , new Object[]{code});
+		return getJdbcTemplate().queryForObject(sql, CODELIST_ROW_MAPPER , new Object[]{code});
 	}
 
 	public CodeList findById(int id) {
 		String sql = "select * from " + CODELIST_TABLE_NAME + " where id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, CODELIST_ROW_MAPPER , new Object[]{id});
+		return getJdbcTemplate().queryForObject(sql, CODELIST_ROW_MAPPER , new Object[]{id});
 	}
 
 	public List<CodeList> getAllCodeLists() {
 		String sql = "select * from " + CODELIST_TABLE_NAME ;
-		return getSimpleJdbcTemplate().query(sql, CODELIST_ROW_MAPPER, new Object[]{});
+		return getJdbcTemplate().query(sql, CODELIST_ROW_MAPPER, new Object[]{});
 	}
 
 	public List<ListItem> getAllItemsForCodeList(CodeList list) {
 		
 		String sql = "select * from " + LIST_ITEM_TABLE_NAME + " where listId = ?"; 
-		List<ListItem> items = getSimpleJdbcTemplate().query(sql, LIST_ITEM_ROW_MAPPER, new Object[]{list.getId()});
+		List<ListItem> items = getJdbcTemplate().query(sql, LIST_ITEM_ROW_MAPPER, new Object[]{list.getId()});
 		for(ListItem li: items){
 			li.setCodeList(list);
 		}
@@ -82,16 +82,16 @@ public class CodeListDaoImpl extends SimpleJdbcDaoSupport implements CodeListDao
 	public ListItem getListItemByCode(CodeList list, String code) {
 		
 		String sql = "select * from " + LIST_ITEM_TABLE_NAME  + " where code = ? and listId = ?";
-		ListItem item = getSimpleJdbcTemplate().queryForObject(sql, LIST_ITEM_ROW_MAPPER, new Object[]{code, list.getId()});
+		ListItem item = getJdbcTemplate().queryForObject(sql, LIST_ITEM_ROW_MAPPER, new Object[]{code, list.getId()});
 		item.setCodeList(list);
 		return item;
 	}
 
 	public ListItem getListItemById(int id) {
 		String listSql = "SELECT t.* FROM " + CODELIST_TABLE_NAME + " t inner join " + LIST_ITEM_TABLE_NAME  + " i on i.listId = t.id where i.id = ?";
-		CodeList cl = getSimpleJdbcTemplate().queryForObject(listSql, CODELIST_ROW_MAPPER, new Object[]{id});
+		CodeList cl = getJdbcTemplate().queryForObject(listSql, CODELIST_ROW_MAPPER, new Object[]{id});
 		String itemSql = "select * from " + LIST_ITEM_TABLE_NAME + " where id = ?";
-		ListItem item = getSimpleJdbcTemplate().queryForObject(itemSql, LIST_ITEM_ROW_MAPPER, new Object[]{id});
+		ListItem item = getJdbcTemplate().queryForObject(itemSql, LIST_ITEM_ROW_MAPPER, new Object[]{id});
 		item.setCodeList(cl);
 		return item;
 	}

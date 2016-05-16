@@ -33,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -44,7 +44,7 @@ import uk.gov.ofwat.fountain.domain.GroupEntry;
 import uk.gov.ofwat.fountain.domain.Interval;
 import uk.gov.ofwat.fountain.domain.Item;
 
-public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
+public class DataDaoImpl extends JdbcDaoSupport  implements DataDao {
 	private static final Log log = LogFactory.getLog(DataDaoImpl.class);
 	
 	private final static String DATA_TABLENAME = "tbl_data";
@@ -201,7 +201,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
     		cgId = data.getConfidenceGrade().getId();
     	}
     	Integer btId = data.getBranch().getId();
-		getSimpleJdbcTemplate().update(sql, 
+		getJdbcTemplate().update(sql,
                 data.getValue(),
 				data.getId(),
 				audit.getId(),
@@ -215,7 +215,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
 		// TODO - locks
 		
 		// todo - data has to have a value - get the latest?
-		return getSimpleJdbcTemplate().queryForObject(sql, DATA_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, DATA_MAPPER, id);
 	}
 	
 	public synchronized void bulkUpdate(List<Data> list, Audit audit) {
@@ -271,7 +271,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
    		 		values[pos++] = btId;
    		 	}
    		 
-            getSimpleJdbcTemplate().update(sql.toString(), values);
+            getJdbcTemplate().update(sql.toString(), values);
 
 		}
 	}
@@ -302,7 +302,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
 		for (int itemId : itemIds) {
 			String sql = "SELECT * FROM " + DATA_TABLENAME + " " + 
  						 "WHERE companyId=? AND itemId=?";
-			List<Data> dataList = getSimpleJdbcTemplate().query(sql, BASIC_DATA_MAPPER, companyId, itemId);
+			List<Data> dataList = getJdbcTemplate().query(sql, BASIC_DATA_MAPPER, companyId, itemId);
 			for (Data data : dataList) {
 				dataIds.put(buildKey(data), data.getId());
 			}
@@ -355,7 +355,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
 		String sql = "SELECT  *, null as runId, null as tagId FROM " + DATA_TABLENAME + " d INNER JOIN (" + VALUE_TABLENAME + " v INNER JOIN " + AUDIT__TABLENAME + " a ON v.auditId = a.id INNER Join " + BRANCH_TAG_TABLENAME + " b ON v.branchTagId = b.id) ON d.id = v.dataId WHERE d.itemId=? and d.IntervalId=? and d.CompanyId=? and d.groupEntryId = ? and b.id = ? order by a.timestamp desc, v.id desc limit 1";
 		Object[] params = new Object[]{itemId, intervalId,  companyId, groupEntryId, branchId};
 		try {
-			data = getSimpleJdbcTemplate().queryForObject(sql, DATA_MAPPER, params);
+			data = getJdbcTemplate().queryForObject(sql, DATA_MAPPER, params);
 		} catch(EmptyResultDataAccessException dae){
 			// it's ok to have no data
 			return null;
@@ -366,7 +366,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
 	
 	public List<Data> getDataForAudit(Audit audit) {
 		String sql = "SELECT *, null as runId, null as tagId FROM " + DATA_TABLENAME + " d INNER JOIN "+ VALUE_TABLENAME + " v ON d.id = v.dataId WHERE v.AuditId = ?";
-		return getSimpleJdbcTemplate().query(sql, DATA_MAPPER, audit.getId());
+		return getJdbcTemplate().query(sql, DATA_MAPPER, audit.getId());
 	}
 
 	@Override
@@ -411,7 +411,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
 		Object[] params = new Object[]{};
 		log.debug("query    : " + sql.toString());
 	    try{
-	    	data = getSimpleJdbcTemplate().query(sql.toString(), DATA_MAPPER);
+	    	data = getJdbcTemplate().query(sql.toString(), DATA_MAPPER);
 	    }
 	    catch(EmptyResultDataAccessException erdae){
 	    	// ok to have no data
@@ -448,7 +448,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
 		Object[] params = new Object[]{};
 		log.debug("getTagData() query    : " + sql.toString());
 	    try{
-	    	data = getSimpleJdbcTemplate().query(sql.toString(), DATA_MAPPER);
+	    	data = getJdbcTemplate().query(sql.toString(), DATA_MAPPER);
 	    }
 	    catch(EmptyResultDataAccessException erdae){
 	    	// ok to have no data
@@ -480,7 +480,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
 		Object[] params = new Object[]{valueId};
 		Data data = null;
 	    try{
-			data = getSimpleJdbcTemplate().queryForObject(sql, DATA_MAPPER, params);
+			data = getJdbcTemplate().queryForObject(sql, DATA_MAPPER, params);
 	    }
 	    catch(EmptyResultDataAccessException erdae){
 	    	// ok to have no data
@@ -498,7 +498,7 @@ public class DataDaoImpl extends SimpleJdbcDaoSupport  implements DataDao {
 				"WHERE v.id in (" + valueCDLString + ") ";
 		List<Data> data = null;
 	    try{
-			data = getSimpleJdbcTemplate().query(sql, DATA_MAPPER);
+			data = getJdbcTemplate().query(sql, DATA_MAPPER);
 	    }
 	    catch(EmptyResultDataAccessException erdae){
 	    	// ok to have no data

@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -39,7 +39,7 @@ import uk.gov.ofwat.fountain.domain.CompanyType;
 /**
  * Cacheable as companyType is not a cached entity in it's own right 
  */
-public class CompanyDaoImpl extends SimpleJdbcDaoSupport  implements CompanyDao{
+public class CompanyDaoImpl extends JdbcDaoSupport  implements CompanyDao{
 	private static Log log = LogFactory.getLog(CompanyDaoImpl.class);
 	private static final String COMPANY_TABLE_NAME = "tbl_company";
 	private static final String COMPANY_TYPE_TABLE_NAME = "tbl_companytype";
@@ -90,7 +90,7 @@ public class CompanyDaoImpl extends SimpleJdbcDaoSupport  implements CompanyDao{
 	public Company findById(int id) {
 		try {
 			String sql = "SELECT * FROM "+COMPANY_TABLE_NAME+" as c inner join "+COMPANY_TYPE_TABLE_NAME+" as t on c.companytypeId=t.id WHERE c.Id=? AND c.visible=1";
-			return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+			return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 		}
 		catch (EmptyResultDataAccessException ex) {
 			log.error("Couldn't find id " + id, ex);
@@ -100,17 +100,17 @@ public class CompanyDaoImpl extends SimpleJdbcDaoSupport  implements CompanyDao{
 
 	public List<Company> getAllCurrent() {
 		String sql = "SELECT * FROM "+COMPANY_TABLE_NAME+" as c inner join "+COMPANY_TYPE_TABLE_NAME+" as t on c.companytypeId=t.id WHERE not c.expired<=>1 AND c.visible=1 ORDER BY t.code, c.name";
-        return getSimpleJdbcTemplate().query(sql, ROW_MAPPER);
+        return getJdbcTemplate().query(sql, ROW_MAPPER);
 	}
 	
 	public List<CompanyType> getAllCompanyTypes() {
 		String sql = "SELECT * FROM " + COMPANY_TYPE_TABLE_NAME;
-		return getSimpleJdbcTemplate().query(sql, CT_ROWMAPPER, new Object[]{});
+		return getJdbcTemplate().query(sql, CT_ROWMAPPER, new Object[]{});
 	}
 
 	public Company findByCode(String company) {
 		 String sql = "SELECT * FROM "+COMPANY_TABLE_NAME+" as c inner join "+COMPANY_TYPE_TABLE_NAME+" as t on c.companytypeId=t.id WHERE c.code=? AND c.visible=1";
-	     return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, company);
+	     return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, company);
 	}
 
 	public int findCompanyTypeId(String companyTypeName) {
@@ -118,7 +118,7 @@ public class CompanyDaoImpl extends SimpleJdbcDaoSupport  implements CompanyDao{
 		try
 		{
 			String sql = "SELECT id from " + COMPANY_TYPE_TABLE_NAME + " WHERE code = ?";
-			companyTypeId = getSimpleJdbcTemplate().queryForInt(sql, companyTypeName);
+			companyTypeId = getJdbcTemplate().queryForObject(sql, new Object[]{companyTypeName}, Integer.class);
 		}
 		catch(EmptyResultDataAccessException dae){
 			// return 0 for 'ALL'
@@ -128,16 +128,16 @@ public class CompanyDaoImpl extends SimpleJdbcDaoSupport  implements CompanyDao{
 
 	public CompanyType findByCompanyTypeId(int id) {
 		String sql = "SELECT * FROM " + COMPANY_TYPE_TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, CT_ROWMAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, CT_ROWMAPPER, id);
 	}
 	public CompanyType findByCompanyTypeCode(String code) {
 		String sql = "SELECT * FROM " + COMPANY_TYPE_TABLE_NAME + " WHERE code = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, CT_ROWMAPPER, code.toUpperCase());
+		return getJdbcTemplate().queryForObject(sql, CT_ROWMAPPER, code.toUpperCase());
 	}
 
 	public List<Company> getAll() {
 		String sql = "SELECT * FROM "+COMPANY_TABLE_NAME+" as c inner join "+COMPANY_TYPE_TABLE_NAME+" as t on c.companytypeId=t.id WHERE c.visible=1 ORDER BY c.expired, t.code, c.name";
-        return getSimpleJdbcTemplate().query(sql, ROW_MAPPER);
+        return getJdbcTemplate().query(sql, ROW_MAPPER);
 	}
 
 	public List<Company> getCompaniesForRunCompanyTemplate(int runCompanyTemplateId){
@@ -147,7 +147,7 @@ public class CompanyDaoImpl extends SimpleJdbcDaoSupport  implements CompanyDao{
 				"inner join tbl_companytype as t on c.companytypeId = t.id " +
 				"INNER JOIN " + RunCompanyTemplateDaoImpl.RUN_COMPANY_TEMPLATE_COMPANY_TABLE_NAME + " AS rctc on c.id = rctc.companyId " +
 				"INNER JOIN " + RunCompanyTemplateDaoImpl.RUN_COMPANY_TEMPLATE_TABLE_NAME + " as rct on rctc.runCompanyTemplateId = ?; ";
-		List<Company> companies = getSimpleJdbcTemplate().query(sql, ROW_MAPPER, runCompanyTemplateId);
+		List<Company> companies = getJdbcTemplate().query(sql, ROW_MAPPER, runCompanyTemplateId);
 		return companies;
 	}
 	

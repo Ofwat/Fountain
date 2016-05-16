@@ -22,12 +22,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import uk.gov.ofwat.fountain.domain.Coded;
 import uk.gov.ofwat.fountain.domain.RunRole;
 
-public class RunRoleDaoImpl extends SimpleJdbcDaoSupport implements RunRoleDao {
+public class RunRoleDaoImpl extends JdbcDaoSupport implements RunRoleDao {
 
 	private static final String TABLE_NAME = "tbl_run_role";
 	
@@ -43,12 +43,12 @@ public class RunRoleDaoImpl extends SimpleJdbcDaoSupport implements RunRoleDao {
 	
 	public RunRole findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	public RunRole findByCode(String code) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE code = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
 	}
 
 }

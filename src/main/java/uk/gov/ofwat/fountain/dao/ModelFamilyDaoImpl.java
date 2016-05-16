@@ -25,14 +25,14 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import uk.gov.ofwat.fountain.domain.ModelFamily;
 
-public class ModelFamilyDaoImpl extends SimpleJdbcDaoSupport implements ModelFamilyDao{
+public class ModelFamilyDaoImpl extends JdbcDaoSupport implements ModelFamilyDao{
 
 //	private static final String MODEL_TABLE_NAME = "tbl_model";
 	private final static String MODEL_FAMILY_TABLE_NAME = "tbl_modelfamily";
@@ -51,17 +51,17 @@ public class ModelFamilyDaoImpl extends SimpleJdbcDaoSupport implements ModelFam
 	
 	public List<ModelFamily> findAll() {
 		String sql = "SELECT * FROM " + MODEL_FAMILY_TABLE_NAME + "";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER);
+		return getJdbcTemplate().query(sql, ROW_MAPPER);
 	}	
 	
 	public ModelFamily findByCode(String code) {
 		String sql = "SELECT * FROM " + MODEL_FAMILY_TABLE_NAME + " WHERE code = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
 	}
 
 	public ModelFamily findById(int id) {
 		String sql = "SELECT * FROM " + MODEL_FAMILY_TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	public int create(ModelFamily family) {	
@@ -84,7 +84,7 @@ public class ModelFamilyDaoImpl extends SimpleJdbcDaoSupport implements ModelFam
          "Code=?, " +
          "Name=?, " + 
          "WHERE ID=?";		
-		 getSimpleJdbcTemplate().update(sql, modelFamily.getCode(), modelFamily.getName(), modelFamily.getId());   
+		 getJdbcTemplate().update(sql, modelFamily.getCode(), modelFamily.getName(), modelFamily.getId());
 		
 	}
 	

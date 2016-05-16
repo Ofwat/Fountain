@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import uk.gov.ofwat.fountain.domain.ConfidenceGrade;
 
-public class ConfidenceGradeDaoImpl extends SimpleJdbcDaoSupport  implements ConfidenceGradeDao {
+public class ConfidenceGradeDaoImpl extends JdbcDaoSupport  implements ConfidenceGradeDao {
 	
 	private static final String TABLE_NAME = "tbl_confidence_grade";
 	
@@ -44,14 +44,14 @@ public class ConfidenceGradeDaoImpl extends SimpleJdbcDaoSupport  implements Con
 
 	public synchronized ConfidenceGrade findById(int id) {
 		 String sql = "SELECT * FROM " + TABLE_NAME  + " WHERE id=?";
-	     return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+	     return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 	
 	public synchronized ConfidenceGrade findByCode(String code) {
 		 String sql = "SELECT * FROM " + TABLE_NAME  + " WHERE code=?";
 		 ConfidenceGrade cg = null;
 	     try{
-	    	 cg = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
+	    	 cg = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
 	     }
 	     catch(DataAccessException dae){
 //	    	 System.out.println("Can't find CG " + code);
@@ -61,6 +61,6 @@ public class ConfidenceGradeDaoImpl extends SimpleJdbcDaoSupport  implements Con
 	
 	public synchronized List<ConfidenceGrade> getAll(){
 		String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY `cg_order`;";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, new Object[]{});
+		return getJdbcTemplate().query(sql, ROW_MAPPER, new Object[]{});
 	}
 }

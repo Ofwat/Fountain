@@ -25,7 +25,7 @@ import java.util.List;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import uk.gov.ofwat.fountain.api.report.CellType;
 import uk.gov.ofwat.fountain.domain.Model;
@@ -35,7 +35,7 @@ import uk.gov.ofwat.fountain.domain.form.FormEmptyCell;
 import uk.gov.ofwat.fountain.domain.form.FormHeaderCell;
 import uk.gov.ofwat.fountain.domain.form.PageForm;
 
-public class FormCellDaoImpl extends SimpleJdbcDaoSupport implements FormCellDao {
+public class FormCellDaoImpl extends JdbcDaoSupport implements FormCellDao {
 
 	private static final String TABLE_NAME = "tbl_form_cell";
 	private PageFormDao pageFormDao;
@@ -101,12 +101,12 @@ public class FormCellDaoImpl extends SimpleJdbcDaoSupport implements FormCellDao
 
 	public List<FormDisplayCell> findByFormId(int formId) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE pageFormId = ?";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, formId);
+		return getJdbcTemplate().query(sql, ROW_MAPPER, formId);
 	}
 
 	public FormDisplayCell findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	

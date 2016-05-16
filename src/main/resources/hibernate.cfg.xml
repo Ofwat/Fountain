@@ -9,7 +9,9 @@
 		<property name="hibernate.show_sql">false</property>
 		<!-- <property name="hbm2ddl.auto">validate</property> -->
 
-		<property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
+
+		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+		<!--<property name="hibernate.cache.provider_class">org.hibernate.cache.ehcache.EhCacheProvider</property> -->
 		<property name="hibernate.cache.use_query_cache">true</property>
 <!-- 		<property name="log4j.logger.org.hibernate.cache">debug</property>
  -->

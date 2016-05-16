@@ -26,7 +26,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -36,7 +36,7 @@ import uk.gov.ofwat.fountain.domain.ItemPropertyInterval;
 import uk.gov.ofwat.fountain.domain.ModelItem;
 import uk.gov.ofwat.fountain.domain.ModelPropertiesMap;
 
-public class ModelPropertiesMapDaoImpl extends SimpleJdbcDaoSupport implements ModelPropertiesMapDao {
+public class ModelPropertiesMapDaoImpl extends JdbcDaoSupport  implements ModelPropertiesMapDao {
 
 	private ItemPropertiesDao itemPropertiesDao;
 	private ItemPropertyIntervalDao itemPropertyIntervalDao;
@@ -105,7 +105,7 @@ public class ModelPropertiesMapDaoImpl extends SimpleJdbcDaoSupport implements M
         String sql = "SELECT * FROM tbl_modelpropertiesmap WHERE modelId=? and ItemID=?";
         ModelPropertiesMap mpm = null;
         try {
-        	mpm = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, modelId, itemId);
+        	mpm = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, modelId, itemId);
 		} catch (DataAccessException e) {
 			// Deliberate behaviour. Returns null if no code found 
 		}
@@ -114,7 +114,7 @@ public class ModelPropertiesMapDaoImpl extends SimpleJdbcDaoSupport implements M
 
 	public HashMap<Integer, ItemProperties> getAllForModel(int modelId) {
 		String sql = "SELECT * FROM tbl_modelpropertiesmap WHERE modelId=?";
-		List<ModelPropertiesMap> mpmList = getSimpleJdbcTemplate().query(sql, ROW_MAPPER, modelId);
+		List<ModelPropertiesMap> mpmList = getJdbcTemplate().query(sql, ROW_MAPPER, modelId);
 		
 		HashMap<Integer, ItemProperties> retval = new HashMap<Integer, ItemProperties>();
 
@@ -159,8 +159,8 @@ public class ModelPropertiesMapDaoImpl extends SimpleJdbcDaoSupport implements M
 //				"	and ip.version in (SELECT max(version) " +
 //				"   FROM tbl_itemproperties p2 WHERE p2.itemId = i.id) "+
 				"GROUP BY i.Id");
-//		List<ModelItem> tmp = getSimpleJdbcTemplate().query(sqlQuery.toString(), MODELITEM_ROW_MAPPER, "%" + criteria  + "%", "%" + criteria  + "%", "%" + criteria  + "%");
-		return getSimpleJdbcTemplate().query(sqlQuery.toString(), MODELITEM_ROW_MAPPER, "%" + criteria  + "%", "%" + criteria  + "%", "%" + criteria  + "%");
+//		List<ModelItem> tmp = getJdbcTemplate().query(sqlQuery.toString(), MODELITEM_ROW_MAPPER, "%" + criteria  + "%", "%" + criteria  + "%", "%" + criteria  + "%");
+		return getJdbcTemplate().query(sqlQuery.toString(), MODELITEM_ROW_MAPPER, "%" + criteria  + "%", "%" + criteria  + "%", "%" + criteria  + "%");
 	}
 
 	public List<ModelItem> searchByLatestDefinitions(String criteria,
@@ -186,7 +186,7 @@ public class ModelPropertiesMapDaoImpl extends SimpleJdbcDaoSupport implements M
 //				"   FROM tbl_itemproperties p2 WHERE p2.itemId = i.id) "+
 				"GROUP BY i.Id");
 		
-		return getSimpleJdbcTemplate().query(sqlQuery.toString(), MODELITEM_ROW_MAPPER, "%" + criteria  + "%", "%" + criteria  + "%", "%" + criteria  + "%", "%" + criteria  + "%");
+		return getJdbcTemplate().query(sqlQuery.toString(), MODELITEM_ROW_MAPPER, "%" + criteria  + "%", "%" + criteria  + "%", "%" + criteria  + "%", "%" + criteria  + "%");
 	}
 
 	

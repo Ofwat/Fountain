@@ -35,7 +35,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -59,7 +59,7 @@ import uk.gov.ofwat.fountain.domain.tag.Tag;
 import uk.gov.ofwat.fountain.search.wrapper.ItemSearchWrapper;
 import uk.gov.ofwat.fountain.search.wrapper.ReportSearchWrapper;
 
-public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
+public class ReportDaoImpl  extends JdbcDaoSupport implements ReportDao {
 	
 	private ItemDao itemDao;
     private ModelDao modelDao;
@@ -163,7 +163,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
         	sbuf.append(")");
         	
         }
-        getSimpleJdbcTemplate().update(sbuf.toString());
+        getJdbcTemplate().update(sbuf.toString());
 
         logger.info("reportDef.getId() " + reportDef.getId());
         
@@ -185,7 +185,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
         	sbuf.append(")");
         	
         }
-        getSimpleJdbcTemplate().update(sbuf.toString());
+        getJdbcTemplate().update(sbuf.toString());
        
         logger.info("reportDef.getId() " + reportDef.getId());
 
@@ -207,7 +207,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 	        	sbuf.append(")");
 	        	
 	        }
-	        getSimpleJdbcTemplate().update(sbuf.toString());
+	        getJdbcTemplate().update(sbuf.toString());
         }
 
         System.out.println("reportDef.getId() " + reportDef.getId());
@@ -232,7 +232,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
                 sbuf.append(")");
 
             }
-            getSimpleJdbcTemplate().update(sbuf.toString());
+            getJdbcTemplate().update(sbuf.toString());
         }
 
         sbuf = new StringBuffer("INSERT INTO tbl_report_layout (reportId, position, entry) VALUES ");
@@ -267,7 +267,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
         	sbuf.append("')");
         	
         }
-        getSimpleJdbcTemplate().update(sbuf.toString());
+        getJdbcTemplate().update(sbuf.toString());
         
         System.out.println("reportDef.getId() " + reportDef.getId());
 
@@ -444,7 +444,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
     public ReportDefinition findById(int id){
 		String sql = "SELECT * FROM "+ REPORTTABLE +" WHERE id = ?";
 					
-		ReportDefinition rd = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, new Object[]{id});
+		ReportDefinition rd = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, new Object[]{id});
 
 		rd.setId(id);
 		rd.setName(rd.getName());
@@ -453,31 +453,31 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 		
 		sql = "SELECT * FROM tbl_report_display where reportId = ?";
 		
-		ReportDisplay repDisp = getSimpleJdbcTemplate().queryForObject(sql, REPORT_DISPLAY_ROW_MAPPER, id);
+		ReportDisplay repDisp = getJdbcTemplate().queryForObject(sql, REPORT_DISPLAY_ROW_MAPPER, id);
 		rd.setReportDisplay(repDisp);
 		
 		sql = "SELECT entry FROM tbl_report_layout where reportId = ? and position = 'left'";
-		List<String> left = getSimpleJdbcTemplate().query(sql, REPORT_LAYOUT_ENTRY_ROW_MAPPER, new Object[]{id});
+		List<String> left = getJdbcTemplate().query(sql, REPORT_LAYOUT_ENTRY_ROW_MAPPER, new Object[]{id});
 		rd.setLayoutLeft(left);
 		
 		sql = "SELECT entry FROM tbl_report_layout where reportId = ? and position = 'top'";
-		List<String> top = getSimpleJdbcTemplate().query(sql, REPORT_LAYOUT_ENTRY_ROW_MAPPER, new Object[]{id});
+		List<String> top = getJdbcTemplate().query(sql, REPORT_LAYOUT_ENTRY_ROW_MAPPER, new Object[]{id});
 		rd.setLayoutTop(top);
 		
 		sql = "SELECT itemId, modelId FROM tbl_report_items where reportId = ?";
-		List<ModelItem> modelItems = getSimpleJdbcTemplate().query(sql, MODEL_ITEM_ROW_MAPPER, new Object[]{id});
+		List<ModelItem> modelItems = getJdbcTemplate().query(sql, MODEL_ITEM_ROW_MAPPER, new Object[]{id});
 		rd.setModelItems(modelItems);
 		
 		sql = "SELECT intervalId as idValue FROM tbl_report_interval where reportId = ?";
-		List<Integer> intervalIds = getSimpleJdbcTemplate().query(sql, ID_ROW_MAPPER, new Object[]{id});
+		List<Integer> intervalIds = getJdbcTemplate().query(sql, ID_ROW_MAPPER, new Object[]{id});
 		rd.setIntervalIds(intervalIds);
 
 		sql = "SELECT companyId as idValue FROM tbl_report_company where reportId = ?";
-		List<Integer> companyIds = getSimpleJdbcTemplate().query(sql, ID_ROW_MAPPER, new Object[]{id});
+		List<Integer> companyIds = getJdbcTemplate().query(sql, ID_ROW_MAPPER, new Object[]{id});
 		rd.setCompanyIds(companyIds);
 
         sql = "select runId, tagId from tbl_report_runs where reportId = ?";
-        List<RunTag> runTags = getSimpleJdbcTemplate().query(sql, RUN_TAG_ROW_MAPPER, new Object[]{id});
+        List<RunTag> runTags = getJdbcTemplate().query(sql, RUN_TAG_ROW_MAPPER, new Object[]{id});
         rd.setRunTags(runTags);
 
 		return rd;	
@@ -486,7 +486,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 	public List<Integer> findReportCompaniesById(int id){
 		
 		String sql = "SELECT companyId as idValue FROM tbl_report_company where reportId = ?";
-		List<Integer> companyIds = getSimpleJdbcTemplate().query(sql, ID_ROW_MAPPER, new Object[]{id});
+		List<Integer> companyIds = getJdbcTemplate().query(sql, ID_ROW_MAPPER, new Object[]{id});
 		
 		return companyIds;	
 	}
@@ -495,14 +495,14 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 		String sql = "SELECT r.id, r.name, r.lastModified, r.public, r.teamid, r.iplRun, r.readOnly, r.description FROM "+ REPORTTABLE 
 				+" r, tbl_report_items ri WHERE ri.itemId = ? and r.id = ri.reportId order by lastModified desc";
 		
-		return getSimpleJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER,  itemId);		
+		return getJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER,  itemId);
 	}	
 	
 	
 	public List<Integer> findReportRunsById(int id){
 		
 		String sql = "SELECT runId as idValue FROM tbl_report_runs where reportId = ?";
-		List<Integer> runIds = getSimpleJdbcTemplate().query(sql, ID_ROW_MAPPER, new Object[]{id});
+		List<Integer> runIds = getJdbcTemplate().query(sql, ID_ROW_MAPPER, new Object[]{id});
 		
 		return runIds;	
 	}
@@ -517,7 +517,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 		if((limit != null) && (limit != 0)){
 			sql = sql + " limit " + limit;
 		}
-		return getSimpleJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER,  teamId);
+		return getJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER,  teamId);
 	}
 	
 	public List<ReportSummary> getReportsForTeams(List<Integer> teamIds) {
@@ -534,7 +534,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 			if((limit != null) && (limit != 0)){				
 				sql = sql + " limit " + limit;
 			}
-			List<ReportSummary> rs = getSimpleJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER,  teamId);
+			List<ReportSummary> rs = getJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER,  teamId);
 			reportSummaries.addAll(rs);
 		}
 
@@ -550,13 +550,13 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 		}
 		
 		for(Integer teamId : teamsToAddPublicReports){
-			//NamedParameterJdbcTemplate npjdbc = new NamedParameterJdbcTemplate(getSimpleJdbcTemplate().getJdbcOperations());
+			//NamedParameterJdbcTemplate npjdbc = new NamedParameterJdbcTemplate(getJdbcTemplate().getJdbcOperations());
 			String sql = "SELECT id, name, lastModified, public, teamid, iplRun, readOnly, description FROM "+ REPORTTABLE 
 			+" WHERE (teamid = ? and deleted = 0 and public = 1) order by teamid, lastModified desc";
 			if((limit != null) && (limit != 0)){				
 				sql = sql + " limit " + limit;
 			}
-			List<ReportSummary> rs = getSimpleJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER,  teamId);
+			List<ReportSummary> rs = getJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER,  teamId);
 			reportSummaries.addAll(rs);
 		}		
 		return reportSummaries;
@@ -564,13 +564,13 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 	
 	public List<ReportSummary> getAll() {
 		String sql = "SELECT id, name, lastModified, public, teamid, iplRun, readOnly, description FROM "+ REPORTTABLE ;
-		return getSimpleJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER);
+		return getJdbcTemplate().query(sql, SUMMARY_ROW_MAPPER);
 	}
 
 	public ReportSummary findSummaryById(int reportId) {
 		String sql = "SELECT id, name, lastModified, public, teamid, iplRun, readOnly, description FROM " + REPORTTABLE + " WHERE id = ?";
 		try {
-			return getSimpleJdbcTemplate().queryForObject(sql, SUMMARY_ROW_MAPPER, reportId);
+			return getJdbcTemplate().queryForObject(sql, SUMMARY_ROW_MAPPER, reportId);
 		} catch (DataAccessException e) {
 			// Its OK to have no report. 
 			return null;
@@ -579,13 +579,13 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 
 	public void delete(int id) {
 		String sql = "UPDATE " + REPORTTABLE + " set deleted=1 WHERE id=?";
-		getSimpleJdbcTemplate().update(sql, id);
+		getJdbcTemplate().update(sql, id);
 		return;
 	}
 
 	public boolean updatePublishedStatus(boolean toPublish, int id) {
 		String sql = "UPDATE " + REPORTTABLE + " set public=? " + "WHERE id=?"; 
-		return (getSimpleJdbcTemplate().update(sql, toPublish ,id)==1);
+		return (getJdbcTemplate().update(sql, toPublish ,id)==1);
 	}
 
 	public void update(ReportDefinition reportDef) {
@@ -597,12 +597,12 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
         if(null != reportDef.getGroup()){
         	groupId = reportDef.getGroup().getId();
         }
-		getSimpleJdbcTemplate().update(sql, reportDef.getName(), reportDef.getOwnerUser(), new Date(), 
+		getJdbcTemplate().update(sql, reportDef.getName(), reportDef.getOwnerUser(), new Date(),
 				 reportDef.isPublicReport(), groupId, reportDef.getTeamId(), reportDef.isIplRun(), reportDef.isReadOnly(), reportDef.getDescription(), reportDef.getId());  
 		
 		// remove the old intervals, add the new ones
 		sql = "DELETE FROM tbl_report_interval WHERE reportId=?";
-		getSimpleJdbcTemplate().update(sql, reportDef.getId());
+		getJdbcTemplate().update(sql, reportDef.getId());
 		 
 		StringBuffer sbuf = new StringBuffer("INSERT INTO tbl_report_interval (reportId, intervalId) VALUES ");
         boolean first = true;
@@ -620,11 +620,11 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
         	sbuf.append(")");
         	
         }
-        getSimpleJdbcTemplate().update(sbuf.toString());
+        getJdbcTemplate().update(sbuf.toString());
 
         //remove the old runTags add the new ones.
         sql = "DELETE FROM tbl_report_runs WHERE reportId=?";
-        getSimpleJdbcTemplate().update(sql, reportDef.getId());
+        getJdbcTemplate().update(sql, reportDef.getId());
 
         if (!reportDef.getRunTags().isEmpty()) {
 	        sbuf = new StringBuffer("INSERT INTO tbl_report_runs (reportId, runId, tagId) VALUES ");
@@ -644,12 +644,12 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 	            sbuf.append(runTag.getRunModelTag().getId());
 	            sbuf.append(")");
 	        }
-	        getSimpleJdbcTemplate().update(sbuf.toString());
+	        getJdbcTemplate().update(sbuf.toString());
         }
         
         // remove the old items, add the new ones
 		sql = "DELETE FROM tbl_report_items WHERE reportId=?";
-		getSimpleJdbcTemplate().update(sql, reportDef.getId());
+		getJdbcTemplate().update(sql, reportDef.getId());
 		
         sbuf = new StringBuffer("INSERT INTO tbl_report_items (reportId, itemId, modelId) VALUES ");
         first = true;
@@ -669,11 +669,11 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
         	sbuf.append(")");
         	
         }
-	    getSimpleJdbcTemplate().update(sbuf.toString());
+	    getJdbcTemplate().update(sbuf.toString());
        
         // remove the old companies
 		sql = "DELETE FROM tbl_report_company WHERE reportId=?";
-		getSimpleJdbcTemplate().update(sql, reportDef.getId());
+		getJdbcTemplate().update(sql, reportDef.getId());
 		
 		// add new companies if there are any!
 		if (!reportDef.getCompanyIds().isEmpty()) {
@@ -693,12 +693,12 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 	        	sbuf.append(")");
 	        	
 	        }
-	        getSimpleJdbcTemplate().update(sbuf.toString());
+	        getJdbcTemplate().update(sbuf.toString());
 		}
 		
         // remove the old layout, add the new ones
 		sql = "DELETE FROM tbl_report_layout WHERE reportId=?";
-		getSimpleJdbcTemplate().update(sql, reportDef.getId());
+		getJdbcTemplate().update(sql, reportDef.getId());
 		
         sbuf = new StringBuffer("INSERT INTO tbl_report_layout (reportId, position, entry) VALUES ");
         first = true;
@@ -733,11 +733,11 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
         	
         }
         
-        getSimpleJdbcTemplate().update(sbuf.toString());
+        getJdbcTemplate().update(sbuf.toString());
         
         // update the report display options
         sql = "DELETE FROM tbl_report_display WHERE reportId=?";
-		getSimpleJdbcTemplate().update(sql, reportDef.getId());
+		getJdbcTemplate().update(sql, reportDef.getId());
 		
         // insert the new values in tbl_report_display
         sql = "INSERT INTO tbl_report_display "+
@@ -793,11 +793,11 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 			
 			//Basic report properties. 
 			String sqlBasic = "select id as id, name as name, user as user, lastModified as lastModified, deleted as  deleted, public as public, groupId as groupId, iplRun as iplRun, readOnly as readOnly, description as description from tbl_report where id = " + reportId;
-			rsw = getSimpleJdbcTemplate().queryForObject(sqlBasic, REPORT_SEARCH_WRAPPER_MAPPER); 
+			rsw = getJdbcTemplate().queryForObject(sqlBasic, REPORT_SEARCH_WRAPPER_MAPPER);
 			
 			//Further properties. -- We will iterate over this. 
 			String sqlDetail = "select distinct i.id as id, i.code as code, i.unit as unit, ip.description as description, ip.version as version, ip.definition as definition, tri.modelId as modelId from tbl_item i, tbl_report_items tri, tbl_itemproperties ip where tri.itemId = i.id and ip.itemId = i.id and tri.reportId = " + reportId;
-			itemSearchWrappers = getSimpleJdbcTemplate().query(sqlDetail, REPORT_ITEM_SEARCH_WRAPPER_MAPPER);
+			itemSearchWrappers = getJdbcTemplate().query(sqlDetail, REPORT_ITEM_SEARCH_WRAPPER_MAPPER);
 			
 			rsw.setItems(itemSearchWrappers);
 			reportSearchWrappers.add(rsw);
@@ -817,11 +817,11 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 		
 		//Basic report properties. 
 		String sqlBasic = "select id as id, name as name, user as user, lastModified as lastModified, deleted as  deleted, public as public, groupId as groupId, iplRun as iplRun, readOnly as readOnly, description as description from tbl_report where id = " + reportId;
-		rsw = getSimpleJdbcTemplate().queryForObject(sqlBasic, REPORT_SEARCH_WRAPPER_MAPPER); 
+		rsw = getJdbcTemplate().queryForObject(sqlBasic, REPORT_SEARCH_WRAPPER_MAPPER);
 		
 		//Further properties. -- We will iterate over this. 
 		String sqlDetail = "select distinct i.id as id, i.code as code, i.unit as unit, ip.description as description, ip.version as version, ip.definition as definition, tri.modelId as modelId from tbl_item i, tbl_report_items tri, tbl_itemproperties ip where tri.itemId = i.id and ip.itemId = i.id and tri.reportId = " + reportId + " and ip.version = (SELECT max(version) FROM tbl_itemproperties WHERE itemid = i.id)";
-		itemSearchWrappers = getSimpleJdbcTemplate().query(sqlDetail, REPORT_ITEM_SEARCH_WRAPPER_MAPPER);
+		itemSearchWrappers = getJdbcTemplate().query(sqlDetail, REPORT_ITEM_SEARCH_WRAPPER_MAPPER);
 		
 		rsw.setItems(itemSearchWrappers);
 		return rsw;
@@ -836,7 +836,7 @@ public class ReportDaoImpl  extends SimpleJdbcDaoSupport implements ReportDao {
 			status = 1;
 		}
 		String sql = "UPDATE " + REPORTTABLE + " set readOnly=" + status.toString() + " WHERE id=?";
-		getSimpleJdbcTemplate().update(sql, id);
+		getJdbcTemplate().update(sql, id);
 		return;		
 	}
 	

@@ -29,7 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -38,7 +38,7 @@ import uk.gov.ofwat.fountain.domain.User;
 import uk.gov.ofwat.fountain.domain.UserEdit;
 import uk.gov.ofwat.fountain.domain.UserEdit.EditType;
 
-public class UserEditDaoImpl extends SimpleJdbcDaoSupport  implements UserEditDao {
+public class UserEditDaoImpl extends JdbcDaoSupport  implements UserEditDao {
 	
 	protected static Log log = LogFactory.getLog(UserEditDaoImpl.class);
 	private static final String TABLE_NAME = "tbl_user_edit";
@@ -98,26 +98,26 @@ public class UserEditDaoImpl extends SimpleJdbcDaoSupport  implements UserEditDa
 	
 	public UserEdit findByUserEditId(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Id=?";
-		UserEdit userEdit = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		UserEdit userEdit = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
     	return userEdit;
 	}
 
 	public List<UserEdit> findByItemIntervalCompany(int itemId, int intervalId,
 			int companyId) {
 		String sql = "select * from " + TABLE_NAME + " WHERE itemId = ? AND intervalId = ? AND companyId = ?";
-		List<UserEdit> edits = getSimpleJdbcTemplate().query(sql, ROW_MAPPER, itemId, intervalId, companyId);
+		List<UserEdit> edits = getJdbcTemplate().query(sql, ROW_MAPPER, itemId, intervalId, companyId);
 		return edits;
 	}
 
 	public List<UserEdit> findByUser(User user){
 		String sql = "select * from " + TABLE_NAME + " WHERE user = ?";
-		List<UserEdit> edits = getSimpleJdbcTemplate().query(sql, ROW_MAPPER, user.getName());
+		List<UserEdit> edits = getJdbcTemplate().query(sql, ROW_MAPPER, user.getName());
 		return edits;
 	}
 
 	public List<UserEdit> findByBranchId(int branchId){
 		String sql = "select * from " + TABLE_NAME + " WHERE branchTagId = ?";
-		List<UserEdit> edits = getSimpleJdbcTemplate().query(sql, ROW_MAPPER, branchId);
+		List<UserEdit> edits = getJdbcTemplate().query(sql, ROW_MAPPER, branchId);
 		return edits;
 	}
 
@@ -134,7 +134,7 @@ public class UserEditDaoImpl extends SimpleJdbcDaoSupport  implements UserEditDa
         "modeId = ?, " +
         "runId = ?, " +
         "WHERE ID=?";
-		 getSimpleJdbcTemplate().update(sql, 
+		getJdbcTemplate().update(sql,
 				                        userEdit.getItemId(), 
 				                        userEdit.getIntervalId(), 
 				                        userEdit.getCompanyId(),
@@ -153,7 +153,7 @@ public class UserEditDaoImpl extends SimpleJdbcDaoSupport  implements UserEditDa
 		// the original value cannot be changed so this is not sent to the database
 		String sqlDelete = "DELETE FROM " + TABLE_NAME + " WHERE user = ?";
 		String sqlInsert = "INSERT INTO " + TABLE_NAME + " (ItemId, IntervalId, CompanyId, GroupEntryId, user, value, original, editType, branchTagId, runId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		getSimpleJdbcTemplate().update(sqlDelete, user.getName());	
+		getJdbcTemplate().update(sqlDelete, user.getName());
 		
 		getJdbcTemplate().batchUpdate( sqlInsert,
 			new BatchPreparedStatementSetter() {
@@ -189,13 +189,13 @@ public class UserEditDaoImpl extends SimpleJdbcDaoSupport  implements UserEditDa
 
 	public void refreshEditsForUser(User user) {
 		String sql = "update " + TABLE_NAME + " set timestamp=CURRENT_TIMESTAMP WHERE user = ?";
-		getSimpleJdbcTemplate().update(sql, user.getName());
+		getJdbcTemplate().update(sql, user.getName());
 		
 	}
 
 	public void removeUserEdits(User user) {
 		String sqlDelete = "DELETE FROM " + TABLE_NAME + " WHERE user = ?";
-		getSimpleJdbcTemplate().update(sqlDelete, user.getName());	
+		getJdbcTemplate().update(sqlDelete, user.getName());
 	}
 	
 	

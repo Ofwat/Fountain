@@ -114,7 +114,7 @@
 	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
 		<property name="dataSource" ref="dataSource-fountain" /> </bean> -->
 	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
 		p:sessionFactory-ref="sessionFactory">
 	</bean>
 	
@@ -173,7 +173,7 @@
 	<!-- ************************************************** ** ** ** HIBERNATE ** ** ** ******************************************************* -->
 
 	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource">
 			<ref bean="dataSource-fountain" />
 		</property>
@@ -182,7 +182,7 @@
 		</property>
 	</bean>
 
-
+	<!--
 	<bean id="jmxExporter" class="org.springframework.jmx.export.MBeanExporter">
 	    <property name="beans">
 	        <map>
@@ -190,19 +190,15 @@
 	        </map>
 	    </property>
 	</bean>
-	
+	-->
+	<!--
 	<bean id="hibernateStatisticsBean" class="org.hibernate.jmx.StatisticsService">
 	    <property name="statisticsEnabled" value="true"/>
 	    <property name="sessionFactory">
 	    	<ref local="sessionFactory"/>
-	
-	        <!-- Uncomment the following when using Hibernate via JPA
-	             (Assuming the managed EMF is named 'entityManagerFactory'.
-	              Namespace is: xmlns:util="http://www.springframework.org/schema/util")
-	        -->
-	        <!-- util:property-path path="entityManagerFactory.sessionFactory" /-->
-	    </property>
+		</property>
 	</bean>
+	-->
 	<!-- 
 	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
 	    <property name="locateExistingServerIfPossible" value="true" />

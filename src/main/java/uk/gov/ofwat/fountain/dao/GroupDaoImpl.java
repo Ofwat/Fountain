@@ -29,7 +29,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -39,7 +39,7 @@ import uk.gov.ofwat.fountain.domain.Company;
 import uk.gov.ofwat.fountain.domain.Group;
 import uk.gov.ofwat.fountain.domain.GroupEntry;
 
-public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
+public class GroupDaoImpl extends JdbcDaoSupport  implements GroupDao{
 
 	private final static String GROUP_TABLE_NAME = "tbl_group";
 	private final static String GROUP_ENTRY_TABLE_NAME = "tbl_groupentry";
@@ -127,7 +127,7 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 		int cgId = -1;
 		String sql = "SELECT id FROM " + COMPANY_GROUP_TABLE_NAME + " WHERE groupId = ? and companyId = ?";
 		try{
-			cgId = getSimpleJdbcTemplate().queryForInt(sql, groupId, companyId);
+			cgId = getJdbcTemplate().queryForObject(sql, new Object[]{groupId, companyId}, Integer.class);
 		}
 		catch(Exception e){
 			// no such companyGroup - return -1
@@ -156,13 +156,13 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 			return UNGROUPED;
 		}
 		String sql = "SELECT * FROM " + GROUP_TABLE_NAME+ " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, GROUP_ROW_MAPPER, groupId);
+		return getJdbcTemplate().queryForObject(sql, GROUP_ROW_MAPPER, groupId);
 	}
 
 	public List<GroupEntry> findEntriesForCompanyAndGroup(Company company, Group group) {
 		String sql = "SELECT ge.* FROM "+GROUP_ENTRY_TABLE_NAME+" ge INNER JOIN "+COMPANY_GROUP_TABLE_NAME+" cg ON cg.id = ge.companyGroupID WHERE cg.companyId = ? AND cg.groupID = ?";
 		
-		List<GroupEntry> entries = getSimpleJdbcTemplate().query(sql, GROUP_ENTRY_ROW_MAPPER, new Object[]{company.getId(), group.getId()});
+		List<GroupEntry> entries = getJdbcTemplate().query(sql, GROUP_ENTRY_ROW_MAPPER, new Object[]{company.getId(), group.getId()});
 		for(GroupEntry entry: entries){
 			entry.setGroup(group);
 			entry.setCompany(company);
@@ -172,7 +172,7 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 
 	public GroupEntry findEntryById(int groupEntryId) {
 		String sql = "SELECT * FROM " + GROUP_ENTRY_TABLE_NAME+ " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, groupEntryId);
+		return getJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, groupEntryId);
 	}
 	
 	
@@ -182,7 +182,7 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 		GroupEntry ge = null;
 		String sql = "SELECT ge.* FROM " + GROUP_ENTRY_TABLE_NAME + " ge INNER JOIN (" +  COMPANY_GROUP_TABLE_NAME + " cg INNER JOIN " + GROUP_TABLE_NAME + "  gp ON cg.groupId = gp.id)  ON ge.companyGroupId = cg.id WHERE cg.companyId = ? AND ge.description = ?";
 		try{
-			ge = getSimpleJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, companyId, groupEntryName);
+			ge = getJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, companyId, groupEntryName);
 		}
 		catch(IncorrectResultSizeDataAccessException irsdae){
 			// it's ok to have no results. return null
@@ -199,7 +199,7 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 		try {
 			// Get the ungrouped entry
 			String sql = "SELECT ge.* FROM " + GROUP_ENTRY_TABLE_NAME + " ge INNER JOIN (" +  COMPANY_GROUP_TABLE_NAME + " cg INNER JOIN " + GROUP_TABLE_NAME + "  gp ON cg.groupId = gp.id)  ON ge.companyGroupId = cg.id WHERE cg.companyId = ? AND gp.name = ?";
-			return getSimpleJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, company.getId(), NO_GROUP_NAME);
+			return getJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, company.getId(), NO_GROUP_NAME);
 		}
 		catch (EmptyResultDataAccessException ex1) {
 			GroupEntry ge = new GroupEntry();
@@ -209,7 +209,7 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 
 			int id = createGroupEntry(ge);
 			String sql = "SELECT * FROM " + GROUP_ENTRY_TABLE_NAME + " WHERE  id=?";
-			return getSimpleJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, id);
+			return getJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, id);
 		}
 	}
 
@@ -218,7 +218,7 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 	public Group findByName(String groupName) {
 		String sql = "select * from " + GROUP_TABLE_NAME + " where name = ?";
 		try {
-			return getSimpleJdbcTemplate().queryForObject(sql, GROUP_ROW_MAPPER, groupName);
+			return getJdbcTemplate().queryForObject(sql, GROUP_ROW_MAPPER, groupName);
 		}
 		catch (EmptyResultDataAccessException ex1) {
 			// Its valid to find no group.
@@ -230,14 +230,14 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 
 	public List<Group> getAllGroups() {
 		String sql = "SELECT * FROM "+ GROUP_TABLE_NAME;
-		return getSimpleJdbcTemplate().query(sql, GROUP_ROW_MAPPER, new Object[]{});
+		return getJdbcTemplate().query(sql, GROUP_ROW_MAPPER, new Object[]{});
 	}
 
 
 
 	public void updateGroupEntryDescription(int groupEntryId, String description) {
 		String sql = "UPDATE " + GROUP_ENTRY_TABLE_NAME + " SET description = ? WHERE id = ?";
-		getSimpleJdbcTemplate().update(sql, new Object[]{description, groupEntryId});
+		getJdbcTemplate().update(sql, new Object[]{description, groupEntryId});
 		alertLiseners();
 	}
 
@@ -250,7 +250,7 @@ public class GroupDaoImpl extends SimpleJdbcDaoSupport  implements GroupDao{
 	public GroupEntry findEntryCompanyGroupAndOrdinal(int companyId,
 			String groupName, int ordinal) {
 		String sql =  "select g.*, e.* from " + GROUP_TABLE_NAME + " g inner join (" + COMPANY_GROUP_TABLE_NAME + " c inner join " + GROUP_ENTRY_TABLE_NAME + " e on c.id = e.companygroupid) on g.id = c.groupId where e.ordinal = ? and g.name like ? and c.companyId = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, new Object[]{ordinal, groupName, companyId});
+		return getJdbcTemplate().queryForObject(sql, GROUP_ENTRY_ROW_MAPPER, new Object[]{ordinal, groupName, companyId});
 	}
 
 

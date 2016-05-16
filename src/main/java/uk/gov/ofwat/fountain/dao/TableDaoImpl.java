@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -35,13 +35,13 @@ import uk.gov.ofwat.fountain.domain.CompanyTable;
 import uk.gov.ofwat.fountain.domain.Group;
 import uk.gov.ofwat.fountain.domain.Table;
 
-public class TableDaoImpl extends SimpleJdbcDaoSupport  implements TableDao {
+public class TableDaoImpl extends JdbcDaoSupport  implements TableDao {
 
 	private static final String COMPANY_TABLE = "tbl_companyTable";
 	private static final String TABLE_TABLE = "tbl_table";
 	private static final String COMPANY_GROUP_TABLE = "tbl_tablegroups";
 	
-	private static final RowMapper<Table> ROW_MAPPER = new ParameterizedRowMapper<Table>() {
+	private static final RowMapper<Table> ROW_MAPPER = new RowMapper<Table>() {
 	    public Table mapRow(ResultSet rs, int rowNum) throws SQLException {
 	        Table t = new Table();
 	        t.setId(rs.getInt("ID"));
@@ -52,13 +52,13 @@ public class TableDaoImpl extends SimpleJdbcDaoSupport  implements TableDao {
 	    }
 	};	
 	
-	private static final RowMapper<Integer> GROUPID_ROW_MAPPER = new ParameterizedRowMapper<Integer>() {
+	private static final RowMapper<Integer> GROUPID_ROW_MAPPER = new RowMapper<Integer>() {
 	    public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
 	        return rs.getInt("groupId");
 	    }
 	};	
 	
-	private static final RowMapper<CompanyTable> COMPANYTABLE_ROW_MAPPER = new ParameterizedRowMapper<CompanyTable>() {
+	private static final RowMapper<CompanyTable> COMPANYTABLE_ROW_MAPPER = new RowMapper<CompanyTable>() {
 		
 		public CompanyTable mapRow(ResultSet rs, int rowNum) throws SQLException {
 			
@@ -103,25 +103,25 @@ public class TableDaoImpl extends SimpleJdbcDaoSupport  implements TableDao {
 
 	public Table findById(int id) {
         String sql = "SELECT * FROM tbl_table WHERE ID=?";
-        Table table = getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+        Table table = getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
         return table;
 	}
 	
 	public List<Table>getAll(){
 		
 		String sql = "SELECT * FROM tbl_table";
-		List<Table> tables = getSimpleJdbcTemplate().query(sql, ROW_MAPPER);
+		List<Table> tables = getJdbcTemplate().query(sql, ROW_MAPPER);
 		return tables;
 	}
 
 	public List<Table> findByModelId(int modelId) {
 		String sql = "SELECT * FROM tbl_table WHERE modelId=? ORDER BY Id";
-        return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, modelId);
+        return getJdbcTemplate().query(sql, ROW_MAPPER, modelId);
 	}
 	
 	public List<Table> findByModelIdAndCompanyId(int modelId, int companyId) {
 		String sql = "SELECT * FROM " + COMPANY_TABLE + " WHERE modelId=? AND companyId =? ORDER BY tableId";
-		List<CompanyTable> companyTables = getSimpleJdbcTemplate().query(sql, COMPANYTABLE_ROW_MAPPER, modelId, companyId);
+		List<CompanyTable> companyTables = getJdbcTemplate().query(sql, COMPANYTABLE_ROW_MAPPER, modelId, companyId);
 		List<Table> tables = new ArrayList<Table>();
 		for (CompanyTable companyTable : companyTables) {
 			Table t = findById(companyTable.getTableId());
@@ -132,7 +132,7 @@ public class TableDaoImpl extends SimpleJdbcDaoSupport  implements TableDao {
 
 	public List<Table> findByModelIdAndCompanyType(int modelId,	int companyTypeId) {
 		String sql = "SELECT * FROM " + TABLE_TABLE + " WHERE modelId=? AND (companyTypeId=? OR companyTypeId = null OR companyTypeId = 0) ORDER BY id";
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER, modelId, companyTypeId);
+		return getJdbcTemplate().query(sql, ROW_MAPPER, modelId, companyTypeId);
 	}
 
 	public int addCompanyTable(int companyId, int modelId, int tableId) {
@@ -152,7 +152,7 @@ public class TableDaoImpl extends SimpleJdbcDaoSupport  implements TableDao {
 
 	public List<Integer> getGroupIdsForTable(int tableId) {
 		String sql = "select groupId from " + COMPANY_GROUP_TABLE + " where tableId = ?";
-		return getSimpleJdbcTemplate().query(sql, GROUPID_ROW_MAPPER, tableId);
+		return getJdbcTemplate().query(sql, GROUPID_ROW_MAPPER, tableId);
 	}
 	
 	public List<Table> getTablesForItem(int itemId){
@@ -160,13 +160,13 @@ public class TableDaoImpl extends SimpleJdbcDaoSupport  implements TableDao {
 		String sql = "SELECT DISTINCT t.id, t.name, t.modelId, t.companyTypeId FROM tbl_table t, tbl_pot p, tbl_table_pots tp, tbl_model m " + 
 		"where p.itemid = ? and p.id = tp.potId and t.id = tp.tableId " +  
 		"and m.id = t.modelId";
-		List<Table> tables = getSimpleJdbcTemplate().query(sql, ROW_MAPPER, itemId);
+		List<Table> tables = getJdbcTemplate().query(sql, ROW_MAPPER, itemId);
 		return tables;	
 	}
 	
 	public List<Table>findAll(){
 		String sql = "SELECT * FROM tbl_table ORDER BY Id";
-        return getSimpleJdbcTemplate().query(sql, ROW_MAPPER);		
+        return getJdbcTemplate().query(sql, ROW_MAPPER);
 	}
 	
 }

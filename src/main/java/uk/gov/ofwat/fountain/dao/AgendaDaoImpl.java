@@ -26,14 +26,14 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import uk.gov.ofwat.fountain.domain.Agenda;
 
-public class AgendaDaoImpl extends SimpleJdbcDaoSupport implements AgendaDao {
+public class AgendaDaoImpl extends JdbcDaoSupport implements AgendaDao {
 
 	private static final String TABLE_NAME = "tbl_agenda";
 	
@@ -50,13 +50,13 @@ public class AgendaDaoImpl extends SimpleJdbcDaoSupport implements AgendaDao {
 	
 	public Agenda findById(int id) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-		return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
+		return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, id);
 	}
 
 	public Agenda findByCode(String code) {
 		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE code = ?";
 		try {
-			return getSimpleJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
+			return getJdbcTemplate().queryForObject(sql, ROW_MAPPER, code);
 		} catch (DataAccessException e) {
 			// It's OK to find no agenda.
 			return null;
@@ -82,7 +82,7 @@ public class AgendaDaoImpl extends SimpleJdbcDaoSupport implements AgendaDao {
 	@Override
 	public List<Agenda> findAllAgenda() {
 		String sql = "SELECT * FROM " + TABLE_NAME;
-		return getSimpleJdbcTemplate().query(sql, ROW_MAPPER);
+		return getJdbcTemplate().query(sql, ROW_MAPPER);
 	}
 
 

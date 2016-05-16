@@ -11,7 +11,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,7 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import uk.gov.ofwat.fountain.domain.Company;
 import uk.gov.ofwat.fountain.domain.RunCompanyTemplate;
 
-public class RunCompanyTemplateDaoImpl extends SimpleJdbcDaoSupport implements
+public class RunCompanyTemplateDaoImpl extends JdbcDaoSupport implements
 		RunCompanyTemplateDao {
 
 	private CompanyDao companyDao;
@@ -67,7 +67,7 @@ public class RunCompanyTemplateDaoImpl extends SimpleJdbcDaoSupport implements
 	public List<RunCompanyTemplate> getAll() {
 		String sql = "SELECT id, description, name, created, createdBy FROM "
 				+ RUN_COMPANY_TEMPLATE_TABLE_NAME + " where deleted = 0";
-		List<RunCompanyTemplate> runTemplates = getSimpleJdbcTemplate().query(
+		List<RunCompanyTemplate> runTemplates = getJdbcTemplate().query(
 				sql, RUN_TEMPLATE_ROW_MAPPER);
 		return runTemplates;
 	}
@@ -100,7 +100,7 @@ public class RunCompanyTemplateDaoImpl extends SimpleJdbcDaoSupport implements
 	public boolean delete(int runCompanyTemplateId) {
 		String sql = "UPDATE " + RUN_COMPANY_TEMPLATE_TABLE_NAME
 				+ " SET DELETED = 1 WHERE id = ?";
-		int result = getSimpleJdbcTemplate().update(sql, runCompanyTemplateId);
+		int result = getJdbcTemplate().update(sql, runCompanyTemplateId);
 		if (result == 1) {
 			return true;
 		} else {
@@ -127,14 +127,14 @@ public class RunCompanyTemplateDaoImpl extends SimpleJdbcDaoSupport implements
 	public void removeAllCompanies(int runCompanyTemplateId) {
 		String sql = "DELETE FROM " + RUN_COMPANY_TEMPLATE_COMPANY_TABLE_NAME
 				+ " WHERE runCompanyTemplateId = ?";
-		getSimpleJdbcTemplate().update(sql, runCompanyTemplateId);
+		getJdbcTemplate().update(sql, runCompanyTemplateId);
 	}
 
 	@Override
 	public void removeCompany(int runCompanyTemplateId, int companyId) {
 		String sql = "DELETE FROM " + RUN_COMPANY_TEMPLATE_COMPANY_TABLE_NAME
 				+ " WHERE runCompanyTemplateId = ? and companyId = ?";
-		getSimpleJdbcTemplate().update(sql, runCompanyTemplateId, companyId);
+		getJdbcTemplate().update(sql, runCompanyTemplateId, companyId);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class RunCompanyTemplateDaoImpl extends SimpleJdbcDaoSupport implements
 				+ RUN_COMPANY_TEMPLATE_TABLE_NAME
 				+ " WHERE id=? and deleted = 0";
 		try {
-			return getSimpleJdbcTemplate().queryForObject(sql,
+			return getJdbcTemplate().queryForObject(sql,
 					RUN_TEMPLATE_ROW_MAPPER, runCompanyTemplateId);
 		} catch (DataAccessException e) {
 			// Its OK to find no RunCompanyTemplate.
