@@ -59,7 +59,6 @@
     <orderEntry type="library" exported="" name="Gradle: org.mongodb.morphia:morphia:0.108" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.mongodb.morphia:morphia-logging-slf4j:0.108" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.code.gson:gson:2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.elasticsearch:elasticsearch:1.7.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.vividsolutions:jts:1.13" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.codehaus.groovy.modules.http-builder:http-builder:0.7.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.github.dblock.waffle:waffle-jna:1.8.0" level="project" />
@@ -106,9 +105,6 @@
     <orderEntry type="library" exported="" name="Gradle: org.apache.lucene:lucene-join:4.10.4" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.spatial4j:spatial4j:0.4.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.apache.lucene:lucene-spatial:4.10.4" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.antlr:antlr-runtime:3.5" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.ow2.asm:asm:4.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.ow2.asm:asm-commons:4.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.yaml:snakeyaml:1.12" level="project" />
     <orderEntry type="library" exported="" name="Gradle: net.sf.ezmorph:ezmorph:1.0.6" level="project" />
     <orderEntry type="library" exported="" name="Gradle: net.sf.json-lib:json-lib:2.3:jdk15" level="project" />
@@ -367,6 +363,7 @@
     <orderEntry type="library" exported="" name="Gradle: org.apache.directory.server:apacheds-kerberos-shared:1.5.5" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.apache.directory.server:apacheds-bootstrap-partition:1.5.5" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.apache.directory.server:apacheds-protocol-ldap:1.5.5" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.elasticsearch:elasticsearch:1.7.5" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: C__workspace_Fountain_web_WEB_INF_classes">
         <CLASSES>
@@ -383,5 +380,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm:4.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-commons:4.1" level="project" />
   </component>
 </module>

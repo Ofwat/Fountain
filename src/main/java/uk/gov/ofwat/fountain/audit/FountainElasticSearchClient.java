@@ -3,6 +3,7 @@ package uk.gov.ofwat.fountain.audit;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import org.elasticsearch.action.index.IndexResponse;
@@ -18,6 +19,9 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
 import uk.gov.ofwat.fountain.dao.mongo.MongoResource;
+
+import javax.swing.plaf.FontUIResource;
+
 import static org.elasticsearch.node.NodeBuilder.*;
 
 public class FountainElasticSearchClient { //implements InitializingBean, DisposableBean{
@@ -66,7 +70,11 @@ public class FountainElasticSearchClient { //implements InitializingBean, Dispos
 				 * Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "fountain").build();
 				 * Grrrhhh!
 				 */
-				Settings settings = ImmutableSettings.settingsBuilder().classLoader(contextClassLoader.getParent()).put("cluster.name", properties.getProperty("elasticsearch.search.cluster")).build();
+				URL resource = FountainElasticSearchClient.class.getClassLoader().getResource("/");
+				//put("cluster.name", properties.getProperty("elasticsearch.search.cluster"))
+				//put("path.conf", resource.getPath() +  "/names.txt");
+				System.out.print(resource.getPath());
+				Settings settings = ImmutableSettings.settingsBuilder().classLoader(contextClassLoader.getParent()).put("cluster.name", properties.getProperty("elasticsearch.search.cluster")).put("path.conf", resource.getPath()).build();
 				client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(properties.getProperty("elasticsearch.search.host"), Integer.parseInt(properties.getProperty("elasticsearch.search.port"))));
 				//TODO the host and port should come form the environment properties.
 				InetSocketTransportAddress addr = new InetSocketTransportAddress(properties.getProperty("elasticsearch.search.host"), Integer.parseInt(properties.getProperty("elasticsearch.search.port"))); //9300 is the 'transport address' 9200 the REST interface.

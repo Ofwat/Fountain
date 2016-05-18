@@ -221,7 +221,7 @@ dependencies{
 	compile 'com.google.code.gson:gson:2.2.4'
 
 	//ElasticSearch for auditing
-	compile ('org.elasticsearch:elasticsearch:1.7.1'){
+	compile ('org.elasticsearch:elasticsearch:1.7.5'){
 		exclude (group:"org.apache.tomcat", module: 'jasper')
 	}
 	compile 'com.vividsolutions:jts:1.13'

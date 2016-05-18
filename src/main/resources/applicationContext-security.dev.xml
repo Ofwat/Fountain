@@ -10,6 +10,7 @@
         <s:intercept-url pattern="/rest-services/**" access="hasAnyRole('ROLE_OFWAT\FOUNTAIN.EDITORS', 'ROLE_OFWAT\FOUNTAIN.ADMINS', 'ROLE_OFWAT\FOUNTAIN.USERS')"/>
         <s:intercept-url pattern="/**" access="permitAll()" />
         <s:form-login />
+        <s:csrf disabled="true"/>
         <s:anonymous />
         <s:logout />
     </s:http>
