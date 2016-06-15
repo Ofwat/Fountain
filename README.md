@@ -1,6 +1,4 @@
 Fountain
 ========
 
-Fountain application
-
-Test modification 3.
+Open sourced version of the Fountain regulatory database.
