@@ -82,7 +82,7 @@ public class ModelPropertiesMapDaoImpl extends JdbcDaoSupport  implements ModelP
 	};	
 	
 	public int create(ModelPropertiesMap modelPropertiesMap) {
-        String sql = "INSERT INTO tbl_modelpropertiesMap (modelid, itemid, itemCode, ItemPropertiesId) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO tbl_modelpropertiesmap (modelid, itemid, itemCode, ItemPropertiesId) VALUES (?,?,?,?)";
         SqlUpdate su = new SqlUpdate();
         su.setDataSource(getDataSource());
         su.setSql(sql);
@@ -90,7 +90,7 @@ public class ModelPropertiesMapDaoImpl extends JdbcDaoSupport  implements ModelP
         su.declareParameter(new SqlParameter(Types.INTEGER)); // ItemId
         su.declareParameter(new SqlParameter(Types.VARCHAR)); // ItemCode
         su.declareParameter(new SqlParameter(Types.INTEGER)); // ItemPropertiesId
-        Object[] parameters = new Object[] {modelPropertiesMap.getModelId(), 
+        Object[] parameters = new Object[] {modelPropertiesMap.getModelId(),
         		                            modelPropertiesMap.getItemId(),
         		                            modelPropertiesMap.getItemCode(),
         		                            modelPropertiesMap.getItemPropertiesId()};
