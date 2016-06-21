@@ -93,7 +93,7 @@ public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 	    	String modelTypeName = rs.getString("modelTypeName");
 	    	ModelType mt = ModelType.getByName(modelTypeName);
 	        int branchId = rs.getInt("branchTagId");
-	        int id = rs.getInt("ID");
+	        int id = rs.getInt("id");
 	        int displayOrder = rs.getInt("displayOrder");
 	        int runId = rs.getInt("runId");
 	        
@@ -219,7 +219,7 @@ public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 						"m.*, t.id AS modelTypeId, t.name AS modelTypeName " + 
 					 "FROM " + MODEL_TABLE_NAME + " AS m " + 
 					 	"INNER JOIN " + MODEL_TYPE_TABLE_NAME + " AS t on m.modelTypeId = t.id " +
-					 "ORDER BY M.displayOrder";
+					 "ORDER BY m.displayOrder";
 		List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER);
         return models;
 	}
@@ -229,7 +229,7 @@ public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 						"m.*, t.id AS modelTypeId, t.name AS modelTypeName " + 
 					 "FROM " + MODEL_TABLE_NAME + " AS m " + 
 					 	"INNER JOIN " + MODEL_TYPE_TABLE_NAME + " AS t on m.modelTypeId = t.id and t.id=? " +
-					 "ORDER BY M.displayOrder";
+					 "ORDER BY m.displayOrder";
 		List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER, modelTypeId);
         return models;
 	}
@@ -381,7 +381,7 @@ public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 				" INNER JOIN tbl_modeltype AS t on m.modelTypeId = t.id" + 
 				" INNER JOIN " + MODEL_RUN_DEPENDENCY_TABLE_NAME + " AS d on m.id = d.dependencyId" +
 				" where d.modelId = ?" + 
-				" ORDER BY M.displayOrder;";
+				" ORDER BY m.displayOrder;";
 			List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER, modelId);
 		return models;
 	}

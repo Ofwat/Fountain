@@ -37,7 +37,7 @@ import uk.gov.ofwat.fountain.domain.Table;
 
 public class TableDaoImpl extends JdbcDaoSupport  implements TableDao {
 
-	private static final String COMPANY_TABLE = "tbl_companyTable";
+	private static final String COMPANY_TABLE = "tbl_companytable";
 	private static final String TABLE_TABLE = "tbl_table";
 	private static final String COMPANY_GROUP_TABLE = "tbl_tablegroups";
 	
