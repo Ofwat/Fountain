@@ -700,6 +700,9 @@
 		<property name="bulkUploadDir">
 			<value>${model.bulk.dir}</value>
 		</property>
+		<property name="modelBuilderUploadDir">
+			<value>${model.builder.upload.dir}</value>
+		</property>
 		<property name="tableUploadLogDir">
 			<value>${table.upload.log.dir}/</value>
 		</property>
