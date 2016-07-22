@@ -18,20 +18,19 @@
 
 package uk.gov.ofwat.fountain.dao;
 
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import uk.gov.ofwat.fountain.domain.CodeList;
+import uk.gov.ofwat.fountain.domain.ListItem;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-
-import uk.gov.ofwat.fountain.domain.CodeList;
-import uk.gov.ofwat.fountain.domain.ListItem;
-
 public class CodeListDaoImpl extends JdbcDaoSupport implements CodeListDao{
 	
 	private static final String CODELIST_TABLE_NAME = "tbl_list";
-	private static final String LIST_ITEM_TABLE_NAME = "tbl_listItem";
+	private static final String LIST_ITEM_TABLE_NAME = "tbl_listitem";
 	
 	
 	private final RowMapper<CodeList> CODELIST_ROW_MAPPER = new RowMapper<CodeList>() {

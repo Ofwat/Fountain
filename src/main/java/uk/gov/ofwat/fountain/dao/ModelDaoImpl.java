@@ -17,29 +17,22 @@
  */
  package uk.gov.ofwat.fountain.dao;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.object.SqlUpdate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import uk.gov.ofwat.fountain.domain.*;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.object.SqlUpdate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import uk.gov.ofwat.fountain.domain.Branch;
-import uk.gov.ofwat.fountain.domain.Model;
-import uk.gov.ofwat.fountain.domain.ModelCompanyReport;
-import uk.gov.ofwat.fountain.domain.ModelFamily;
-import uk.gov.ofwat.fountain.domain.ModelInput;
-import uk.gov.ofwat.fountain.domain.ModelType;
 
 public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 	
@@ -219,7 +212,7 @@ public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 						"m.*, t.id AS modelTypeId, t.name AS modelTypeName " + 
 					 "FROM " + MODEL_TABLE_NAME + " AS m " + 
 					 	"INNER JOIN " + MODEL_TYPE_TABLE_NAME + " AS t on m.modelTypeId = t.id " +
-					 "ORDER BY M.displayOrder";
+					 "ORDER BY m.displayOrder";
 		List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER);
         return models;
 	}
@@ -229,7 +222,7 @@ public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 						"m.*, t.id AS modelTypeId, t.name AS modelTypeName " + 
 					 "FROM " + MODEL_TABLE_NAME + " AS m " + 
 					 	"INNER JOIN " + MODEL_TYPE_TABLE_NAME + " AS t on m.modelTypeId = t.id and t.id=? " +
-					 "ORDER BY M.displayOrder";
+					 "ORDER BY m.displayOrder";
 		List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER, modelTypeId);
         return models;
 	}
@@ -381,7 +374,7 @@ public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 				" INNER JOIN tbl_modeltype AS t on m.modelTypeId = t.id" + 
 				" INNER JOIN " + MODEL_RUN_DEPENDENCY_TABLE_NAME + " AS d on m.id = d.dependencyId" +
 				" where d.modelId = ?" + 
-				" ORDER BY M.displayOrder;";
+				" ORDER BY m.displayOrder;";
 			List<Model> models =  getJdbcTemplate().query(sql, MODEL_ROW_MAPPER, modelId);
 		return models;
 	}

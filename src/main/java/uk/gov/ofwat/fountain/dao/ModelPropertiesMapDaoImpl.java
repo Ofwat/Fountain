@@ -17,12 +17,6 @@
  */
 package uk.gov.ofwat.fountain.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.HashMap;
-import java.util.List;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
@@ -30,11 +24,16 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
 import uk.gov.ofwat.fountain.domain.ItemProperties;
 import uk.gov.ofwat.fountain.domain.ItemPropertyInterval;
 import uk.gov.ofwat.fountain.domain.ModelItem;
 import uk.gov.ofwat.fountain.domain.ModelPropertiesMap;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.HashMap;
+import java.util.List;
 
 public class ModelPropertiesMapDaoImpl extends JdbcDaoSupport  implements ModelPropertiesMapDao {
 
@@ -82,7 +81,7 @@ public class ModelPropertiesMapDaoImpl extends JdbcDaoSupport  implements ModelP
 	};	
 	
 	public int create(ModelPropertiesMap modelPropertiesMap) {
-        String sql = "INSERT INTO tbl_modelpropertiesMap (modelid, itemid, itemCode, ItemPropertiesId) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO tbl_modelpropertiesmap (modelid, itemid, itemCode, ItemPropertiesId) VALUES (?,?,?,?)";
         SqlUpdate su = new SqlUpdate();
         su.setDataSource(getDataSource());
         su.setSql(sql);
