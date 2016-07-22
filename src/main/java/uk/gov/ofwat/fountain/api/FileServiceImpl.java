@@ -1,4 +1,5 @@
 /*
+/*
  *  Copyright (C) 2009 Water Services Regulation Authority (Ofwat)
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,29 +18,23 @@
  */
 package uk.gov.ofwat.fountain.api;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlbeans.XmlObject;
 import org.springframework.transaction.annotation.Transactional;
-
+import uk.gov.ofwat.fountain.domain.ImportResponse;
+import uk.gov.ofwat.fountain.domain.Notice;
 import uk.gov.ofwat.fountain.rest.dto.ImportResponseDto;
 import uk.gov.ofwat.fountain.tools.InvalidDocumentException;
 import uk.gov.ofwat.model2.ModelDocument;
 import uk.gov.ofwat.model2.ModelDocument.Model;
 import uk.gov.ofwat.version1.DictionaryDocument;
 import uk.gov.ofwat.version1.DictionaryDocument.Dictionary;
+
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class FileServiceImpl implements FileService {
 
@@ -48,9 +43,10 @@ public class FileServiceImpl implements FileService {
 	private ReservoirDictionaryItemsImporter reservoirImporter;
 	protected String bulkUploadDir;
 	private String tableUploadLogDir;
-	
+	private String modelBuilderUploadDir;
+
 	private static final Log log = LogFactory.getLog(FileServiceImpl.class);
-	
+
 	public void setModelImporter(ModelImporter modelImporter){
 		this.modelImporter = modelImporter;
 	}
@@ -142,8 +138,107 @@ public class FileServiceImpl implements FileService {
 			}
 		}
 		
-		reports.add ("Successfully processed " + processed + " file(s)");
+		reports.add("Successfully processed " + processed + " file(s)");
 		return reports;
+	}
+
+	@Transactional
+	public ImportResponse singleModelImport(String filename) {
+		ImportResponse importResponse = new ImportResponse();
+		importResponse.setUploadFileName(filename);
+		importResponse.setSuccess(false);
+
+		File uploadDir = new File(modelBuilderUploadDir);
+		File finishedDir = new File(bulkUploadDir, "done");
+
+		List<String> reports = new ArrayList<String>();
+
+		if (!createDirOrFail(reports, uploadDir)) {
+			importResponse.addNotice(new Notice("Error", reports.get(0), ""));
+			return importResponse;
+		}
+		if (!createDirOrFail(reports, finishedDir)) {
+			importResponse.addNotice(new Notice("Error", reports.get(0), ""));
+			return importResponse;
+		}
+		if(!filename.endsWith(".xml")){
+			importResponse.addNotice(new Notice("Error", filename + " is not an XML file.", ""));
+			return importResponse;
+		}
+
+		File modelFile = new File(uploadDir.getAbsolutePath(), filename);
+
+		XmlObject xmlObjExpected = null;
+		try {
+			xmlObjExpected = XmlObject.Factory.parse(modelFile);
+		} catch(Exception e) {
+			log.error("Invalid file: " + filename + ". Not a valid XML file.");
+			e.printStackTrace();
+			importResponse.addNotice((new Notice("Error", "File " + filename + " was not a valid XML file.", "Please see server log. " + e.getMessage().toString())));
+			moveCompletedFile(importResponse, modelFile, finishedDir);
+			return importResponse;
+		}
+		
+		if (null == xmlObjExpected ||
+			!(xmlObjExpected instanceof ModelDocument)) {
+			log.error("Invalid file: " + filename + ". Not a valid model file.");
+			importResponse.addNotice((new Notice("Error", "File " + filename + " was not a valid model file.", "")));
+			moveCompletedFile(importResponse, modelFile, finishedDir);
+			return importResponse;
+		}
+
+		ModelDocument modelDocument = (ModelDocument)xmlObjExpected;
+		Model mdl = modelDocument.getModel();
+		List<String> errors = null;
+		try {
+			errors = modelImporter.importReservoirModel(mdl);
+		} catch (Exception e) {
+			log.error("Invalid file: " + filename + ". Not a valid model file.");
+			StringWriter stringWriter = new StringWriter();
+			e.printStackTrace(new PrintWriter(stringWriter));
+			importResponse.addNotice((new Notice("Error", "File " + filename + " was not a valid model file.", "" + stringWriter.toString())));
+			moveCompletedFile(importResponse, modelFile, finishedDir);
+			return importResponse;
+		}
+		if (!errors.isEmpty()) {
+			for (String error: errors) {
+				importResponse.addNotice(new Notice("Error", error, ""));
+			}
+			moveCompletedFile(importResponse, modelFile, finishedDir);
+			return importResponse;
+		}
+		errors = modelFormsImporter.importModel(mdl);
+		if (!errors.isEmpty()) {
+			for (String error : errors) {
+				importResponse.addNotice(new Notice("Error", error, ""));
+			}
+			moveCompletedFile(importResponse, modelFile, finishedDir);
+			return importResponse;
+		}
+
+		importResponse.setSuccess(true);
+		moveCompletedFile(importResponse, modelFile, finishedDir);
+		return importResponse;
+	}
+
+	private boolean moveCompletedFile(ImportResponse importResponse, File modelFile, File finishedDir) {
+		String destFilename = finishedDir.getAbsolutePath() + "\\" + modelFile.getName();
+		if (importResponse.isSuccess()) {
+			destFilename += "." + getTimeStamp() + ".done";
+		}
+		else {
+			destFilename += "." + getTimeStamp() + ".err";
+		}
+		File destFile = new File(destFilename);
+		if (!modelFile.renameTo(destFile)) {
+			importResponse.addNotice(new Notice("Error", "Could not rename file to " + destFilename, ""));
+			importResponse.setSuccess(false);
+			return false;
+		}
+
+		log.info("Moved finished file to " + destFilename);
+		importResponse.addNotice(new Notice("Info", "Moved file to " + destFilename, ""));
+		return true;
 	}
 
 	@Transactional
@@ -264,5 +359,13 @@ public class FileServiceImpl implements FileService {
 
 	public void setBulkUploadDir(String bulkUploadDir) {
 		this.bulkUploadDir = bulkUploadDir;
+	}
+
+	public String getModelBuilderUploadDir() {
+		return modelBuilderUploadDir;
+	}
+
+	public void setModelBuilderUploadDir(String modelBuilderUploadDir) {
+		this.modelBuilderUploadDir = modelBuilderUploadDir;
 	}
 }
