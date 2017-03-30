@@ -789,6 +789,11 @@
 		<property name="metaDataExtractor" ref="metaDataExtractor" />
 	</bean>
 
+	<!--<bean id="tableWrapperRenderer" class="uk.gov.ofwat.fountain.api.table.TableWrapperRenderer" >-->
+		<!--<property name="tableStructureService" ref="tableStructureService" />-->
+		<!--<property name="modelService" ref="modelService" />-->
+	<!--</bean>-->
+
 	<bean id="reportTableWriter" class="uk.gov.ofwat.fountain.api.report.ReportTableWriter">
 		<property name="reportService" ref="reportService" />
 		<property name="teamService" ref="teamService" />
@@ -889,11 +894,19 @@
 		<property name="chunkPort">
 			<value>${ofwat.chunker.port}</value>
 		</property>
-	</bean>	
-	
+	</bean>
+
 	<bean id="updateService" class="uk.gov.ofwat.fountain.api.UpdateServiceImpl">
 		<property name="UpdateDao" ref="updateDao"></property>
-	</bean>	
+	</bean>
+
+	<bean id="tableWrapperService" class="uk.gov.ofwat.fountain.api.TableWrapperServiceImpl">
+		<property name="tableStructureService" ref="tableStructureService" />
+		<property name="modelService" ref="modelService" />
+		<!--<property name="tableWrapperRenderer" ref="tableWrapperRenderer"></property>-->
+	</bean>
+
+
 
 	<!-- ************************************************** ** ** ** RESOURCES 
 		** ** ** ******************************************************* -->
@@ -999,6 +1012,16 @@
 		<property name="displayService" ref="displayService" />
 		<property name="modelItemService" ref="modelItemService" />
 		<property name="tableService" ref="tableService" />
+	</bean>
+
+	<bean id="tableWrapperResource" class="uk.gov.ofwat.fountain.rest.TableWrapperResource">
+		<property name="modelService" ref="modelService" />
+		<property name="referenceService" ref="referenceService" />
+		<property name="userService" ref="userService" />
+		<property name="displayService" ref="displayService" />
+		<property name="modelItemService" ref="modelItemService" />
+		<property name="tableService" ref="tableService" />
+		<property name="tableWrapperService" ref="tableWrapperService" />
 	</bean>
 
 	<bean id="lockResource" class="uk.gov.ofwat.fountain.rest.LockResource">

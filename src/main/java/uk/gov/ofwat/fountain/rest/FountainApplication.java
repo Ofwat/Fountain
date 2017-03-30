@@ -17,14 +17,13 @@
  */
 package uk.gov.ofwat.fountain.rest;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.ws.rs.core.Application;
-
 import uk.gov.ofwat.fountain.rest.interceptors.ContentTypeSetterPreProcessorInterceptor;
 import uk.gov.ofwat.fountain.rest.interceptors.LoggingInterceptor;
 import uk.gov.ofwat.fountain.util.SpringApplicationContext;
+
+import javax.ws.rs.core.Application;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FountainApplication extends Application {
    private Set<Object> singletons = new HashSet<Object>();
@@ -60,6 +59,7 @@ public class FountainApplication extends Application {
       singletons.add(SpringApplicationContext.getBean("excelReportMarshaller"));
       singletons.add(SpringApplicationContext.getBean("searchResource"));
       singletons.add(SpringApplicationContext.getBean("updateResource"));
+      singletons.add(SpringApplicationContext.getBean("tableWrapperResource"));
       //singletons.add(SpringApplicationContext.getBean("auditInterceptor"));
       //singletons.add(SpringApplicationContext.getBean("postAuditInterceptor"));
       //simple resources or resources with their own initialisation

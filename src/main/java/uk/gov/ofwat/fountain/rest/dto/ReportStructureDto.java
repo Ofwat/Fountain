@@ -18,10 +18,11 @@
 
 package uk.gov.ofwat.fountain.rest.dto;
 
-import java.util.List;
-
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.List;
 
 @XmlRootElement(name = "reportStructure")
 @XmlType(propOrder = { "id", "name", "owningUser", "modelItems", "intervalIds", "intervals"})
@@ -30,9 +31,9 @@ public class ReportStructureDto {
 	private int id;
 	private String name;
 	private String owningUser;
-	private List<ModelItemDto>modelItemDtos;
+	@XmlTransient private List<ModelItemDto>modelItemDtos;
 	private List<Integer>intervalIds;
-	private List<IntervalDto>intervalDtos;
+	@XmlTransient private List<IntervalDto>intervalDtos;
 	
 	public int getId() {
 		return id;
@@ -54,7 +55,8 @@ public class ReportStructureDto {
 	public void setOwningUser(String owningUser) {
 		this.owningUser = owningUser;
 	}
-	
+
+	@XmlElement(name="modelItems")
 	public List<ModelItemDto> getModelItemDtos() {
 		return modelItemDtos;
 	}
@@ -67,6 +69,8 @@ public class ReportStructureDto {
 	public void setIntervalIds(List<Integer> intervalIds) {
 		this.intervalIds = intervalIds;
 	}
+
+	@XmlElement(name = "intervals")
 	public List<IntervalDto> getIntervalDtos() {
 		return intervalDtos;
 	}
