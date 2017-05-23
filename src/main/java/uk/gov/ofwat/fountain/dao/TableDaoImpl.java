@@ -17,23 +17,21 @@
  */
 package uk.gov.ofwat.fountain.dao;
 
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.object.SqlUpdate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import uk.gov.ofwat.fountain.domain.CompanyTable;
+import uk.gov.ofwat.fountain.domain.Group;
+import uk.gov.ofwat.fountain.domain.Table;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.object.SqlUpdate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import uk.gov.ofwat.fountain.domain.CompanyTable;
-import uk.gov.ofwat.fountain.domain.Group;
-import uk.gov.ofwat.fountain.domain.Table;
 
 public class TableDaoImpl extends JdbcDaoSupport  implements TableDao {
 

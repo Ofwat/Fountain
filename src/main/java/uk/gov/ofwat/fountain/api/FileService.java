@@ -20,6 +20,7 @@ package uk.gov.ofwat.fountain.api;
 import java.io.File;
 import java.util.List;
 
+import uk.gov.ofwat.fountain.domain.ImportResponse;
 import uk.gov.ofwat.fountain.rest.dto.ImportResponseDto;
 
 public interface FileService {
@@ -57,4 +58,6 @@ public interface FileService {
 
 	public String writeTableUploadLogFile(ImportResponseDto responseDto);
 	public File readTableUploadLogFile(long id);
+
+	public ImportResponse singleModelImport(String filename);
 }

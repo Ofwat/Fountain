@@ -17,16 +17,15 @@
  */
 package uk.gov.ofwat.fountain.domain;
 
+import uk.gov.ofwat.fountain.api.ItemService;
+import uk.gov.ofwat.fountain.api.ModelService;
+import uk.gov.ofwat.fountain.audit.SkipAudit;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import uk.gov.ofwat.fountain.api.ItemService;
-import uk.gov.ofwat.fountain.api.ModelService;
-import uk.gov.ofwat.fountain.api.report.RunTag;
-import uk.gov.ofwat.fountain.audit.SkipAudit;
 
 public class Model implements Addressable, Entity, Coded , Serializable {
 
@@ -198,6 +197,10 @@ public class Model implements Addressable, Entity, Coded , Serializable {
 	}
 	public List<Table> getTables() {
 		if (null == tables){
+			System.out.println("model = " + this.getName());
+			System.out.println("model id = " + this.getId());
+
+			System.out.println("modelService = " + modelService);
 			setTables(modelService.getTablesForModel(id));
 		}
 		return tables;

@@ -17,29 +17,22 @@
  */
  package uk.gov.ofwat.fountain.dao;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.object.SqlUpdate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import uk.gov.ofwat.fountain.domain.*;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.object.SqlUpdate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import uk.gov.ofwat.fountain.domain.Branch;
-import uk.gov.ofwat.fountain.domain.Model;
-import uk.gov.ofwat.fountain.domain.ModelCompanyReport;
-import uk.gov.ofwat.fountain.domain.ModelFamily;
-import uk.gov.ofwat.fountain.domain.ModelInput;
-import uk.gov.ofwat.fountain.domain.ModelType;
 
 public class ModelDaoImpl extends JdbcDaoSupport  implements ModelDao {
 	

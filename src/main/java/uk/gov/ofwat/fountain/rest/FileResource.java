@@ -17,45 +17,35 @@
  */
 package uk.gov.ofwat.fountain.rest;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.SecurityContext;
-
 import org.apache.xmlbeans.XmlObject;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import uk.gov.ofwat.fountain.api.DaoCacheService;
-import uk.gov.ofwat.fountain.api.FileService;
-import uk.gov.ofwat.fountain.api.ListException;
-import uk.gov.ofwat.fountain.api.TableService;
-import uk.gov.ofwat.fountain.api.UserService;
+import uk.gov.ofwat.fountain.api.*;
 import uk.gov.ofwat.fountain.api.security.RoleChecker;
 import uk.gov.ofwat.fountain.dataformat.v1.AuditsDocument;
+import uk.gov.ofwat.fountain.domain.ImportResponse;
 import uk.gov.ofwat.fountain.domain.TableUploadMetaData;
 import uk.gov.ofwat.fountain.domain.User;
 import uk.gov.ofwat.fountain.rest.dto.ImportResponseDto;
 import uk.gov.ofwat.fountain.rest.security.RestServiceRoleChecker;
 import uk.gov.ofwat.fountain.tools.AuditAndDataImporter;
 import uk.gov.ofwat.model2.ModelDocument;
+
+import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.SecurityContext;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/file")
 public class FileResource extends RestResource {
@@ -407,15 +397,16 @@ public class FileResource extends RestResource {
 		logger.debug("finished bulkDataUpload");
 		return Response.seeOther(responseURI).build();
 	}
-		
-	
+
+
 
 	@POST
 	@Path("/bulkModelUpload")
-	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
+//	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
+//	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response bulkModelUpload(@Context SecurityContext securityContext,
-			                       @Context HttpServletRequest httpServletRequest)
-								throws Exception{
+									@Context HttpServletRequest httpServletRequest)
+			throws Exception{
 		logger.debug("started bulkModelUpload");
 		daoCacheService.disableCache();
 
@@ -424,15 +415,44 @@ public class FileResource extends RestResource {
 		resp.setNotices(results);
 		resp.setSuccess(results.size() == 0);
 		URI responseURI = new URI("../jsp/protected/modelUploadResponse.jsp");
-		
+
 		// put tresults where they can be read by the jsp
 		httpServletRequest.getSession().setAttribute("results", resp);
-		
+
 		daoCacheService.enableCache();
 		logger.debug("finished bulkModelUpload");
 		return Response.seeOther(responseURI).build();
 	}
-		
-	
+
+
+	@POST
+	@Path("/modelFileUploader")
+	@Produces({"application/json", "application/xml"})
+	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
+	public Response modelFileUpload(@QueryParam("filename") String filename,
+									@Context SecurityContext securityContext,
+									@Context HttpServletRequest httpServletRequest)
+									throws Exception {
+		logger.debug("started modelFileUpload");
+
+		daoCacheService.disableCache();
+		ImportResponse resp = fileService.singleModelImport(filename);
+		daoCacheService.enableCache();
+
+		ResponseBuilder responseBuilder;
+		if (resp.isSuccess()) {
+			responseBuilder = Response.ok();
+		}
+		else {
+			responseBuilder = Response.status(Response.Status.BAD_REQUEST);
+		}
+		responseBuilder.entity(resp);
+
+		logger.debug("finished modelFileUpload");
+		return responseBuilder.build();
+	}
+
+
+
 
 }

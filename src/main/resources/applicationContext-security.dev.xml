@@ -13,6 +13,7 @@
         <s:csrf disabled="true"/>
         <s:anonymous />
         <s:logout />
+        <s:csrf disabled="true"/>
     </s:http>
 
     <!-- Simple namespace-based configuration -->

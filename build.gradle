@@ -1,10 +1,12 @@
-import java.text.*
-import org.gradle.api.java.archives.internal.DefaultManifest
-import org.gradle.api.internal.file.IdentityFileResolver
 import org.apache.tools.ant.filters.ReplaceTokens
+
+import java.text.SimpleDateFormat
 
 //System.setProperty('http.proxyHost', '127.0.0.1')
 //System.setProperty('http.proxyPort', '8888')
+
+//compileJava.options.fork = true
+//compileJava.options.forkOptions.executable = "C:/Program Files/Java/jdk1.7.0_79"
 
 //Helper method to load properties
 def loadProperties(String sourceFileName) {

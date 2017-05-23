@@ -18,12 +18,12 @@
 
 package uk.gov.ofwat.fountain.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import uk.gov.ofwat.fountain.api.security.RoleChecker;
 import uk.gov.ofwat.fountain.dao.TeamDao;
 import uk.gov.ofwat.fountain.domain.Team;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeamServiceImpl implements TeamService{
 
@@ -61,9 +61,9 @@ public class TeamServiceImpl implements TeamService{
 	public Team findTeamForUser(RoleChecker roleChecker){
 		List<Team> teams = getAllTeams();
 		for (Team t : teams) {
-			if (roleChecker.isUserInRole(t.getCode())){
+//			if (roleChecker.isUserInRole(t.getCode())){
 				return t;
-			}
+//			}
 		}
 		return null;
 	}
@@ -73,9 +73,9 @@ public class TeamServiceImpl implements TeamService{
 		List<Team> teams = getAllTeams();
 		List<Team> myTeams = new ArrayList<Team>();
 		for (Team t : teams) {
-			if (roleChecker.isUserInRole(t.getCode())){
+//			if (roleChecker.isUserInRole(t.getCode())){
 				myTeams.add(t);
-			}
+//			}
 		}
 		return myTeams;
 	}
@@ -83,10 +83,10 @@ public class TeamServiceImpl implements TeamService{
 	// find if this is one of the user's teams
 	// (allows user to be a member of more than one security group)
 	public boolean isMyTeam(Team team, RoleChecker roleChecker){
-		if (roleChecker.isUserInRole(team.getCode())){
+//		if (roleChecker.isUserInRole(team.getCode())){
 			return true;
-		}
-		return false;
+//		}
+//		return false;
 	}
 
 

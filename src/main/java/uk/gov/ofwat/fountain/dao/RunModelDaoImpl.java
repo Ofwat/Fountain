@@ -17,6 +17,16 @@
  */
  package uk.gov.ofwat.fountain.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.object.SqlUpdate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import uk.gov.ofwat.fountain.api.UserService;
+import uk.gov.ofwat.fountain.domain.RunModel;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -25,22 +35,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.jdbc.object.SqlUpdate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import uk.gov.ofwat.fountain.api.UserService;
-import uk.gov.ofwat.fountain.domain.RunModel;
-
 public class RunModelDaoImpl extends JdbcDaoSupport implements RunModelDao {
 	
 	private RunDao runDao;
 	private UserService userService;
-	private static final String RUN_MODEL_TABLE_NAME = "tbl_runModel";
+	private static final String RUN_MODEL_TABLE_NAME = "tbl_runmodel";
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;

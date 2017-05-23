@@ -17,24 +17,36 @@
  */
 package uk.gov.ofwat.fountain.rest;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.ws.rs.core.Application;
-
+import org.jboss.resteasy.plugins.interceptors.CorsFilter;
 import uk.gov.ofwat.fountain.rest.interceptors.ContentTypeSetterPreProcessorInterceptor;
 import uk.gov.ofwat.fountain.rest.interceptors.LoggingInterceptor;
 import uk.gov.ofwat.fountain.util.SpringApplicationContext;
 
+import javax.ws.rs.core.Application;
+import java.util.HashSet;
+import java.util.Set;
+
+//import javax.ws.rs.ApplicationPath;
+
+//@ApplicationPath("")
 public class FountainApplication extends Application {
    private Set<Object> singletons = new HashSet<Object>();
    private Set<Class<?>> empty = new HashSet<Class<?>>();
-   
+   private HashSet<Class<?>> classes = new HashSet<Class<?>>();
    
    public FountainApplication() {
 	  
 	  // Spring managed resources
-	  singletons.add(SpringApplicationContext.getBean("auditAdvice"));
+
+       CorsFilter corsFilter = new CorsFilter();
+       corsFilter.getAllowedOrigins().add("*");
+//       corsFilter.setAllowedHeaders("origin, content-type, accept, authorization");
+       corsFilter.setAllowCredentials(true);
+       corsFilter.setAllowedMethods("OPTIONS, GET, POST, DELETE, PUT, PATCH");
+       corsFilter.setCorsMaxAge(1209600);
+       singletons.add(corsFilter);
+
+      singletons.add(SpringApplicationContext.getBean("auditAdvice"));
 	  singletons.add(SpringApplicationContext.getBean("tableResource"));
 	  singletons.add(SpringApplicationContext.getBean("companyResource"));
 	  singletons.add(SpringApplicationContext.getBean("auditResource"));
@@ -60,12 +72,15 @@ public class FountainApplication extends Application {
       singletons.add(SpringApplicationContext.getBean("excelReportMarshaller"));
       singletons.add(SpringApplicationContext.getBean("searchResource"));
       singletons.add(SpringApplicationContext.getBean("updateResource"));
+      singletons.add(SpringApplicationContext.getBean("tableWrapperResource"));
       //singletons.add(SpringApplicationContext.getBean("auditInterceptor"));
       //singletons.add(SpringApplicationContext.getBean("postAuditInterceptor"));
       //simple resources or resources with their own initialisation
       //singletons.add(new ExcelMarshaller());
       singletons.add(new ContentTypeSetterPreProcessorInterceptor());
       singletons.add(new LoggingInterceptor());
+
+
    }
 
    @Override
@@ -75,6 +90,6 @@ public class FountainApplication extends Application {
 
    @Override
    public Set<Object> getSingletons() {
-      return singletons;
+       return singletons;
    }
 }

@@ -18,29 +18,6 @@
 
 package uk.gov.ofwat.fountain.rest;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
-
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.annotations.providers.jaxb.Wrapped;
 import org.jboss.resteasy.annotations.providers.jaxb.json.BadgerFish;
@@ -48,48 +25,27 @@ import org.jboss.resteasy.spi.UnhandledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.CannotAcquireLockException;
-
-import uk.gov.ofwat.fountain.api.BasketService;
-import uk.gov.ofwat.fountain.api.ChunkService;
-import uk.gov.ofwat.fountain.api.IndexService;
-import uk.gov.ofwat.fountain.api.ModelService;
-import uk.gov.ofwat.fountain.api.PopularityPeriod;
-import uk.gov.ofwat.fountain.api.PopularityService;
-import uk.gov.ofwat.fountain.api.ReferenceService;
-import uk.gov.ofwat.fountain.api.ReportService;
+import uk.gov.ofwat.fountain.api.*;
 import uk.gov.ofwat.fountain.api.ReportServiceImpl.ReportCommitResult;
-import uk.gov.ofwat.fountain.api.RunService;
-import uk.gov.ofwat.fountain.api.RunTagService;
-import uk.gov.ofwat.fountain.api.TeamService;
-import uk.gov.ofwat.fountain.api.UserService;
 import uk.gov.ofwat.fountain.api.report.RunTag;
 import uk.gov.ofwat.fountain.api.security.RoleChecker;
-import uk.gov.ofwat.fountain.domain.Model;
-import uk.gov.ofwat.fountain.domain.ModelCompanyReport;
-import uk.gov.ofwat.fountain.domain.ModelItem;
-import uk.gov.ofwat.fountain.domain.Report;
-import uk.gov.ofwat.fountain.domain.ReportDefinition;
-import uk.gov.ofwat.fountain.domain.ReportSummary;
-import uk.gov.ofwat.fountain.domain.RunModel;
-import uk.gov.ofwat.fountain.domain.Team;
-import uk.gov.ofwat.fountain.domain.User;
+import uk.gov.ofwat.fountain.domain.*;
 import uk.gov.ofwat.fountain.domain.chunk.ChunkSet;
-import uk.gov.ofwat.fountain.domain.chunk.ReportChunkSet;
 import uk.gov.ofwat.fountain.domain.run.Run;
 import uk.gov.ofwat.fountain.domain.runTag.RunModelTag;
-import uk.gov.ofwat.fountain.rest.dto.BulkDeleteReportDto;
-import uk.gov.ofwat.fountain.rest.dto.BulkModifyReportDto;
-import uk.gov.ofwat.fountain.rest.dto.CustomReportDto;
-import uk.gov.ofwat.fountain.rest.dto.EditReportDto;
-import uk.gov.ofwat.fountain.rest.dto.ModelItemDto;
-import uk.gov.ofwat.fountain.rest.dto.ReportDetailsDto;
-import uk.gov.ofwat.fountain.rest.dto.ReportDto;
-import uk.gov.ofwat.fountain.rest.dto.ReportFlat;
-import uk.gov.ofwat.fountain.rest.dto.RunTagIdsDto;
-import uk.gov.ofwat.fountain.rest.dto.TableDto;
+import uk.gov.ofwat.fountain.rest.dto.*;
 import uk.gov.ofwat.fountain.rest.dto.factory.CustomReportDtoFactory;
 import uk.gov.ofwat.fountain.rest.security.RestServiceRoleChecker;
 import uk.gov.ofwat.fountain.search.wrapper.ReportSearchWrapper;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Path("/report")
 public class ReportResource extends RestResource {
@@ -486,7 +442,7 @@ public class ReportResource extends RestResource {
 	}
 
 	@GET
-	@Produces({"application/json", "application/xml"})
+	@Produces({"application/xml", "application/json"})
 	@Path("/table/{id}")
 	@Wrapped(element="reportTable")
 	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
