@@ -74,6 +74,7 @@ public class TableWrapperRendererTest extends TestCase {
 
 	public void testSetSpansOnEmptyCell() {
 		layout.setRowAndColOnEmptyCells();
+		layout.initialiseCellLayout();
 		int row = 0;
 		int col = 0;
 		FormDisplayCell formDisplayCell = formDisplayGrid[row][col];
@@ -87,6 +88,7 @@ public class TableWrapperRendererTest extends TestCase {
 
 	public void testSetSpansOnLoneEmptyCell() {
 		layout.setRowAndColOnEmptyCells();
+		layout.initialiseCellLayout();
 		int row = 9;
 		int col = 12;
 		FormDisplayCell formDisplayCell = formDisplayGrid[row][col];
@@ -100,6 +102,7 @@ public class TableWrapperRendererTest extends TestCase {
 
 	public void testSetSpansOnEmptyLastCell() {
 		layout.setRowAndColOnEmptyCells();
+		layout.initialiseCellLayout();
 		int row = 10;
 		int col = 13;
 		FormDisplayCell formDisplayCell = formDisplayGrid[row][col];
@@ -1301,8 +1304,6 @@ public class TableWrapperRendererTest extends TestCase {
 
 		return formDisplayGrid;
 	}
-
-
 
 }
 

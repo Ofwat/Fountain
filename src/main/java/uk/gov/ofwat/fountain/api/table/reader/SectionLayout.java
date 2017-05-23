@@ -28,7 +28,7 @@ public class SectionLayout {
     }
 
     public String[][] makeCellLayout() {
-//        makeTestData();
+        makeTestData();
         printFormDisplayGrid();
         setRowAndColOnEmptyCells();
         initialiseCellLayout();
@@ -51,22 +51,12 @@ public class SectionLayout {
 
     public void processCell(int rowIndex, int colIndex) {
         FormDisplayCell formDisplayCell = formDisplayGrid[rowIndex][colIndex];
-        if (skipRedundantCells(rowIndex, colIndex, formDisplayCell)) {
+        if (skipRedundantCell(rowIndex, colIndex, formDisplayCell)) {
             return;
         }
         setSpansOnEmptyCell(rowIndex, colIndex, formDisplayCell);
         markSpannedCellsAsRedundent(rowIndex, colIndex, formDisplayCell);
         setCellLayoutCode(rowIndex, colIndex, formDisplayCell);
-    }
-
-    public void printSectionLayout() {
-        for (int rowIndex=0; rowIndex<sectionRows; rowIndex++ ) {
-            System.out.println("");
-            for (int colIndex=0; colIndex<sectionCols; colIndex++ ) {
-                System.out.print(" " + cellLayout[rowIndex][colIndex]);
-            }
-        }
-        System.out.println("");
     }
 
     public String setCellLayoutCode(int rowIndex, int colIndex, FormDisplayCell formDisplayCell) {
@@ -132,35 +122,15 @@ public class SectionLayout {
         cellLayout[rowIndex][colIndex] = "|~  ";
     }
 
-//    public void markColSpannedCellsAsRedundent(int rowIndex, int colIndex, FormDisplayCell formDisplayCell) {
-//        // Mark column spanned cells as not usable.
-//        for (int colsSpanned=1; colsSpanned < formDisplayCell.getColumnSpan(); colsSpanned++) {
-//            // Danger - future gazing. Relies on table being correct.
-//            if (colIndex+colsSpanned > sectionCols) {
-////								throw new Exception("colIndex+colsSpanned-1 > sectionCols = " + (colIndex+colsSpanned-1) + " > " + sectionCols);
-//                System.out.println("ERROR colIndex+colsSpanned-1 > sectionCols = " + (colIndex+colsSpanned) + " > " + sectionCols);
-//            }
-//            cellLayout[rowIndex][colIndex+colsSpanned] = "|~  ";
-//            // Mark row spanned cells as not usable.
-//            for (int rowsSpanned=1; rowsSpanned < formDisplayCell.getRowSpan(); rowsSpanned++) {
-//                // Danger - future gazing. Relies on table being correct.
-//                if (rowIndex+rowsSpanned > sectionRows) {
-////								throw new Exception("rowIndex+rowsSpanned-1 > sectionRows = " + (rowIndex+rowsSpanned-1) + " > " + sectionRows);
-//                    System.out.println("ERROR rowIndex+rowsSpanned-1 > sectionRows = " + (rowIndex+rowsSpanned) + " > " + sectionRows);
-//                }
-//                cellLayout[rowIndex+rowsSpanned][colIndex] = "|~  ";
-//            }
-//        }
-//    }
-
-    public void setSpansOnEmptyCell(int rowIndex, int startColIndex, FormDisplayCell formDisplayCell) {
+    public void setSpansOnEmptyCell(int rowIndex, int colOffset, FormDisplayCell formDisplayCell) {
         if (formDisplayCell.getCellType().equals(CellType.EMPTY)) {
             int colSpanCount=0;
             int rowSpanCount=Integer.MAX_VALUE;
             try {
-                while(((startColIndex + colSpanCount) < sectionCols) &&
-                        (formDisplayGrid[rowIndex][startColIndex + colSpanCount].getCellType().equals(CellType.EMPTY))) {
-                    int currentCellRowSpan = getRowSpanForEmptyCell(formDisplayGrid[rowIndex][startColIndex + colSpanCount], formDisplayGrid, rowIndex, startColIndex, sectionRows);
+                while(  ((colOffset + colSpanCount) < sectionCols) &&
+                        (formDisplayGrid[rowIndex][colOffset + colSpanCount].getCellType().equals(CellType.EMPTY)) &&
+                        !(skipRedundantCell(rowIndex, colOffset + colSpanCount, formDisplayCell))) {
+                    int currentCellRowSpan = getRowSpanForEmptyCell(formDisplayGrid[rowIndex][colOffset + colSpanCount], formDisplayGrid, rowIndex, colOffset + colSpanCount, sectionRows);
                     if (currentCellRowSpan < rowSpanCount) {
                         // Row span needs to be the smallest we find in the row.
                         rowSpanCount = currentCellRowSpan;
@@ -169,32 +139,33 @@ public class SectionLayout {
                 }
             } catch (Exception e) {
                 System.out.println("rowIndex " + rowIndex);
-                System.out.println("startColIndex " + startColIndex);
+                System.out.println("colOffset " + colOffset);
                 System.out.println("colSpanCount " + colSpanCount);
-                System.out.println("startColIndex + colSpanCount " + (startColIndex + colSpanCount));
+                System.out.println("colOffset + colSpanCount " + (colOffset + colSpanCount));
             }
             formDisplayCell.setColumnSpan(colSpanCount);
             formDisplayCell.setRowSpan(rowSpanCount);
         }
     }
 
-    public int getRowSpanForEmptyCell(FormDisplayCell formDisplayCell, FormDisplayCell[][] formDisplayGrid, int startRowIndex, int colIndex, int sectionRows) {
+    public int getRowSpanForEmptyCell(FormDisplayCell formDisplayCell, FormDisplayCell[][] formDisplayGrid, int rowOffset, int colIndex, int sectionRows) {
         int rowSpanCount=0;
         try {
-            while(((startRowIndex + rowSpanCount) < sectionRows) &&
-                   (formDisplayGrid[startRowIndex + rowSpanCount][colIndex].getCellType().equals(CellType.EMPTY))) {
+            while(  ((rowOffset + rowSpanCount) < sectionRows) &&
+                    (formDisplayGrid[rowOffset + rowSpanCount][colIndex].getCellType().equals(CellType.EMPTY)) &&
+                    (!skipRedundantCell(rowOffset + rowSpanCount, colIndex, formDisplayCell))) {
                 rowSpanCount++;
             }
         } catch (Exception e) {
             System.out.println("colIndex " + colIndex);
-            System.out.println("startRowIndex " + startRowIndex);
+            System.out.println("rowOffset " + rowOffset);
             System.out.println("rowSpanCount " + rowSpanCount);
-            System.out.println("startRowIndex + rowSpanCount " + (startRowIndex + rowSpanCount));
+            System.out.println("rowOffset + rowSpanCount " + (rowOffset + rowSpanCount));
         }
         return rowSpanCount;
     }
 
-    public boolean skipRedundantCells(int rowIndex, int colIndex, FormDisplayCell formDisplayCell) {
+    public boolean skipRedundantCell(int rowIndex, int colIndex, FormDisplayCell formDisplayCell) {
         if (cellLayout[rowIndex][colIndex].equals("|~  ")) {
             if (!formDisplayCell.getCellType().equals(CellType.EMPTY)) {
                 // conflict if cell type is not EMPTY
@@ -288,4 +259,15 @@ public class SectionLayout {
         }
         return grid;
     }
+
+    public void printSectionLayout() {
+        for (int rowIndex=0; rowIndex<sectionRows; rowIndex++ ) {
+            System.out.println("");
+            for (int colIndex=0; colIndex<sectionCols; colIndex++ ) {
+                System.out.print(" " + cellLayout[rowIndex][colIndex]);
+            }
+        }
+        System.out.println("");
+    }
+
 }

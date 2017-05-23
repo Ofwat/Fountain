@@ -402,7 +402,8 @@ public class FileResource extends RestResource {
 
 	@POST
 	@Path("/bulkModelUpload")
-	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
+//	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.ADMINS"})
+//	@RolesAllowed(value={"ROLE_OFWAT\\FOUNTAIN.USERS"})
 	public Response bulkModelUpload(@Context SecurityContext securityContext,
 									@Context HttpServletRequest httpServletRequest)
 			throws Exception{

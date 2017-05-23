@@ -22,7 +22,7 @@ import java.util.List;
         "content",
         "key"})
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TWCell {
+public class TWCell implements TWComponent {
     private int id;
     private String displayText;
 //    @SerializedName("isHeader")

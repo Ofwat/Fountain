@@ -10,5 +10,6 @@ public interface TableWrapperService {
 
     public TWModel renderTable(int tableId);
     public TWModel populateWithData(TWModel twModel, DataTable dataTable, int companyId);
+    public String checkHeaderCellValuesAreTheSame(TWModel serverTWModel, TWModel clientTWModel);
 
 }

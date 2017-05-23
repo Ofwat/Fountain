@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "sectionDetails")
 @XmlType(propOrder = {
-        "id",
         "twSectionId",
 //        "display",
         "code",
@@ -24,8 +23,7 @@ import javax.xml.bind.annotation.*;
         "colCount"
 })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TWSectionDetails {
-    private int id;
+public class TWSectionDetails implements TWComponent {
     @XmlElement(name="sectionId")
     private int twSectionId;
     @XmlTransient
@@ -52,14 +50,6 @@ public class TWSectionDetails {
     private int colCount;
 
     public TWSectionDetails() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getTwSectionId() {

@@ -12,6 +12,7 @@
         <s:form-login />
         <s:anonymous />
         <s:logout />
+        <s:csrf disabled="true"/>
     </s:http>
 
     <!-- Simple namespace-based configuration -->

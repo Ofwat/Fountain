@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "model")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "twTable" })
-public class TWModel {
+public class TWModel implements TWComponent {
 //    @SerializedName("table")
     @XmlElement(name="table")
     private TWTable twTable;

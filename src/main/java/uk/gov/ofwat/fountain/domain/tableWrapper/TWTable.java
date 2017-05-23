@@ -12,7 +12,7 @@ import java.util.List;
 @XmlRootElement(name = "table")
 @XmlType(propOrder = { "id", "name", "description", "twSections" })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TWTable {
+public class TWTable implements TWComponent {
     private int id;
     private String name;
     private String description;

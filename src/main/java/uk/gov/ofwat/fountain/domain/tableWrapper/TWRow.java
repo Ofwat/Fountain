@@ -11,7 +11,7 @@ import java.util.List;
 @XmlRootElement(name = "row")
 @XmlType(propOrder = { "id", "rowNumber", "twCells" })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TWRow {
+public class TWRow implements TWComponent {
     private int id;
     private int rowNumber;
     @XmlElement(name="cells")

@@ -11,7 +11,7 @@ import java.util.List;
 @XmlRootElement(name = "column")
 @XmlType(propOrder = { "id", "twCells" })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TWColumn {
+public class TWColumn implements TWComponent {
     private int id;
 
     @XmlElement(name="cells")

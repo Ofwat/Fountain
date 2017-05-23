@@ -11,7 +11,7 @@ import java.util.List;
 //@XmlType(propOrder = { "id", "twSectionDetails", "twColumns", "twRows" })
 @XmlType(propOrder = { "id", "twSectionDetails", "twRows" })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TWSection {
+public class TWSection implements TWComponent {
     private int id;
     @XmlElement(name="sectionDetails")
     private TWSectionDetails twSectionDetails;
