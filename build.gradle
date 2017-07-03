@@ -240,7 +240,7 @@ sourceSets {
 
 
 task fountainClean(type: Delete, overwrite: true) {
-    delete '/src/main/webapp/jsp/footer.jsp'
+    delete 'src/main/webapp/jsp/footer.jsp'
 }
 clean.dependsOn fountainClean
 
@@ -248,17 +248,17 @@ clean.dependsOn fountainClean
  * The compile groovy and java tasks
  */
 compileGroovy {
-    destinationDir = file('/src/main/webapp/WEB-INF/classes')
+    //destinationDir = file('src/main/webapp/WEB-INF/classes')
 }
 
 task createFooter(dependsOn: compileGroovy, type: Copy) {
     outputs.upToDateWhen { false }
-    from('/src/main/webapp/jsp/footer.jsp.template') {
+    from('src/main/webapp/jsp/footer.jsp.template') {
         def token = "${System.env.JOB_NAME} build: ${System.env.BUILD_NUMBER}  TimeStamp: ${System.env.BUILD_ID}  SVN revision: ${System.env.SVN_REVISION}"
         filter(ReplaceTokens, tokens: ['BUILD_INFO': token.toString(), 'COPYRIGHT_YEAR': new Date().getAt(Calendar.YEAR).toString()])
     }
     rename { fn -> "footer.jsp" }
-    into '/src/main/webapp/jsp'
+    into 'src/main/webapp/jsp'
 }
 
 war {
