@@ -6,8 +6,8 @@
  <Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
       		
       		connectionURL="ldap://DC201.ofwat.net:389"      
-      		connectionName="fountain.live@ofwat.net"
-      		connectionPassword="AdamJB0806#"   
+      		connectionName="xxx"
+      		connectionPassword="xxx"
             userRoleName="member"
             userBase="OU=Users, OU=Jigsaw\ , DC=ofwat,DC=net"
             userPattern="CN={0},OU=Users, OU=Jigsaw\ , DC=ofwat,DC=net"

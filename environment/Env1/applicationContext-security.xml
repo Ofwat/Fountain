@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
     http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-  	<sec:ldap-server url="ldap://DC201.ofwat.net:389" manager-dn="fountain.live@ofwat.net" manager-password="AdamJB0806#"/>
+  	<sec:ldap-server url="ldap://DC201.ofwat.net:389" manager-dn="fountain.live@ofwat.net" manager-password="XXXX"/>
 
 	<!-- windows authentication provider -->
 	<bean id="waffleWindowsAuthProvider" class="waffle.windows.auth.impl.WindowsAuthProviderImpl" />
