@@ -44,7 +44,7 @@ public class TableDaoImpl extends JdbcDaoSupport  implements TableDao {
 	private static final RowMapper<Table> ROW_MAPPER = new RowMapper<Table>() {
 	    public Table mapRow(ResultSet rs, int rowNum) throws SQLException {
 	        Table t = new Table();
-	        t.setId(rs.getInt("ID"));
+	        t.setId(rs.getInt("id"));
 	        t.setName(rs.getString("name"));
 	        t.setModelId(rs.getInt("modelId"));
 	        t.setCompanyTypeId(rs.getInt("companyTypeId"));

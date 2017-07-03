@@ -10,8 +10,7 @@
 		http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:app.properties</value>
@@ -67,52 +66,6 @@
 		</property>														
 	</bean> 
 
-	<!-- 
-	<bean id="dataSource-fountain" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="url">
-			<value>${db.url}</value>
-		</property>
-		<property name="username">
-			<value>${db.user}</value>
-		</property>
-		<property name="password">
-			<value>${db.password}</value>
-		</property>
-		<property name="driverClassName">
-			<value>com.mysql.jdbc.Driver</value>
-		</property>
-		<property name="validationQuery">
-			<value>SELECT 1</value>
-		</property>
-		<property name="testOnBorrow">
-			<value>true</value>
-		</property>
-	</bean>	
-	-->
-<!--  
-	<bean id="dataSource-audit" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="url">
-			<value>${db_audit.url}</value>
-		</property>
-		<property name="username">
-			<value>${db_audit.user}</value>
-		</property>
-		<property name="password">
-			<value>${db_audit.password}</value>
-		</property>
-		<property name="driverClassName">
-			<value>com.mysql.jdbc.Driver</value>
-		</property>
-		<property name="validationQuery">
-			<value>SELECT 1</value>
-		</property>
-		<property name="testOnBorrow">
-			<value>true</value>
-		</property>
-	</bean>	
--->	
-	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
-		<property name="dataSource" ref="dataSource-fountain" /> </bean> -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
 		p:sessionFactory-ref="sessionFactory">

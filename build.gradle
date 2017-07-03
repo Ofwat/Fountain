@@ -1,46 +1,41 @@
 import java.text.*
-import org.gradle.api.java.archives.internal.DefaultManifest
-import org.gradle.api.internal.file.IdentityFileResolver
 import org.apache.tools.ant.filters.ReplaceTokens
 
-//System.setProperty('http.proxyHost', '127.0.0.1')
-//System.setProperty('http.proxyPort', '8888')
-
-//Helper method to load properties
-def loadProperties(String sourceFileName) {
-	println "loading properties for ${sourceFileName}"
-	def config = new Properties()
-	def propFile = new File(sourceFileName)
-	if (propFile.canRead()) {
-		config.load(new FileInputStream(propFile))
-		for (Map.Entry property in config) {
-			ext[property.key] = property.value;
-		}
-	}
+plugins {
+    id 'groovy'
+    id 'java'
+    id 'war'
+    id 'project-report'
+    id 'idea'
+    id 'net.saliman.cobertura' version '2.5.0'
 }
 
+ext.env = project.hasProperty('env') ? project.env : 'local'
+
+println "\n\n\n***${ext.env}***\n\n\n"
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'lib'
+    }
+}
 
 configurations {
-	all*.exclude group: 'commons-logging', module: 'commons-logging'
-}
-
-
-if(project.hasProperty('targetVersion')){
-	println "\n\n\n***has property targetVersion***\n\n\n"
-}else{
-	println "\n\n\n***no property targetVersion***\n\n\n"
+    all*.exclude group: 'commons-logging', module: 'commons-logging'
 }
 
 def libs = files(
-		"lib/scannotation-1.0.2.jar",
-		"lib/jtor/jtor-1.3.1.jar",
-		"lib/jtor/json-20080701.jar",
-		"lib/xml/dictionary.jar",
-		"lib/xml/newmodel.jar",
-		"lib/xml/newdictionary.jar",
-		"lib/FountainDataFormat/FountainDataFormat.jar")
+        "lib/scannotation-1.0.2.jar",
+        "lib/jtor/jtor-1.3.1.jar",
+        "lib/jtor/json-20080701.jar",
+        "lib/xml/dictionary.jar",
+        "lib/xml/newmodel.jar",
+        "lib/xml/newdictionary.jar",
+        "lib/FountainDataFormat/FountainDataFormat.jar"
+)
 
-		/*
+/*
  These are deployed to the container root lib!
  "lib/waffle/waffle-jna.jar",
  "lib/waffle/commons-logging-1.1.1.jar",
@@ -48,18 +43,8 @@ def libs = files(
  "lib/waffle/guava-r07.jar",
  "lib/waffle/platform.jar"
  */
-		
 
-//Could do below similar to:
-//def runtimelibs = fileTree (dir: 'lib', includes: ['*.jar'])
-def runtimelibs = files(
-		//Ofwat specific
-		)
-
-
-
-
-def classDir = 'web/WEB-INF/classes'
+//def classDir = 'web/WEB-INF/classes'
 def testClassesDir = 'build/classes/test'
 def spockVersion = '0.7-groovy-2.0'
 def gebVersion = "0.9.0-SNAPSHOT"
@@ -70,321 +55,241 @@ def springSecurityVersion = "4.0.4.RELEASE"
 def tomcatVersion = '7.0.11' //For functional testing
 def hibernateVersion = '4.3.11.Final'
 
-//def environment
-//Pick up the env from cmd line if running in Jenkins etc.
-if(!(hasProperty('environment'))){
-	println "Setting environment to 'local'"
-	environment = 'local' //Dont declare it as we want to bind!
-}else{
-	println "Using environment: ${environment}"
-	println "And classDir ${classDir}"
-}
+def compilelibs = libs
 
-
-loadProperties "environment/${environment}/build.properties"
-loadProperties "environment/${environment}/test.properties"
-loadProperties "environment/${environment}/mongodb.properties"
-//println "\n\n\n***Using environment: ${environment}***\n\n\n"
-//println "Using test.db.port: ${test.db.port}"
-
-def compilelibs = libs + runtimelibs
 def testlibs = files(
-		classDir,
-		testClassesDir,
-		//Warning!!! copying these aren't appearing on the CP without the 'from' copy blocks in copytestResources.
-		"environment/${environment}/test.properties",	
-		//"environment/${environment}/mongodb.properties",
-		'src/test/java',
-		'hibernate'
-		).plus(compilelibs)
+        testClassesDir,
+        //Warning!!! copying these aren't appearing on the CP without the 'from' copy blocks in copytestResources.
+        "env/${project.ext.env}/test.properties",
+        'src/test/java',
+        'hibernate'
+).plus(compilelibs)
 
 configurations { provided }
 
-defaultTasks 'clean', 'buildWar'
-apply plugin: 'groovy'
-apply plugin: 'war'
-//apply plugin: 'checkstyle'
-apply plugin: 'project-report'
-//apply plugin: 'eclipse-wtp'
-apply plugin: 'idea'
+defaultTasks 'clean', 'war'
 
-buildscript {
-	repositories { 	mavenCentral()
-					flatDir {
-						dirs 'lib'
-					}
-	}
-	dependencies { classpath "net.saliman:gradle-cobertura-plugin:1.2.1" }
-}
-
-apply plugin: 'cobertura'
 cobertura {
-	coverageFormats = ['xml', 'html']
-	coverageDirs << file("${classDir}")
-	coverageSourceDirs << file('src/main/java')
-	coverageSourceDirs << file('src/main/groovy')
+    coverageFormats = ['xml', 'html']
+    coverageSourceDirs = [file('src/main/java'), file('src/main/groovy')]
 }
-
-//eclipse.classpath.plusConfigurations += configurations.provided
-
-//include existing Fountain Ant tasks by using: 'antbuild.taskName'; this stops conflicts with existing tasks that are declared in Gradle and Ant e.g.'test'
-//ant.importBuild 'antWrapper.xml'
 
 //External repositories.
 repositories {
-//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/Ofwat"
-//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/central"
-//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/sonatype"
-//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/publicjboss"
-//	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/jboss"
-	mavenCentral()
-	flatDir {
+    //	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/Ofwat"
+    //	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/central"
+    //	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/sonatype"
+    //	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/publicjboss"
+    // 	mavenRepo urls: "http://fntdev201:9191/nexus/content/repositories/jboss"
+    mavenCentral()
+    flatDir {
         dirs 'lib'
     }
 }
 
-dependencies{
+dependencies {
+    compile 'org.apache.tomcat:tomcat-jsp-api:7.0.57'
 
-	//compile 'tomcat:jsp-api:7.0.35' //not deployed to war!
-	compile 'org.apache.tomcat:tomcat-jsp-api:7.0.57'
-	
-	provided 'org.apache.xmlbeans:xmlbeans:2.5.0' //not deployed to war!
+    provided 'org.apache.xmlbeans:xmlbeans:2.5.0' //not deployed to war!
+    providedCompile "com.cenqua.clover:clover:2.5.1"
 
-	compile compilelibs
-	compile "com.yahoo.platform.yui:yuicompressor:2.4.2"
-	compile "com.thoughtworks.xstream:xstream:1.4.2"
-	compile "org.jdom:jdom:1.1"
-	compile "jstl:jstl:1.1.0"
-	compile "org.apache.ant:ant:1.8.2"
-	compile "org.apache.poi:poi-ooxml:3.8"
-	runtime "taglibs:standard:1.1.0"
-	runtime ("org.jboss.resteasy:resteasy-jaxrs:${restEasyVersion}"){
-		exclude (group:"commons-logging", module:'commons-logging')
-		exclude (group:"org.slf4j", module:'slf4j-simple')
-		exclude (group:"org.slf4j", module:'jcl-over-slf4j')
-	}
-	compile ("org.jboss.resteasy:resteasy-multipart-provider:${restEasyVersion}"){
-		exclude (group:"org.slf4j", module:'slf4j-simple')
-		exclude (group:"org.slf4j", module:'jcl-over-slf4j')
-	}
-	compile "org.jboss.resteasy:resteasy-jaxb-provider:${restEasyVersion}"
-	compile "org.jboss.resteasy:resteasy-jettison-provider:${restEasyVersion}"
-	compile "org.jboss.resteasy:resteasy-spring:${restEasyVersion}"
-	compile "org.jboss.resteasy:resteasy-jackson-provider:${restEasyVersion}"
-	compile "org.codehaus.jackson:jackson-jaxrs:1.3.0"
-	compile "org.codehaus.jackson:jackson-xc:1.3.0"
-	compile "net.sf.kxml:kxml2:2.3.0"
-	compile "mysql:mysql-connector-java:5.1.23"
-	compile ("org.springframework:spring-core:${springVersion}"){
-		exclude (group:"commons-logging", module: 'commons-logging')
-	}
-	compile "org.springframework:spring-aop:${springVersion}"
-	compile "org.springframework:spring-aspects:${springVersion}"
-	compile "org.springframework:spring-expression:${springVersion}"
-	compile "org.springframework:spring-instrument:${springVersion}"
-	compile "org.springframework:spring-instrument-tomcat:${springVersion}"
-	compile "org.springframework:spring-jms:${springVersion}"
-	compile "org.springframework:spring-orm:${springVersion}"
-	compile "org.springframework:spring-jdbc:${springVersion}"
-	compile "org.springframework:spring-webmvc-portlet:${springVersion}"
-	//compile ("org.springframework:spring-struts:${springVersion}"){exclude module: 'commons-logging'}
-	compile ("org.springframework:spring-struts:3.2.17.RELEASE"){exclude module: 'commons-logging'}
-	compile "org.springframework:spring-test:${springVersion}"
-	compile "jakarta-regexp:jakarta-regexp:1.4"
-	compile "commons-collections:commons-collections:3.2"
-	providedCompile  "com.cenqua.clover:clover:2.5.1"
-	compile "commons-io:commons-io:2.4"
-	compile 'org.aspectj:aspectjrt:1.7.1'
-	compile 'org.aspectj:aspectjweaver:1.7.1'
-	compile "commons-lang:commons-lang:2.6"
-	
-	compile 'joda-time:joda-time:2.9.1'
-	
-	compile "javax.servlet:javax.servlet-api:3.0.1" //Changed from provided.
-	
-	compile "log4j:log4j:1.2.16"
-	runtime 'cglib:cglib-nodep:2.1_3'
+    compile compilelibs
+    compile "com.yahoo.platform.yui:yuicompressor:2.4.2"
+    compile "com.thoughtworks.xstream:xstream:1.4.2"
+    compile "org.jdom:jdom:1.1"
+    compile "jstl:jstl:1.1.0"
+    compile "org.apache.ant:ant:1.8.2"
+    compile "org.apache.poi:poi-ooxml:3.8"
+    runtime "taglibs:standard:1.1.0"
+    runtime("org.jboss.resteasy:resteasy-jaxrs:${restEasyVersion}") {
+        exclude(group: "commons-logging", module: 'commons-logging')
+        exclude(group: "org.slf4j", module: 'slf4j-simple')
+        exclude(group: "org.slf4j", module: 'jcl-over-slf4j')
+    }
+    compile("org.jboss.resteasy:resteasy-multipart-provider:${restEasyVersion}") {
+        exclude(group: "org.slf4j", module: 'slf4j-simple')
+        exclude(group: "org.slf4j", module: 'jcl-over-slf4j')
+    }
+    compile "org.jboss.resteasy:resteasy-jaxb-provider:${restEasyVersion}"
+    compile "org.jboss.resteasy:resteasy-jettison-provider:${restEasyVersion}"
+    compile "org.jboss.resteasy:resteasy-spring:${restEasyVersion}"
+    compile "org.jboss.resteasy:resteasy-jackson-provider:${restEasyVersion}"
+    compile "org.codehaus.jackson:jackson-jaxrs:1.3.0"
+    compile "org.codehaus.jackson:jackson-xc:1.3.0"
+    compile "net.sf.kxml:kxml2:2.3.0"
+    compile "mysql:mysql-connector-java:5.1.23"
+    compile("org.springframework:spring-core:${springVersion}") {
+        exclude(group: "commons-logging", module: 'commons-logging')
+    }
+    compile "org.springframework:spring-aop:${springVersion}"
+    compile "org.springframework:spring-aspects:${springVersion}"
+    compile "org.springframework:spring-expression:${springVersion}"
+    compile "org.springframework:spring-instrument:${springVersion}"
+    compile "org.springframework:spring-instrument-tomcat:${springVersion}"
+    compile "org.springframework:spring-jms:${springVersion}"
+    compile "org.springframework:spring-orm:${springVersion}"
+    compile "org.springframework:spring-jdbc:${springVersion}"
+    compile "org.springframework:spring-webmvc-portlet:${springVersion}"
+    compile("org.springframework:spring-struts:3.2.17.RELEASE") { exclude module: 'commons-logging' }
+    compile "org.springframework:spring-test:${springVersion}"
+    compile "jakarta-regexp:jakarta-regexp:1.4"
+    compile "commons-collections:commons-collections:3.2"
+    compile "commons-io:commons-io:2.4"
+    compile 'org.aspectj:aspectjrt:1.7.1'
+    compile 'org.aspectj:aspectjweaver:1.7.1'
+    compile "commons-lang:commons-lang:2.6"
+    compile 'joda-time:joda-time:2.9.1'
+    compile "javax.servlet:javax.servlet-api:3.0.1" //Changed from provided.
+    compile "log4j:log4j:1.2.16"
+    runtime 'cglib:cglib-nodep:2.1_3'
 
-	//Hibernate
-	compile "org.hibernate:hibernate-core:${hibernateVersion}"
-	//compile "org.hibernate:hibernate-jmx:${hibernateVersion}"
-	//compile "org.hibernate:hibernate-annotations:${hibernateVersion}"
-	compile "org.hibernate.common:hibernate-commons-annotations:4.0.5.Final"
-	compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
-	compile "org.hibernate:hibernate-ehcache:${hibernateVersion}"
-	//compile 'org.slf4j:slf4j-api:1.6.1'
+    //Hibernate
+    compile "org.hibernate:hibernate-core:${hibernateVersion}"
+    compile "org.hibernate.common:hibernate-commons-annotations:4.0.5.Final"
+    compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
+    compile "org.hibernate:hibernate-ehcache:${hibernateVersion}"
 
-	//Mongo + mapping
-	compile 'org.mongodb:mongo-java-driver:2.13.2'
-	compile 'org.mongodb.morphia:morphia:0.108'
-	compile 'org.mongodb.morphia:morphia-logging-slf4j:0.108'
-	compile 'com.google.code.gson:gson:2.2.4'
+    //Mongo + mapping
+    compile 'org.mongodb:mongo-java-driver:2.13.2'
+    //compile 'org.mongodb:mongo-java-driver:3.5.8' - Do we need to upgrade?
+    compile 'org.mongodb.morphia:morphia:0.108'
+    compile 'org.mongodb.morphia:morphia-logging-slf4j:0.108'
+    compile 'com.google.code.gson:gson:2.2.4'
 
-	//ElasticSearch for auditing
-	compile ('org.elasticsearch:elasticsearch:1.7.5'){
-		exclude (group:"org.apache.tomcat", module: 'jasper')
-	}
-	compile 'com.vividsolutions:jts:1.13'
+    //ElasticSearch for auditing
+    compile('org.elasticsearch:elasticsearch:1.7.5') {
+        exclude(group: "org.apache.tomcat", module: 'jasper')
+    }
+    compile 'com.vividsolutions:jts:1.13'
 
+    //External REST calls
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 
-	//External REST calls
-	compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
-	
-	
-	//Waffle Spring Security deps
-	compile "org.springframework.security:spring-security-core:${springSecurityVersion}"
-	compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
-	compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
-	compile "org.springframework.security:spring-security-ldap:${springSecurityVersion}"
-	compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
-	compile "com.github.dblock.waffle:waffle-spring-security4:1.8.0"
-	compile "com.github.dblock.waffle:waffle-jna:1.8.0"
+    //Waffle Spring Security deps
+    compile "org.springframework.security:spring-security-core:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-ldap:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
+    compile "com.github.dblock.waffle:waffle-spring-security4:1.8.0"
+    compile "com.github.dblock.waffle:waffle-jna:1.8.0"
 
+    //Just for LDAP
+    compile 'org.apache.directory.server:apacheds-server-jndi:1.5.5'
+    compile 'org.slf4j:slf4j-simple:1.7.12'
+    compile 'org.slf4j:jcl-over-slf4j:1.7.12'
 
-	//Just for LDAP
-	//compile 'org.apache.directory.server:apacheds-all:2.0.0-M21'
-	compile 'org.apache.directory.server:apacheds-server-jndi:1.5.5'
-	compile 'org.slf4j:slf4j-simple:1.7.12'
-	compile 'org.slf4j:jcl-over-slf4j:1.7.12'
-	//compile 'org.apache.directory.server:apacheds-core:1.5.7'
-	//compile 'org.apache.directory.server:apacheds-shared:1.5.7'
-	//Quartz scheduling
-	/*
-	compile ('org.quartz-scheduler:quartz:2.2.1'){
-		exclude(group:"c3p0", module:"c3p0")
-	}
-	*/
-	
-	
-	runtime 'org.slf4j:slf4j-log4j12:1.7.5'
-	runtime "org.slf4j:jcl-over-slf4j:1.7.5"
-	runtime "org.slf4j:slf4j-api:1.7.5"
-
-	runtime 'net.bull.javamelody:javamelody-core:1.46.0'
-
-	compile 'com.mchange:c3p0:0.9.5.2'
-	runtime runtimelibs
-
-	testCompile "org.jboss:jboss-common-core:2.2.10.GA"
-	testRuntime "org.dbunit:dbunit:2.4.4"
-	testCompile 'junit:junit:4.11'
-	testCompile "junit:junit-dep:4.8.2"
-	testCompile 'org.mockito:mockito-all:1.9.5'
-	testRuntime "junit:junit:4.11"
-	testCompile "com.googlecode.json-simple:json-simple:1.1.1"
-	testCompile testlibs
-
-	testCompile "org.gebish:geb-spock:0.12.2"
-	testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
-	//testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
-	testCompile "org.gebish:geb-junit4:0.12.2"
-	//testCompile "org.gebish:geb-spock:$gebVersion" //SNAPSHOTS from OSS repo.
-	testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
-	//testCompile 'org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion'
-	testCompile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
-	testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
-	testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.0"
-	providedCompile 'org.seleniumhq.selenium:selenium-chrome-driver:2.47.0@jar'
-	providedCompile 'org.seleniumhq.selenium:selenium-ie-driver:2.47.0@jar'
-	testCompile "com.ibm.icu:icu4j:52.1"
-
-	testCompile "com.ibm.icu:icu4j:52.1"
-
-	testRuntime testlibs
-
-	groovy group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.3.10'
-
+    //Quartz scheduling
+    /*
+    compile ('org.quartz-scheduler:quartz:2.2.1'){
+        exclude(group:"c3p0", module:"c3p0")
+    }
+    */
+    runtime 'org.slf4j:slf4j-log4j12:1.7.5'
+    runtime "org.slf4j:jcl-over-slf4j:1.7.5"
+    runtime "org.slf4j:slf4j-api:1.7.5"
+    runtime 'net.bull.javamelody:javamelody-core:1.46.0'
+    compile 'com.mchange:c3p0:0.9.5.2'
+    testCompile "org.jboss:jboss-common-core:2.2.10.GA"
+    testRuntime "org.dbunit:dbunit:2.4.4"
+    testCompile 'junit:junit:4.11'
+    testCompile "junit:junit-dep:4.8.2"
+    testCompile 'org.mockito:mockito-all:1.9.5'
+    testRuntime "junit:junit:4.11"
+    testCompile "com.googlecode.json-simple:json-simple:1.1.1"
+    testCompile testlibs
+    testCompile "org.gebish:geb-spock:0.12.2"
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+    //testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+    testCompile "org.gebish:geb-junit4:0.12.2"
+    //testCompile "org.gebish:geb-spock:$gebVersion" //SNAPSHOTS from OSS repo.
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    //testCompile 'org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion'
+    testCompile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
+    testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+    testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.0"
+    providedCompile 'org.seleniumhq.selenium:selenium-chrome-driver:2.47.0@jar'
+    providedCompile 'org.seleniumhq.selenium:selenium-ie-driver:2.47.0@jar'
+    testCompile "com.ibm.icu:icu4j:52.1"
+    testCompile "com.ibm.icu:icu4j:52.1"
+    testRuntime testlibs
+    compile 'org.codehaus.groovy:groovy-all:2.3.10'
 }
-
-//Sourcesets defined in the Java plugin.
-
-sourceSets.test.groovy.srcDir 'src/test/java'
-sourceSets.test.java.srcDirs = []
-
-sourceSets.main.groovy.srcDir 'src/main/java'
-sourceSets.main.java.srcDirs = []
 
 sourceSets {
-	main {
-		compileClasspath += configurations.provided
-		groovy { srcDir 'src/main' }
-	}
-	test{ groovy { srcDir 'src/test' } }
+    main {
+        compileClasspath += configurations.provided
+        groovy {
+            srcDirs = ['src/main/groovy', 'src/main/java']
+        }
+        java {
+            srcDirs = [] // don't compile Java code twice
+        }
+        resources {
+            srcDirs = ['src/main/resources', "environment/$env/resources"]
+        }
+    }
+    test {
+        groovy {
+            srcDir 'src/test/java'
+            srcDir 'src/test/groovy'
+        }
+    }
 }
 
-task clean(type: Delete, overwrite: true){
-	println "\n\n\n***clean***\n\n\n"
-	delete 'bin/uk', 'build', classDir, 'web/jsp/footer.jsp', 'test/reports'
-}
 
-task prepare(dependsOn: 'clean') << {
-	println "\n\n\n***Prepare***\n\n\n"
-	mkdir 'build'
-	mkdir classDir //TODO should come from build.properties
+
+task fountainClean(type: Delete, overwrite: true) {
+    delete '/src/main/webapp/jsp/footer.jsp'
 }
+clean.dependsOn fountainClean
 
 /**
  * The compile groovy and java tasks
  */
-compileGroovy{
-	destinationDir = file('web/WEB-INF/classes')
-	dependsOn 'prepare'
+compileGroovy {
+    destinationDir = file('/src/main/webapp/WEB-INF/classes')
 }
 
-task copyJSP(dependsOn: compileGroovy, type:Copy){
-	outputs.upToDateWhen { false }
-	from('web/jsp/footer.jsp.template'){
-		def token = "${System.env.JOB_NAME} build: ${System.env.BUILD_NUMBER}  TimeStamp: ${System.env.BUILD_ID}  SVN revision: ${System.env.SVN_REVISION}"
-		filter(ReplaceTokens, tokens: ['BUILD_INFO': token.toString(), 'COPYRIGHT_YEAR':new Date().getAt(Calendar.YEAR).toString()])
-	}
-	rename {fn -> "footer.jsp"}
-	into 'web/jsp'
+task createFooter(dependsOn: compileGroovy, type: Copy) {
+    outputs.upToDateWhen { false }
+    from('/src/main/webapp/jsp/footer.jsp.template') {
+        def token = "${System.env.JOB_NAME} build: ${System.env.BUILD_NUMBER}  TimeStamp: ${System.env.BUILD_ID}  SVN revision: ${System.env.SVN_REVISION}"
+        filter(ReplaceTokens, tokens: ['BUILD_INFO': token.toString(), 'COPYRIGHT_YEAR': new Date().getAt(Calendar.YEAR).toString()])
+    }
+    rename { fn -> "footer.jsp" }
+    into '/src/main/webapp/jsp'
 }
 
-war{
-	dependsOn 'copyJSP'
-	archiveName = 'Fountain.war'
-	destinationDir = file('build/')
-	webXml = file('web/WEB-INF/web.xml')
-	//Multiple copy blocks as we are taking files from all over the place in Ant!
-	from (files([
-		'web',
-		'META_INF/context.xml'
-	])
-	.plus(fileTree(dir:'src/main/java', include:'log4j*'))) {
-	}
+war {
+    dependsOn 'createFooter'
+    archiveName = 'Fountain.war'
 
-	//from (files('environment/local')){ //TODO pickup environment from config!
-	//include '**/app.properties'
-	//include '**/theme.properties'
-	//include '**/aspect.xml'
-	//into('WEB-INF/classes')
-	//}
+    from("environment/$env/") {
+        include('context.xml')
+        into('META-INF')
+    }
 
-	from (files('hibernate/domain')){
-		//TODO pickup environment from config! + this will copy the source across too if *.java wasn't already being excluded!
-		into('WEB-INF/classes/domain')
-	}
-	
-	from (files('src/main/java')){
-		//TODO pickup environment from config! + this will copy the source across too if *.java wasn't already being excluded!
-		include '**/log4j.dtd' //TODO - Bodge but need to select just this to match existing build!
-		include '**/log4j.xml'
-		include '**/beans.xml'
-		include '**/hibernate.cfg.xml'
-		into('WEB-INF/classes')
-	}
-	excludes += [
-		"web.xml",
-		"**/footer.jsp.template"
-	]
-	//classpath = files(classDir).plus(runtimelibs)
-	manifest {
-		def timestamp = new SimpleDateFormat('yyyyMMddHHmmss', new Locale('en')).format(new Date())
-		def label = "${System.env.BUILD_NUMBER}"
-		attributes("Build-number":label, "Ofwat-Build-Time":timestamp)
-	}
+    from(files('hibernate/domain')) {
+        //TODO pickup env from config! + this will copy the source across too if *.java wasn't already being excluded!
+        into('WEB-INF/classes/domain')
+    }
+
+    excludes += [
+            "web.xml",
+            "**/footer.jsp.template"
+    ]
+    //classpath = files(classDir).plus(runtimelibs)
+    manifest {
+        def timestamp = new SimpleDateFormat('yyyyMMddHHmmss', new Locale('en')).format(new Date())
+        def label = "${System.env.BUILD_NUMBER}"
+        attributes("Build-number": label, "Ofwat-Build-Time": timestamp)
+    }
 }
+
+/*************************************************************************
+ * Test Configuration.
+ *************************************************************************/
 
 /*
  checkstyleMain{
@@ -395,26 +300,27 @@ war{
  }
  */
 
-task copyTestResources(type:Copy){
-	from file('src/main/java')
-	exclude '**/*.java'
-	from("environment/${environment}/test.properties") //TODO - we need this on the classpath and adding it above doesn't seem to work
-	from("environment/${environment}/mongodb.test.properties")
-	from("environment/${environment}/chunker.test.properties")
-	from('src/test/java/test_beans.xml')
+task copyTestResources(type: Copy) {
+    from file('src/main/java')
+    exclude '**/*.java'
+    from("env/${project.ext.env}/test.properties")
+    //TODO - we need this on the classpath and adding it above doesn't seem to work
+    from("env/${project.ext.env}/mongodb.test.properties")
+    from("env/${project.ext.env}/chunker.test.properties")
+    from('src/test/java/test_beans.xml')
 //	from('src/test/resources/test_beans.xml')
-	into file(classDir)
+//	into file(classDir)
 //	into file(testClassesDir)
 }
 
-compileTestGroovy{ dependsOn  compileGroovy, copyTestResources }
+compileTestGroovy { dependsOn compileGroovy, copyTestResources }
 
 //task integrationTests(type:Test){
 //	dependsOn(compileTestGroovy)
 //	include '**/IntegrationTestSuite.class'
 //	scanForTestClasses = false
 //	testResultsDir = file('test/reports')
-//	//classpath = classpath.plus(files("environment/${environment}/test.properties"))
+//	//classpath = classpath.plus(files("env/${env}/test.properties"))
 //}
 //
 //task unitTests(type:Test){
@@ -423,17 +329,17 @@ compileTestGroovy{ dependsOn  compileGroovy, copyTestResources }
 //	include '**/UnitTestSuite.class'
 //	scanForTestClasses = false
 //	testResultsDir = file('test/reports')
-//	//classpath = classpath.plus(files("environment/${environment}/test.properties"))
+//	//classpath = classpath.plus(files("env/${env}/test.properties"))
 //}
 
 test {
-	classpath = files(classDir)
- 	include '**/UnitTestSuite.class'
-	testResultsDir = file('test/reports')
-	doLast{
-		def timestamp = System.currentTimeMillis()
-		test.testResultsDir.eachFile { it.lastModified = timestamp }
-	}
+//	classpath = files(classDir)
+    include '**/UnitTestSuite.class'
+    //testResultsDir = file('test/reports')
+    doLast {
+        def timestamp = System.currentTimeMillis()
+        test.testResultsDir.eachFile { it.lastModified = timestamp }
+    }
 }
 
 //task extraTests2(type:Test){
@@ -449,27 +355,33 @@ test {
 //}
 
 
-task functionalTests(type:Test){
-	dependsOn(compileTestGroovy)
-	systemProperty "geb.env", "remote_ie"
-	//systemProperty "geb.env", "remote_firefox"
-//	systemProperty "geb.env", "ie"
-	//println "\n\n\n***${testClassesDir}***\n\n\n"
-	//include "**/*Spec.class"
+task functionalTests(type: Test) {
+    dependsOn(compileTestGroovy)
+
+    /**
+     * Here we set the env, ie what browser to use - we need to
+     * make sure that the remote server is running!
+     **/
+    systemProperty "geb.env", "remote_ie"
+    //systemProperty "geb.env", "remote_firefox"
+    //systemProperty "geb.env", "ie"
+
+    println "\n\n\n***${testClassesDir}***\n\n\n"
+    //include "**/*Spec.class"
 
 // Recording
 //	include "**/RecordCellValuesInListOfReportsV2Spec.class"
 //	include "**/RecordCellValuesInListOfModelTablesSpec.class"
-	
+
 // Test	
-	include "**/TestCellValuesInListOfReportsV2Spec.class"
+    include "**/TestCellValuesInListOfReportsV2Spec.class"
 //	include "**/TestCellValuesInListOfModelTablesV2Spec.class"
 //	include "**/TestEditValuesInAListOfReportsSpec.class"
 //	include "**/TestEditValuesInAListOfModelsSpec.class"
-	
-	scanForTestClasses = false
-	systemProperties "geb.build.reportsDir": "test/reports/geb"
-	testResultsDir = file('test/reports/geb')
+
+    scanForTestClasses = false
+    systemProperties "geb.build.reportsDir": "test/reports/geb"
+    //testResultsDir = file('test/reports/geb')
 }
 
 
